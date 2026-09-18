@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MusicL · 看得见的乐理</title>
+<link rel="stylesheet" href="./styles/tokens.css">
+<link rel="stylesheet" href="./styles/base.css">
+<style>
+  body { padding: var(--sp-7) var(--sp-5); }
+  main { max-width: 880px; margin: 0 auto; }
+  h1 { font-size: var(--fs-display); margin-bottom: var(--sp-2); }
+  .lead { color: var(--ink-2); margin: 0 0 var(--sp-6); }
+  h2 { font-size: var(--fs-h3); margin: var(--sp-6) 0 var(--sp-3); }
+  .swatches { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  .sw {
+    width: 108px; padding: var(--sp-2); border-radius: var(--r-md);
+    border: 1px solid var(--line); background: var(--surface);
+    font-size: var(--fs-tiny); color: var(--ink-2);
+  }
+  .sw i { display: block; height: 44px; border-radius: var(--r-sm); margin-bottom: var(--sp-2); }
+  .card {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--shadow-1);
+  }
+  button {
+    font: inherit; padding: var(--sp-2) var(--sp-4); border-radius: var(--r-pill);
+    border: 1px solid var(--amber-deep); background: var(--amber);
+    color: var(--ink-1); cursor: pointer;
+  }
+  button:active { transform: translateY(1px); }
+  .hint { color: var(--ink-3); font-size: var(--fs-small); }
+</style>
+</head>
+<body>
+<main>
+  <h1>MusicL</h1>
+  <p class="lead">用看得见的声音讲乐理。当前处于 <strong>M0 · 目录初始化</strong>，这一页只是脚手架自检页，
+  用来验证「设计令牌能渲染」和「不加载任何音频素材也能出声」这两件事。</p>
+
+  <h2>基调色板</h2>
+  <div class="swatches">
+    <div class="sw"><i style="background:#F7F3E9"></i>bg 米白</div>
+    <div class="sw"><i style="background:#FFFDF7"></i>surface 纸面</div>
+    <div class="sw"><i style="background:#EFC24C"></i>amber 黄</div>
+    <div class="sw"><i style="background:#4C9A6A"></i>green 绿</div>
+    <div class="sw"><i style="background:#D4714C"></i>clay 陶土红</div>
+    <div class="sw"><i style="background:#6C8797"></i>slate 灰蓝</div>
+    <div class="sw"><i style="background:#2E2A22"></i>ink 暖黑</div>
+  </div>
+
+  <h2>音频自检</h2>
+  <div class="card">
+    <p style="margin-top:0">Web Audio 实时合成，不依赖任何音频文件。点一下应该听到一个带包络的 A4 = 440Hz。</p>
+    <button id="beep" type="button">播放 A4 (440Hz)</button>
+    <p class="hint">浏览器要求用户手势后才能启动音频，所以第一次点击是必需的。</p>
+  </div>
+</main>
+<script type="module">
+  let ctx;
+  document.getElementById('beep').addEventListener('click', () => {
+    ctx ??= new AudioContext();
+    const t = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = 440;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.25, t + 0.01);  // attack
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.9); // release
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t); osc.stop(t + 1);
+  });
+</script>
+</body>
+</html>

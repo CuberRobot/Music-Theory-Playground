@@ -156,7 +156,7 @@ export const PARTS = [
         blurb: '动机驱动这条路的终点，也是它最有说服力的证明。',
         lessons: [
           { id: 'a-beethoven-5', no: 'A', title: '第五交响曲', sub: '四个音撑起一个乐章', status: 'ready' },
-          { id: 'b-beethoven-9', no: 'B', title: '第九交响曲', sub: '四十分钟的黑暗与一次爆发', status: 'planned' },
+          { id: 'b-beethoven-9', no: 'B', title: '第九交响曲', sub: '先翻旧账，再唱歌', status: 'ready' },
         ],
       },
       {

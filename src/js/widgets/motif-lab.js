@@ -11,10 +11,12 @@
 import { midiToHz, spellMidi } from '../music/pitch.js';
 import { playPluck, preloadPluck } from '../audio/engine.js';
 import { createNoteStrip } from '../audio/transport.js';
-import { TEMPO } from '../audio/tempo.js';
+import { SCORE_TEMPO, beatSeconds } from '../audio/tempo.js';
 
 const BASE = 67;              // G4，那个动机的起点
-const SEC = TEMPO.melody;             // 一个"短音"多少秒
+// 一拍多少秒：按贝五总谱上标的 ♩=108 来，不是"听着差不多"。
+// 这个动机的时值比例（三短一长）也是原谱的，所以这里出来就是原速。
+const SEC = beatSeconds(SCORE_TEMPO.beethoven5_I);
 
 const MOTIF = [
   { semi: 0, beats: 1 },

@@ -27,6 +27,33 @@ export const TEMPO = {
   ornament: 0.09,
 };
 
+/**
+ * 真实作品的速度，单位是 BPM（每分钟多少拍）——不是秒。
+ *
+ * 为什么单独立一张表：上面那组是"教学素材的播放节奏"，数字只是为了听清楚，
+ * 没有出处。分析真实作品时不行 —— 速度是作品的一部分：
+ * 贝多芬标的 ♩=80 和"随便放慢一点"是两回事，慢一半就成了另一首曲子。
+ *
+ * 所以这里的每个数字都要有出处。下面这些是 2026-09 从 IMSLP 上的总谱/分谱
+ * 逐个核对出来的原始标记（不是"常见演绎速度"）：
+ *
+ *   贝多芬第五 · 第一乐章   Allegro con brio              ♩=108
+ *   贝多芬第九 · 第一乐章   Allegro ma non troppo         ♩=88
+ *   贝多芬第九 · 第四乐章   Presto（引子，3/4）           二分音符=96
+ *   贝多芬第九 · 第四乐章   Allegro assai（欢乐颂主题）   ♩=80
+ *   贝多芬第九 · 第四乐章   Alla marcia（土耳其风格）     附点四分音符=84
+ */
+export const SCORE_TEMPO = {
+  beethoven5_I: 108,
+  beethoven9_I: 88,
+  beethoven9_IV_presto: 96,   // 以二分音符为单位
+  beethoven9_IV_joy: 80,
+  beethoven9_IV_marcia: 84,   // 以附点四分音符为单位
+};
+
+/** BPM → 一拍多少秒。BPM 就是"每分钟多少拍"。 */
+export const beatSeconds = (bpm) => 60 / bpm;
+
 /** 音阶类素材的默认参数：音与音之间留一点点重叠，听起来是连的，不是断的。 */
 export const SCALE_ARGS = { gap: TEMPO.scale, duration: 0.5, level: 0.24 };
 

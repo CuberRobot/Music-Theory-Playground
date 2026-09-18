@@ -18,6 +18,8 @@ import { METERS, fitsMeasure } from '../src/js/music/rhythm.js';
 import { TERMS, TEMPO_TERMS, DYNAMICS } from '../src/js/music/glossary.js';
 import { LESSONS, findLesson } from '../src/js/music/curriculum.js';
 import { TEMPO } from '../src/js/audio/tempo.js';
+import { SCORE_TEMPO } from '../src/js/audio/tempo.js';
+import { ODE_THEME } from '../src/js/widgets/ode-lab.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 let fails = 0;
@@ -31,7 +33,11 @@ const near = (got, want, tol, msg) => {
   checks++;
   if (Math.abs(got - want) > tol) fail(`${msg}：得到 ${got}，应为 ${want}`);
 };
-const section = (t) => console.log('\n— ' + t + ' —');
+let starSections = 0;
+const section = (t) => {
+  if (t.startsWith('★')) starSections++;
+  console.log('\n— ' + t + ' —');
+};
 const names = (root, steps, flats = false) =>
   steps.map((s) => spellMidi(root + s, flats).name).join(' ');
 const pc = (m, flats = false) => spellMidi(m, flats).name.replace(/\d+$/, '');
@@ -128,6 +134,39 @@ section('★ 贝多芬第五开头动机');
   const deg = (s) => EB_MAJOR.indexOf(s) + 1;
   // 相对 E♭ 的半音数：G 是 4，E♭ 是 0
   eq(`${deg(4)} ${deg(4)} ${deg(4)} ${deg(0)}`, '3 3 3 1', '在 E♭ 大调里的级数（G=3, E♭=1）');
+}
+
+section('★ 贝多芬第九 · 欢乐颂主题（第四乐章第 92 小节起）');
+{
+  // 出处：IMSLP 上那份大提琴与低音提琴分谱，第四乐章第 92 小节，
+  // Allegro assai ♩=80，D 大调 4/4，大提琴与低音提琴齐奏。
+  const D = 50;                       // D3，原谱低音弦乐那一句的音区
+  const beat = (ph) => ph.reduce((a, n) => a + n.b, 0);
+  const hz = ODE_THEME.phrases.map(beat);
+  eq(hz.join(','), '16,16,16,16', '四句各四小节（每句 16 拍）');
+  eq(hz.reduce((a, b) => a + b, 0), 64, '主题总长 16 小节 64 拍');
+  eq(SCORE_TEMPO.beethoven9_IV_joy, 80, '总谱速度：Allegro assai ♩=80');
+
+  const p1 = ODE_THEME.phrases[0];
+  // 用升号拼写：这是 D 大调，三级音要写成 F♯ 而不是 G♭
+  eq(names(D, p1.map((n) => n.s), false),
+    'F♯3 G3 A3 A3 G3 F♯3 E3 D3 E3 F♯3 F♯3 E3 E3',
+    '第一句必须落在 D 大调的三级音上起（F♯ G A | A G F♯ E | D E F♯ | F♯ E E）');
+  eq(p1.map((n) => n.b).join(','), '2,1,1,1,1,1,1,2,1,1,1.5,0.5,2',
+    '第一句时值：起音是二分音符 F♯（不是两个四分音符）');
+
+  const p2 = ODE_THEME.phrases[1];
+  eq(p2[p2.length - 1].s, 0, '第二句结尾落在主音 D 上');
+  eq(p2[p2.length - 1].b, 2, '而且是一个二分音符的 D');
+
+  const p4 = ODE_THEME.phrases[3];
+  eq(p4[0].s === p4[1].s && p4[1].b === 1, true,
+    '第四句起音是两个 F♯（前一个从上一小节连过来）——和第一句的写法不同');
+
+  // 主题里不该出现 D 大调之外的音
+  const DEGREES = new Set([0, 2, 4, 5, 7, 9, 11]);
+  eq(ODE_THEME.notes.every((n) => DEGREES.has(((n.s % 12) + 12) % 12)), true,
+    '主题只用 D 大调音阶里的音（低音 A 记作 -5，即下五度）');
 }
 
 section('★ 十二小节布鲁斯');
@@ -311,5 +350,5 @@ section('ready 的课必须真的有页面，页面上的实验台必须真的�
 
 console.log(fails
   ? `\n${fails} / ${checks} 项失败`
-  : `\n全部 ${checks} 项通过（含 7 组对照真实作品的检查）`);
+  : `\n全部 ${checks} 项通过（含 ${starSections} 组对照真实作品的检查）`);
 process.exitCode = fails ? 1 : 0;

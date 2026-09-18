@@ -119,19 +119,28 @@ export function mountListenChallenge(root) {
 
   root.querySelector('[data-count]').textContent = `${items.length} 个选项`;
 
+  let solved = false;
+
+  /**
+   * 每次点击都必须更新反馈 —— 以前答对之后按钮被锁住，
+   * 再点它就直接 return，屏幕上留着上一次的旧结果，
+   * 看起来像"点了没反应"。
+   */
   function answer(i, btn) {
-    if (btn.dataset.done === '1') return;
-    if (i === cfg.answer) {
+    const correct = i === cfg.answer;
+    if (correct) {
+      solved = true;
       btn.dataset.done = '1';
       btn.style.borderColor = 'var(--green)';
       btn.style.background = 'var(--green-soft)';
-      verdict.className = 'verdict ok';
-      verdict.textContent = cfg.explain ?? '对了。';
-    } else {
-      // 答错不拦、不标记，只给一句提示，让人继续听
-      verdict.className = 'verdict no';
-      verdict.textContent = cfg.hint ?? '再听一遍，注意比较两者的差别。';
     }
+    verdict.className = `verdict ${correct ? 'ok' : 'no'}`;
+    verdict.textContent = correct
+      ? (cfg.explain ?? '对了。')
+      // 答错不拦、不标记，只给一句提示，让人继续听
+      : solved
+        ? '这次不对 —— 不过答案你已经找出来了，就是高亮的那个。'
+        : (cfg.hint ?? '再听一遍，注意比较两者的差别。');
   }
 
   root.querySelector('[data-play-all]').addEventListener('click', () => {

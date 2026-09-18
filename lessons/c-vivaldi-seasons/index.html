@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C · 维瓦尔第《四季》 · Music Theory Playground</title>
+<meta name="description" content="1725 年那本谱子、随谱印出的十四行诗，以及里托内洛结构怎么把「诗里写了什么」翻译成音乐。含公版乐谱与录音参照。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="c-vivaldi-seasons">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">三 · 作品分析 / <b>C · 维瓦尔第《四季》</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">C · 维瓦尔第《四季》</p>
+      <h1>先有诗，还是先有音乐</h1>
+      <p class="lead-p">《四季》是最早一批把"诗里写了什么"直接翻译成音乐的作品，
+      也是被听得最烂熟的一部——熟到很多人其实没听见过它。</p>
+      <p>它只是一组作品里的四首：1725 年在阿姆斯特丹出版的那本谱子，
+      名字叫《和谐的灵感与创意的较量》，一共十二首协奏曲，《四季》是前四首。</p>
+    </section>
+
+    <div class="card">
+      <dl class="readout">
+        <div><dt>写作</dt><dd>约 1718–1723（维瓦尔第在曼图亚宫廷任职期间）</dd></div>
+        <div><dt>出版</dt><dd>1725 · 阿姆斯特丹 · Michel-Charles Le Cène</dd></div>
+        <div><dt>所在曲集</dt><dd>Op.8《Il cimento dell'armonia e dell'inventione》（十二首协奏曲）</dd></div>
+        <div><dt>编号</dt><dd>RV 269（春）· 315（夏）· 293（秋）· 297（冬）</dd></div>
+        <div><dt>编制</dt><dd>独奏小提琴 + 弦乐 + 通奏低音</dd></div>
+        <div><dt>诗句</dt><dd>随谱印出；很可能是维瓦尔第自己写的</dd></div>
+      </dl>
+    </div>
+
+    <section>
+      <h2>一 · 1725 年的那本谱子</h2>
+      <p>曲集的名字是一句挑衅式的话：<i>Il cimento dell'armonia e dell'inventione</i>，
+      大意是"和谐（规则）与创意（想象）之间的较量"。
+      十二首协奏曲里《四季》是前四首，每一首前面都印着一首十四行诗，
+      诗按乐章分成三段，和音乐的三个乐章一一对应。</p>
+      <p>这件事在今天看起来理所当然，在当时却不是。把"鸟叫""雷雨"这种具体的东西
+      写进严肃音乐，需要理由；维瓦尔第给的理由就是这十二首作品的总标题——
+      <b>他在证明：规则和想象不必二选一。</b></p>
+    </section>
+
+    <section>
+      <h2>二 · 那些诗</h2>
+      <p>诗的作者没有署名，但学界一般倾向于认为就是维瓦尔第本人，
+      依据是：每首诗都工整地切成三段，正好对应协奏曲的三个乐章；
+      而"为已有音乐配诗"很少这样做。</p>
+      <p>《春》的第一段是这样的（这里按意大利原文的英译转译）：</p>
+      <blockquote>
+        <p>春天来了，鸟儿用欢快的歌迎接它，<br>
+        泉水在微风的吹拂下轻轻低语；<br>
+        忽然乌云遮住天空，雷电宣告它的到来；<br>
+        等这些安静下来，小鸟又唱起它们的歌。</p>
+      </blockquote>
+      <p>第二段：<b>牧羊人在开满花的草地上睡着了，忠实的狗在身旁。</b><br>
+      第三段：<b>在牧笛欢快的声音里，仙女和牧人跳起舞来。</b></p>
+      <p>这些不是后人附会的解读——维瓦尔第在谱子上<b>亲手写了提示</b>：
+      "狗在叫"（春的第二乐章）、"酷热带来的倦怠"（夏的第一乐章）、
+      "醉汉们已经睡了"（秋的第二乐章）。谱子本身在告诉你该听什么。</p>
+    </section>
+
+    <section>
+      <h2>三 · 四首协奏曲的地图</h2>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col"></th><th scope="col">调性</th><th scope="col">三个乐章</th><th scope="col">诗里写的是什么</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>春<br>RV 269</td><td>E 大调</td>
+              <td>Allegro<br>Largo e pianissimo sempre<br>Allegro pastorale</td>
+              <td>鸟鸣、泉水、雷雨；牧羊人和狗；牧笛与舞蹈</td>
+            </tr>
+            <tr>
+              <td>夏<br>RV 315</td><td>g 小调</td>
+              <td>Allegro non molto<br>Adagio e piano – Presto e forte<br>Presto</td>
+              <td>酷热、杜鹃与斑鸠、热风与北风；蚊蝇与雷；狂风暴雨</td>
+            </tr>
+            <tr>
+              <td>秋<br>RV 293</td><td>F 大调</td>
+              <td>Allegro<br>Adagio molto<br>Allegro</td>
+              <td>丰收与醉酒；醉汉睡去；狩猎（从猎人和猎物的两面写）</td>
+            </tr>
+            <tr>
+              <td>冬<br>RV 297</td><td>f 小调</td>
+              <td>Allegro non molto<br>Largo<br>Allegro</td>
+              <td>严寒发抖、牙齿打颤；炉火与雨；在冰上行走、摔倒、南风与北风相争</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>注意《秋》的第三乐章：诗里写的是狩猎，音乐里却杀了一段猎物逃命的角度。
+      这已经不是"配插画"，而是<b>用一首曲子讲两个立场</b>——
+      三百年前的标题音乐就想到了这一步。</p>
+      <p>还有一件常被忽略的事：<b>冬</b>的第二乐章（Largo）几乎是静止的。
+      在"表现季节"这么外在的题目里，维瓦尔第留了一整段什么都不发生的音乐。
+      这和 L 那节讲的"取消引力"其实是同一件事的不同版本。</p>
+    </section>
+
+    <div class="card wide" data-widget="form-lab"></div>
+    <p class="hint">切到「里托内洛」——那是巴洛克协奏曲的骨架：乐队反复说同一段（R），
+    独奏插进新东西（S），来回几轮。听《四季》任何一个第一乐章，
+    都可以用这张图跟着走：<b>每次回到 R，你就知道自己还在原地。</b></p>
+
+    <section>
+      <h2>四 · 他是怎么"翻译"的</h2>
+      <p><strong>鸟鸣</strong>：高把位上的快速音型加上装饰音，几种鸟用不同的音型区分（不是随便乱叫）。</p>
+      <p><strong>雷雨</strong>：整个乐队一起的快速音阶与震音，低音区猛然加重——这在当时是"吓人"的手法。</p>
+      <p><strong>狗在叫</strong>：春的第二乐章里，中提琴反复同一个音。
+      维瓦尔第要的就是"不该在这里出现的声音"：旋律在睡觉，狗在叫。
+      <b>把一个持续不变的音当作背景，是这套曲子最现代的地方。</b></p>
+      <p><strong>冰上行走</strong>：冬的第一乐章用突然的停顿和踉跄的节奏表示打滑，
+      结尾处牙齿打颤用的是整段重复的短促同音——和第 22 节的布鲁斯一样，
+      重复本身就是表达。</p>
+    </section>
+
+    <section>
+      <h2>五 · 之后三百年：最熟的一首，也是最陌生的一首</h2>
+      <p>《四季》长期被当作餐厅和电话等待音里的"背景音乐"。
+      1989 年奈杰尔·肯尼迪（Nigel Kennedy）那张唱片把它重新推回排行榜，
+      之后古乐运动又把它彻底重做了一遍：更少的弦乐、更干的音色、
+      更夸张的对比——同一份谱子，听起来像两部不同的作品。</p>
+      <p>2012 年，作曲家马克斯·里希特（Max Richter）做了《Recomposed》：
+      他自己说丢掉了维瓦尔第四分之三的材料，剩下的部分反复、延迟、重组，
+      变成极简主义的循环。这张唱片后来比很多正统版本卖得都好。
+      <b>一部作品被改编到这种程度，说明它已经变成了公共素材。</b></p>
+    </section>
+
+    <section>
+      <h2>六 · 听点</h2>
+      <p><strong>一 · 春的第一乐章开头</strong>：先记住那段齐奏（R）。整章都是它和新东西的交替。</p>
+      <p><strong>二 · 春的第二乐章</strong>：找到那串一直在响的中提琴——那是狗。</p>
+      <p><strong>三 · 夏的第三乐章</strong>：这一段的暴力程度到今天也不过时。</p>
+      <p><strong>四 · 秋的第二乐章</strong>：醉汉睡了。听它的和声怎么变得站不稳。</p>
+      <p><strong>五 · 冬的第二乐章</strong>：几乎什么都不发生。留意它和前后两个乐章的反差。</p>
+    </section>
+
+    <section>
+      <h2>七 · 参考</h2>
+      <div class="card">
+        <div class="card-head"><h2>公版乐谱</h2></div>
+        <p style="margin:0">
+          <a href="https://imslp.org/wiki/The_Four_Seasons_(Vivaldi,_Antonio)">《四季》· IMSLP</a><br>
+          <a href="https://imslp.org/wiki/Il_cimento_dell%27armonia_e_dell%27inventione,_Op.8_(Vivaldi,_Antonio)">Op.8 全十二首 · IMSLP（1725 年阿姆斯特丹初版）</a>
+        </p>
+        <p class="hint">对照着看的时候只盯一件事：<b>谱子上有没有维瓦尔第自己写的那些提示词。</b>
+        他标了"狗在叫""醉汉睡了"的地方，就是他认为你一定要听出来的地方。</p>
+      </div>
+
+      <div class="card" style="margin-top:var(--sp-4)">
+        <div class="card-head"><h2>录音版本</h2></div>
+        <p class="hint" style="margin-top:0">按普遍评价列的参照点，不是绝对答案。这一部作品的路线之争特别清楚：
+        古乐派和现代乐队几乎是两种美学。</p>
+        <div class="scroll-x">
+          <table class="table">
+            <thead><tr><th scope="col">版本</th><th scope="col">留意什么</th></tr></thead>
+            <tbody>
+              <tr><td>平诺克 / 斯坦奇 · 英国音乐会 · 1982</td><td>古乐派的经典参照：编制小、音色干、速度利落</td></tr>
+              <tr><td>奈杰尔·肯尼迪 · 1989</td><td>把这部作品重新带回大众视野的一版。听它的自由速度和重音</td></tr>
+              <tr><td>和谐花园（Il Giardino Armonico）· 1990 年代</td><td>戏剧性极强的一版：动态夸张，像在演歌剧</td></tr>
+              <tr><td>马克斯·里希特《Recomposed》· 2012</td><td>不是演绎，是重写。拿它和上面任何一版对照都很有意思</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>一句话带走</h2>
+      <p><strong>音乐可以"说事"，但要说得好，靠的还是结构。</strong>
+      维瓦尔第往音乐里放了鸟、狗、雷雨和醉汉——用的却是最规整的里托内洛。
+      这套曲子被听了三百年还没坏，靠的是后者。</p>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

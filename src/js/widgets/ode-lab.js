@@ -106,7 +106,7 @@ export function mountOdeLab(root) {
       <p class="hint">主题一个音不改，只换音区和厚度</p>
     </div>
     <p class="hint" style="margin-top:0">
-      原谱标记：D 大调，4/4，<b>♩=80</b>（Allegro assai）——下面的播放就用这个速度，不放慢、不加快。
+      原谱标记：D 大调，4/4，<b><span class="note" role="img" aria-label="四分音符"></span>=80</b>（Allegro assai）——下面的播放就用这个速度，不放慢、不加快。
     </p>
     <div class="seg" data-layers role="group" aria-label="音区与厚度"></div>
     <p class="hint" data-desc style="margin-top:var(--sp-3)"></p>
@@ -214,7 +214,7 @@ export function mountOdeLab(root) {
     el.readout.innerHTML = `
       <div><dt>调性</dt><dd>D 大调</dd></div>
       <div><dt>拍号</dt><dd>4/4</dd></div>
-      <div><dt>速度</dt><dd class="hi">♩=${SCORE_TEMPO.beethoven9_IV_joy}（总谱标记）</dd></div>
+      <div><dt>速度</dt><dd class="hi"><span class="note" role="img" aria-label="四分音符"></span>=${SCORE_TEMPO.beethoven9_IV_joy}（总谱标记）</dd></div>
       <div><dt>长度</dt><dd>16 小节 · 64 拍</dd></div>
       <div><dt>结构</dt><dd>a a′ b a″</dd></div>
       <div><dt>叠了几层</dt><dd>${layer.shifts.length} 层</dd></div>

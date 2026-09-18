@@ -162,6 +162,36 @@
   border-radius: 5px; color: var(--ink-1); white-space: nowrap;
 }
 
+/* --- 谱面音符符号：用 CSS 画，不依赖字体 ---------------------------------
+   ♩ 这个字符（U+2669）在部分中文字体里没有，系统回退时会被画成完全不相干的
+   形状（实测有机器把它显示成三道横线）。速度记号又非用它不可，所以干脆自己画：
+   符头 + 符干，两个伪元素解决，任何字体环境下都一样。
+   用法：<span class="note" role="img" aria-label="四分音符"></span>
+   附点：里面加一个 <i></i>（<span class="note"><i></i></span>）
+   二分音符：<span class="note note-half"></span>            */
+.note, .note-half {
+  position: relative; display: inline-block;
+  width: .68em; height: 1em; vertical-align: -.16em;
+}
+.note::before, .note-half::before {
+  content: ''; position: absolute; left: 0; bottom: 0;
+  width: .56em; height: .42em;
+  background: currentColor; border-radius: 50%;
+  transform: rotate(-20deg);
+}
+.note-half::before {
+  background: transparent; border: .11em solid currentColor;
+  box-sizing: border-box;
+}
+.note::after, .note-half::after {
+  content: ''; position: absolute; left: .5em; bottom: .18em;
+  width: .085em; height: .95em; background: currentColor; border-radius: 1px;
+}
+.note i {
+  position: absolute; right: -.28em; bottom: .1em;
+  width: .16em; height: .16em; border-radius: 50%; background: currentColor;
+}
+
 /* --- 按钮 ----------------------------------------------------------------- */
 
 .btn {
@@ -255,6 +285,19 @@ input[type="range"] {
   background: var(--amber-soft); border-color: var(--amber-deep); color: var(--ink-1);
 }
 .ode-phrase[aria-current="true"] b { color: var(--amber-deep); }
+
+/* --- 卡农台：四个声部的进入图（作品分析 D 用） ------------------------- */
+
+.canon-lanes { display: flex; flex-direction: column; gap: 4px; margin-top: var(--sp-4); }
+.canon-lane { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-tiny); }
+.canon-name { flex: 0 0 5.2em; color: var(--ink-2); }
+.canon-cells { display: flex; gap: 3px; flex: 1; }
+.canon-cells i {
+  flex: 1; height: 14px; border-radius: 3px;
+  background: var(--surface-3); border: 1px solid var(--line);
+}
+.canon-cells i.on { background: var(--green); border-color: var(--green-deep); opacity: .8; }
+.canon-bar { flex: 0 0 6.5em; text-align: right; color: var(--ink-4); }
 
 /* --- 表格 ----------------------------------------------------------------- */
 

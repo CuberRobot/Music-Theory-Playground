@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 8 节 · 三和弦 · Music Theory Playground</title>
+<meta name="description" content="三和弦的四种性质与转位。用可叠的和弦实验台看清大、小、增、减是怎么来的。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="08-triad">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">四 · 纵向结构 / <b>第 8 节 三和弦</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 8 节 · 三和弦</p>
+      <h1>三个音叠起来</h1>
+      <p class="lead-p">前面六节讲的都是单个音，或者两个音的关系。现在把三个音同时叠起来。</p>
+      <p>和弦不是一堆音随便凑的。最常见、也几乎是一切和声基础的，是<b>三度叠置</b>：
+      从一个根音出发，往上叠一个三度，再叠一个三度。</p>
+      <p>这两个三度各自可以是大的或小的，组合起来刚好得到四种三和弦。
+      下面这个实验台让你亲手改这两个三度，看和弦的名字怎么跟着变。</p>
+    </section>
+
+    <div class="card wide" data-widget="chord-builder"></div>
+
+    <section>
+      <h2>四种三和弦 = 两个三度的四种组合</h2>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">和弦</th><th scope="col">下面那个三度</th>
+                <th scope="col">上面那个三度</th><th scope="col">听感</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>大三和弦</td><td>大三度（4）</td><td>小三度（3）</td><td>明亮、稳</td></tr>
+            <tr><td>小三和弦</td><td>小三度（3）</td><td>大三度（4）</td><td>柔和、暗</td></tr>
+            <tr><td>增三和弦</td><td>大三度（4）</td><td>大三度（4）</td><td>悬着、不落地</td></tr>
+            <tr><td>减三和弦</td><td>小三度（3）</td><td>小三度（3）</td><td>紧张、往下塌</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>括号里是半音数。注意一个对称：大和小是"两个三度交换位置"，
+      增和减是"两个都用大的"或"两个都用小的"。</p>
+      <p>口诀：<b>是「下面那个三度」决定它是大还是小。</b>
+      下面是大三度就是大三和弦，下面是小三度就是小三和弦——很多人记反，因为直觉会去看整体听感。</p>
+    </section>
+
+    <section>
+      <h2>转位：同样的三个音，换个低音</h2>
+      <p>把最低的那个音往上挪八度，构成音一个没变，但从下往上的顺序变了，这就是转位。
+      三和弦有三个位置。</p>
+      <p>中文的叫法有点特别：第一转位叫<b>六和弦</b>，第二转位叫<b>四六和弦</b>。
+      这些名字来自数字低音时代，说的是低音和上方音之间构成的音程度数。</p>
+      <p>转位不改变和弦的性质，但会改变它的<b>稳定感</b>。
+      原位最稳，第一转位最轻，第二转位最不稳、最想继续走。
+      所以选哪个转位，本质上是在选"这个和弦要有多想动"。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面三个和弦，哪一个是大三和弦？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.6,
+        "items": [
+          { "label": "A 组", "chord": [0, 3, 7] },
+          { "label": "B 组", "chord": [0, 4, 7] },
+          { "label": "C 组", "chord": [0, 3, 6] }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。大三和弦最亮，小三和弦偏暗，减三和弦听起来像塌下去了。",
+        "explain": "对，B 组是大三和弦（下面大三度加上面小三度）。A 组是小三和弦，C 组是减三和弦。三个和弦只差一个半音，性格却完全不同。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>三和弦 = 根音 + 三音 + 五音，由两个三度叠成。</li>
+        <li>四种性质来自两个三度的大小组合：大+小 = 大三和弦，小+大 = 小三和弦，大+大 = 增，小+小 = 减。</li>
+        <li>判断大小看<b>下面</b>那个三度，不是整体听感。</li>
+        <li>转位是换低音，不改变构成音，但改变稳定感。三个位置叫原位、六和弦、四六和弦。</li>
+        <li>越不稳的转位越"想往前走"，这是写和声进行时的重要工具。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

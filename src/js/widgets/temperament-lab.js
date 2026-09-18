@@ -24,6 +24,20 @@ const R = 112;
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
+/**
+ * 磁吸点。滑块走 688–716 音分，但真正有意义的位置只有两个：
+ * 平均律 700 和纯五度 701.955。靠近它们时自动吸过去，
+ * 否则想"正好停在 700"几乎不可能。
+ */
+const SNAP_TARGETS = [TET_FIFTH, JUST_FIFTH];
+const SNAP_RADIUS = 0.7;
+function snapCents(v) {
+  for (const t of SNAP_TARGETS) {
+    if (Math.abs(v - t) < SNAP_RADIUS) return t;
+  }
+  return v;
+}
+
 /** 音分 → 圆周上的坐标。0 音分在正上方，顺时针为正。 */
 function polar(cents, radius = R) {
   const rad = ((-90 + (cents / 1200) * 360) * Math.PI) / 180;
@@ -61,7 +75,7 @@ export function mountTemperamentLab(root) {
     <div class="lab-controls" style="margin-top: var(--sp-5)">
       <div class="field">
         <label for="tl-fifth">每个五度</label>
-        <input id="tl-fifth" type="range" min="688" max="716" step="0.005" value="${state.fifth}">
+        <input id="tl-fifth" type="range" min="688" max="716" step="0.02" value="${state.fifth}">
         <span class="val" data-fifth-val></span>
       </div>
       <div class="seg" data-quick>
@@ -159,7 +173,8 @@ export function mountTemperamentLab(root) {
     const closed = Math.abs(residual) < 0.05;
 
     drawCircle(c);
-    el.fifthVal.textContent = `${c.toFixed(3)} 音分`;
+    const snapped = SNAP_TARGETS.some((t) => Math.abs(c - t) < 0.05);
+    el.fifthVal.textContent = `${c.toFixed(3)} 音分${snapped ? '（已吸附）' : ''}`;
 
     el.readout.innerHTML = `
       <div><dt>每个五度</dt><dd>${c.toFixed(3)} 音分</dd></div>
@@ -196,8 +211,13 @@ export function mountTemperamentLab(root) {
   // ---- 交互 ---------------------------------------------------------------
 
   el.fifth.addEventListener('input', () => {
-    state.fifth = Number(el.fifth.value);
+    state.fifth = snapCents(Number(el.fifth.value));
     paint();
+  });
+
+  // 松手时把滑块本身也拉到吸附点，手感上才"吸得住"
+  el.fifth.addEventListener('change', () => {
+    el.fifth.value = String(state.fifth);
   });
 
   el.quick.addEventListener('click', (e) => {

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 19 节 · 记谱法与记号 · Music Theory Playground</title>
+<meta name="description" content="谱表是一把尺子：位置决定音高，形状决定长短。以及力度、速度、装饰音这些常用记号。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="19-notation">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">六 · 记谱 / <b>第 19 节 记谱法与记号</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 19 节 · 记谱法与记号</p>
+      <h1>谱表是一把尺子</h1>
+      <p class="lead-p">前面十二节讲的都是音乐本身。这一节讲怎么把它写下来。</p>
+      <p>五线谱的核心只有一条：<b>位置决定音高，形状决定长短</b>。
+      五条线加上它们之间的四个间，一共九个位置，再靠加线上下延伸。
+      每往上一格，就是音阶里的下一个音。</p>
+      <p>下面这张谱表可以点。点任意一个音符，看它对应键盘上哪个键。</p>
+    </section>
+
+    <div class="card wide" data-widget="notation-lab"></div>
+
+    <section>
+      <h2>谱号和调号为什么必要</h2>
+      <p>同样一个位置，在不同的谱号下代表的音不一样。
+      光有位置还不够，必须先用<b>谱号</b>定好基准。高音谱表把中央 C 定位在下加一线上，
+      低音谱表把中央 C 定位在最上面那条线上。</p>
+      <p><b>调号</b>写在谱号后面，一次性告诉你在这一行里哪些音要规律地升或降。
+      上一节的五度圈，本质上就是给十二个调各配一份调号。</p>
+      <p><b>拍号</b>写在调号后面，规定每小节几拍、以什么音符为一拍。
+      它和调号是两套独立的系统：一个管音高，一个管时间。</p>
+    </section>
+
+    <section>
+      <h2>记号改变的是"怎么演奏"，不是"演奏什么"</h2>
+      <p>音符和谱表决定了演奏什么（音高、时值）。而下面这些记号决定的是怎么演奏：</p>
+      <p><b>力度记号</b>：p（弱）、f（强）、mf、pp 等等。它们改变音量，不改变音高。</p>
+      <p><b>速度记号</b>：Adagio（慢）、Allegro（快）这类词，现代记谱里更常用的是
+      "♩= 120"这样的精确写法，意思是每分钟 120 个四分音符。
+      注意速度改变的是音符之间的间隔，音符本身的时值比例不变。</p>
+      <p><b>装饰音</b>：颤音（tr）、倚音、回音等等。它们是在一个音符上临时加出来的一小串音。
+      装饰音写起来是一个符号，听起来是一串音——所以光看谱很容易低估它的实际效果。</p>
+    </section>
+
+    <section>
+      <h2>还有一类记号：省略</h2>
+      <p>反复记号、八度记号（8va）、震音记号、延长记号……
+      这些记号的作用都是"少写一点"。它们不改变音乐，只是让谱面更短、更好读。</p>
+      <p>读谱时遇到不认识的记号，先判断它属于哪一类：
+      是在告诉你音高、时长、怎么演奏，还是在告诉你怎么省着写。四类一分，基本就能猜个八九不离十。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面哪一组是慢速的？同样五个音，只是走的速度不同。",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 0.7,
+        "items": [
+          { "label": "A 组", "notes": [
+            { "beats": 1, "transpose": 0 }, { "beats": 1, "transpose": 2 },
+            { "beats": 1, "transpose": 4 }, { "beats": 1, "transpose": 5 },
+            { "beats": 1, "transpose": 7 }
+          ], "secPerBeat": 0.28 },
+          { "label": "B 组", "notes": [
+            { "beats": 1, "transpose": 0 }, { "beats": 1, "transpose": 2 },
+            { "beats": 1, "transpose": 4 }, { "beats": 1, "transpose": 5 },
+            { "beats": 1, "transpose": 7 }
+          ], "secPerBeat": 0.85 }
+        ],
+        "answer": 1,
+        "hint": "两组弹的音完全一样，只有速度不同。",
+        "explain": "对，B 组更慢。两组音高和时值比例完全一样，只有速度记号不同——这说明速度记号改变的是整体快慢，不改变音乐内部的关系。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>五线谱的核心：位置决定音高，形状决定长短。</li>
+        <li>谱号定基准，调号管音高，拍号管时间，三套系统互相独立。</li>
+        <li>力度、速度、装饰音这些记号改变的是"怎么演奏"，不改变"演奏什么"。</li>
+        <li>速度改变整体快慢，音符之间的比例不变。</li>
+        <li>遇到不认识的记号，先判断它属于音高、时长、演奏方式还是省略，四类一分就好猜了。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

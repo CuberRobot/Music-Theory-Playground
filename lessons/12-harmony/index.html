@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 12 节 · 调内和声 · Music Theory Playground</title>
+<meta name="description" content="调内七个和弦的功能分工、终止式与常用和弦进行。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="12-harmony">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">五 · 调 / <b>第 12 节 调内和声</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 12 节 · 调内和声</p>
+      <h1>七个和弦，各有分工</h1>
+      <p class="lead-p">在一个调里，能用的和弦不是随便挑的，是音阶自己长出来的。</p>
+      <p>在 C 大调的音阶上，从每个音往上叠两个三度，就得到七个和弦。
+      它们的性质是音阶决定的，不是选的：C 上是大的，D 上是小的，B 上是减的。</p>
+      <p>更关键的是，这七个和弦各有各的<b>功能</b>——有的负责停住，有的负责推出去，有的负责制造回来的冲动。</p>
+    </section>
+
+    <div class="card wide" data-widget="chord-map"></div>
+
+    <section>
+      <h2>三种功能</h2>
+      <p>不管在哪个调里，七个和弦大致分成三组：</p>
+      <p><b>主功能（T）</b>：I、vi、iii。稳定，可以停，可以结束。
+      vi 和 iii 和 I 共用两个音，所以是主功能的"替身"。</p>
+      <p><b>下属功能（S）</b>：IV、ii。往外走，离开家的那一步。</p>
+      <p><b>属功能（D）</b>：V、vii°。最不安定，最想回到主。
+      vii° 因为含有导音，拉力比 V 还强。</p>
+      <p>功能进行的基本逻辑是 <b>T → S → D → T</b>，也就是"从家出发，走远，再回来"。
+      这是几百年来绝大多数西方音乐的和声骨架，流行歌也不例外。</p>
+    </section>
+
+    <section>
+      <h2>终止式：怎么"收住"</h2>
+      <p>音乐结束的方式叫终止式，最常见的有两种：</p>
+      <p><b>V → I</b>（正格终止）：属到主，最干脆的收束。
+      它是"期待 → 满足"这个最简单的心理结构，也是调性音乐最有说服力的一步。</p>
+      <p><b>IV → I</b>（变格终止）：下属到主，比较柔和，常用于宗教音乐和结尾的"阿门"。</p>
+      <p>把 V 换成一个属七和弦，收束会更有力，因为三全音让它更急。</p>
+      <p>反过来，如果 V 之后接的不是 I 而是 vi（这叫阻碍终止），
+      就会有那种"以为要结束了结果又拐弯"的感觉，流行歌里用得非常频繁。</p>
+    </section>
+
+    <section>
+      <h2>为什么是这几个进行</h2>
+      <p>实验台里给了三个最常见的进行，它们的共同点是：<b>低音都在走四度或五度。</b></p>
+      <p>I–IV–V–I、ii–V–I、I–vi–IV–V，低音线全是 I→IV→V→I 那样的四度下行。
+      这个"四度下行"的模式根植于五度圈——它就是从属关系回到主关系最短的一条路。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两个和弦，哪一个听起来能让音乐停下来？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.4,
+        "items": [
+          { "label": "A 组", "chord": [0, 4, 7] },
+          { "label": "B 组", "chord": [0, 3, 6] }
+        ],
+        "answer": 0,
+        "hint": "再听一遍。稳定和不安定的差别，就是结束感的差别。",
+        "explain": "A 组是稳定的大三和弦，B 组是紧张的减三和弦。所谓终止式，本质上就是制造紧张再让紧张消失；V→I 之所以有效，道理和这一样。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>调内七个和弦是音阶自己长出来的，性质不由人挑。</li>
+        <li>三种功能：主（I vi iii）、下属（IV ii）、属（V vii°）。</li>
+        <li>基本逻辑是 T → S → D → T，也就是出门再回家。</li>
+        <li>V → I 是正格终止，最干脆；IV → I 是变格终止，柔和。</li>
+        <li>V 换成属七会更有力；V 接到 vi 是阻碍终止，会有"拐弯"的感觉。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

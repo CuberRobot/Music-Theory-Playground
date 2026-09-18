@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 11 节 · 调号与关系调 · Music Theory Playground</title>
+<meta name="description" content="调号是怎么来的，五度圈为什么是一个圈，以及关系大小调之间差什么。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="11-keysig">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">五 · 调 / <b>第 11 节 调号与关系调</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 11 节 · 调号与关系调</p>
+      <h1>为什么需要一堆升号降号</h1>
+      <p class="lead-p">上一节的大调结构是"全全半全全全半"。如果你从 C 开始弹，正好全落白键上。</p>
+      <p>但从 G 开始还按这个结构弹，就要用到 F♯；从 D 开始，要用到 F♯ 和 C♯。
+      每换一个主音，都会多出或者少掉一些升降号。为了避免在每个音前面都写一遍升降号，
+      人们把它们集中写在谱号后面，这就是<b>调号</b>。</p>
+      <p>把十二个调按升降号的数量排一排，会出现一件漂亮的事：它们正好围成一个圈。</p>
+    </section>
+
+    <div class="card wide" data-widget="circle-fifths"></div>
+
+    <section>
+      <h2>五度圈是什么</h2>
+      <p>从任何一个调出发，把主音往上移纯五度，新调就比原来的调多一个升号（或少一个降号）。
+      一直往上走十二次，会绕回出发的那个调。</p>
+      <p>C → G（1♯）→ D（2♯）→ A（3♯）→ E（4♯）→ B（5♯）→ F♯（6♯）
+      → D♭（5♭）→ A♭（4♭）→ E♭（3♭）→ B♭（2♭）→ F（1♭）→ C。</p>
+      <p>升号的添加顺序是固定的：<b>F C G D A E B</b>。
+      降号的顺序正好是它的倒序：<b>B E A D G C F</b>。
+      这两个顺序不用背下来，在圈上顺时针走一遍就自然记住了。</p>
+      <p>为什么是五度而不是别的？因为五度是除了八度以外最"纯"的音程，
+      用它走一圈刚好能把十二个音走完一次、且只走一次。这是数学上的巧合，
+      也是整个西方调性体系的地基。</p>
+    </section>
+
+    <section>
+      <h2>关系大小调</h2>
+      <p>每个大调都有一个"共用同一批音"的小调，叫它的<b>关系小调</b>。
+      找出方法很简单：把主音往下移小三度。</p>
+      <p>C 大调的关系小调是 a 小调，G 大调的关系小调是 e 小调。
+      两者用完全相同的音、完全相同的调号，只是主音不同——</p>
+      <p>这又一次印证了上一节那句话：<b>调式的差别不在用哪些音，而在谁是中心。</b>
+      C 大调和 a 小调用的是同一批音，但一个明亮一个暗淡。</p>
+      <p>另外还有<b>同主音大小调</b>（也叫同名大小调）：C 大调和 c 小调，主音相同，音不同。
+      这两种关系是流行音乐里换情绪最常用的两招。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两个是关系大小调（用同一批音），哪一组是大调？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 0.5,
+        "items": [
+          { "label": "A 组", "notes": [
+            { "beats": 1, "transpose": 0 }, { "beats": 1, "transpose": 2 },
+            { "beats": 1, "transpose": 4 }, { "beats": 1, "transpose": 5 },
+            { "beats": 1, "transpose": 7 }, { "beats": 1, "transpose": 9 },
+            { "beats": 1, "transpose": 11 }, { "beats": 1, "transpose": 12 }
+          ], "secPerBeat": 0.34 },
+          { "label": "B 组", "notes": [
+            { "beats": 1, "transpose": 9 }, { "beats": 1, "transpose": 11 },
+            { "beats": 1, "transpose": 12 }, { "beats": 1, "transpose": 14 },
+            { "beats": 1, "transpose": 16 }, { "beats": 1, "transpose": 17 },
+            { "beats": 1, "transpose": 19 }, { "beats": 1, "transpose": 21 }
+          ], "secPerBeat": 0.34 }
+        ],
+        "answer": 0,
+        "hint": "两组用的音完全一样，只差从哪里开始。听哪一个最后落在了让人踏实的地方。",
+        "explain": "对，A 组是 C 大调。B 组是 a 小调，音符一模一样，只是从 A 开始。这就是关系大小调：同一批音，不同的中心。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>调号把所有升降号集中写在谱号后面，避免每个音单独标。</li>
+        <li>每往上走一个纯五度，就多一个升号或少一个降号。</li>
+        <li>升号顺序 F C G D A E B，降号是它的倒序。</li>
+        <li>关系小调 = 主音往下小三度，和大调共用同一批音与同一个调号。</li>
+        <li>同主音大小调主音相同但音不同，是换情绪最常用的手段。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

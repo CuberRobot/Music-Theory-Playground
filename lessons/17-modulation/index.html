@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 17 节 · 调性关系 · Music Theory Playground</title>
+<meta name="description" content="近关系调、共同和弦、离调与转调、移调。用五度圈看一次转调要经过哪些站。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="17-modulation">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">五 · 调 / <b>第 17 节 调性关系</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 17 节 · 调性关系</p>
+      <h1>换调是一次旅行</h1>
+      <p class="lead-p">一首曲子不会永远待在一个调里。它出门、绕一圈、再回来——或者干脆不回来。</p>
+      <p>上一节我们有了五度圈。现在把它当成一张地图：<b>圈上相邻的两个调是邻居</b>，
+      它们只差一个音，所以来回走动很自然；隔得越远，走过去就越突然。</p>
+      <p>下面这个五度圈可以连点两个调，看看它们之间隔了几格。</p>
+    </section>
+
+    <div class="card wide" data-widget="circle-fifths"></div>
+
+    <section>
+      <h2>近关系调</h2>
+      <p>一个调的<b>近关系调</b>一共有五个，它们和原调之间只差一个升降号：</p>
+      <p>原调、原调的关系小调、上方纯五度的大调、上方纯五度大调的关系小调、
+      下方纯五度的大调、下方纯五度大调的关系小调。</p>
+      <p>换个说法：在五度圈上，就是<b>左边一格、右边一格，以及它们各自的关系小调</b>。
+      这五个调是可以随时去、随时回来的，因为共同音太多，听者几乎不会觉得突兀。</p>
+    </section>
+
+    <section>
+      <h2>怎么"走"过去：共同和弦</h2>
+      <p>从 C 大调转到 G 大调，两个调共用的音有六个（只差一个 F 和 F♯）。
+      既然共用的音这么多，就一定有共用的和弦。</p>
+      <p>C 大调里的 <b>C 和弦</b>（C E G）在 G 大调里是 IV 级；<b>a 小调</b>的 Am（A C E）
+      在 G 大调里是 ii 级；<b>Em</b>（E G B）在 G 里是 vi 级。</p>
+      <p>用这样一个两边都认的和弦作为<b>枢轴</b>，先在旧调里出现它、再让它在新的调里"改变身份"，
+      转调就完成了。这是古典和流行里最通用的手法。</p>
+    </section>
+
+    <section>
+      <h2>离调、转调、移调，三个别混</h2>
+      <p><b>离调</b>是临时去别的调转一下，很快回来。它像出门买瓶水，家还在。</p>
+      <p><b>转调</b>是真的搬了家：原来的调不再回来，或者回来得已经不重要了。</p>
+      <p><b>移调</b>是把整首曲子原封不动地换个高度，内部的所有关系都不变。
+      给歌手降两个半音唱，就是移调；这跟转调是两回事。</p>
+      <p>判断是离调还是转调，不看长短，看<b>是否建立了新的中心</b>：
+      如果新调出现了自己的属和弦和终止式，那它就是新家了。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两个音程，哪一个是纯五度（3:2）？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.6,
+        "items": [
+          { "label": "A 组", "cents": 500 },
+          { "label": "B 组", "cents": 700 }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。五度听起来最空，像两个音之间留了一大片空间。",
+        "explain": "对，B 组是纯五度。之所以在这里再考一次五度：因为整个调性关系的地图——五度圈——就是用这一个音程画出来的。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>五度圈是一张调性地图，相邻的调是邻居。</li>
+        <li>近关系调有五个：左右各一格，加上各自的关系小调。</li>
+        <li>转调靠共同和弦当枢轴，先在旧调出现、再在新调里改变身份。</li>
+        <li>离调是临时出走，转调是真的搬家，移调是整首换个高度。</li>
+        <li>判断转调看是否建立了新的中心，而不是看持续了多久。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

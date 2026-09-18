@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>术语表 · Music Theory Playground</title>
+<meta name="description" content="可搜索的乐理术语词典。以国际通用的英文术语为主条目，附中文对照、一句话解释与出处，另有音程、调式、调号、和弦、速度力度的速查表。">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/base.css">
+<link rel="stylesheet" href="../styles/components.css">
+</head>
+<body data-root="../" data-page="glossary">
+
+<header class="topbar">
+  <a class="brand" href="../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../lessons/">课程地图</a></nav>
+  <span class="spacer"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell--full">
+  <section class="hero" style="margin-bottom: var(--sp-6)">
+    <p class="kicker">术语表</p>
+    <h1>查一个词，找到它对应哪一节</h1>
+    <p class="lead-p">以国际通用的英文术语为主条目，中文作为对照。</p>
+    <p>查资料、看英文教程、读软件界面时，认识英文名字比认识中文译名更有用。
+    而且中文译名本身常常有好几种版本，同一个 leading tone，有人译"导音"，
+    有人译"导音级"——英文名反而是唯一确定的那个。</p>
+  </section>
+
+  <div class="card wide" data-widget="glossary"></div>
+
+  <footer class="page-foot">
+    <span>代码 MIT · 教学内容 CC BY-SA 4.0</span>
+    <span><a href="../">回首页</a></span>
+  </footer>
+</div>
+
+<script type="module" src="../src/js/main.js"></script>
+</body>
+</html>

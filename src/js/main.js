@@ -6,7 +6,7 @@
  *   4. 接管顶栏的声音开关
  */
 
-import { TIERS, LESSONS, findLesson, neighbours, hrefOf, readyCount } from './music/curriculum.js';
+import { PARTS, LESSONS, findLesson, neighbours, hrefOf } from './music/curriculum.js';
 import { installUnlockOnGesture, isMuted, setMuted, isAvailable } from './audio/engine.js';
 
 import { mountHarmonicLab } from './widgets/harmonic-lab.js';
@@ -17,6 +17,13 @@ import { mountIntervalLab } from './widgets/interval-lab.js';
 import { mountConsonanceLab } from './widgets/consonance-lab.js';
 import { mountDurationBuilder } from './widgets/duration-builder.js';
 import { mountMeterGrid } from './widgets/meter-grid.js';
+import { mountChordBuilder } from './widgets/chord-builder.js';
+import { mountScaleLab } from './widgets/scale-lab.js';
+import { mountCircleFifths } from './widgets/circle-fifths.js';
+import { mountChordMap } from './widgets/chord-map.js';
+import { mountNotationLab } from './widgets/notation-lab.js';
+import { mountGlossary } from './widgets/glossary.js';
+import { mountModeDiff } from './widgets/mode-diff.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -27,6 +34,13 @@ const WIDGETS = {
   'consonance-lab': mountConsonanceLab,
   'duration-builder': mountDurationBuilder,
   'meter-grid': mountMeterGrid,
+  'chord-builder': mountChordBuilder,
+  'scale-lab': mountScaleLab,
+  'circle-fifths': mountCircleFifths,
+  'chord-map': mountChordMap,
+  'notation-lab': mountNotationLab,
+  glossary: mountGlossary,
+  'mode-diff': mountModeDiff,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */
@@ -41,26 +55,30 @@ function renderRail() {
   const root = rootPrefix();
   const parts = [];
 
-  for (const tier of TIERS) {
-    parts.push(`<div class="tier">${tier.title}</div>`);
-    for (const lesson of tier.lessons) {
-      const here = lesson.id === current ? ' aria-current="page"' : '';
-      const label = `<em>${lesson.no}</em><span>${lesson.title}</span>`;
-      if (lesson.status === 'ready') {
-        parts.push(`<a href="${root}${hrefOf(lesson)}"${here}>${label}</a>`);
-      } else {
-        // 还没写的章节保留在目录里，让人看到全貌，但不可点
-        parts.push(`<a class="soon" aria-disabled="true">${label}</a>`);
+  for (const part of PARTS) {
+    parts.push(`<div class="part">${part.no} · ${part.title}</div>`);
+    for (const tier of part.tiers) {
+      parts.push(`<div class="tier">${tier.title}</div>`);
+      for (const lesson of tier.lessons) {
+        const here = lesson.id === current ? ' aria-current="page"' : '';
+        const label = `<em>${lesson.no}</em><span>${lesson.title}</span>`;
+        if (lesson.status === 'ready') {
+          parts.push(`<a href="${root}${hrefOf(lesson)}"${here}>${label}</a>`);
+        } else {
+          // 还没写的章节保留在目录里，让人看到全貌，但不可点
+          parts.push(`<a class="soon" aria-disabled="true">${label}</a>`);
+        }
       }
+    }
+    if (!part.tiers.length && part.reserved) {
+      parts.push(`<div class="reserved">${part.reserved}</div>`);
     }
   }
   host.innerHTML = parts.join('');
 
-  // 窄屏下目录是横滑条，把当前这一节滚进视野，不然永远停在第 0 节
+  // 目录会很长，把当前这一节滚进视野，不然每次都要自己找
   const here = host.querySelector('[aria-current="page"]');
-  if (here && host.scrollWidth > host.clientWidth) {
-    here.scrollIntoView({ inline: 'center', block: 'nearest' });
-  }
+  if (here) here.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 
 function renderMeter() {
@@ -81,7 +99,7 @@ function renderMeter() {
   host.innerHTML = parts.join('');
   host.setAttribute('aria-label', currentIndex >= 0
     ? `共 ${total} 节，当前第 ${LESSONS[currentIndex].no} 节`
-    : `共 ${total} 节，已写好 ${readyCount()} 节`);
+    : `共 ${total} 节`);
 }
 
 function renderFoot() {
@@ -107,7 +125,8 @@ function mountWidgets() {
     const mount = WIDGETS[host.dataset.widget];
     if (!mount) continue;
     try {
-      mount(host);
+      // data-* 上的配置原样传给组件，比如 data-size="4"
+      mount(host, { ...host.dataset });
     } catch (err) {
       // 一个实验台坏掉不应该带走整页
       console.error(`[Music Theory Playground] 挂载 ${host.dataset.widget} 失败`, err);
@@ -133,31 +152,48 @@ function wireSoundToggle() {
   sync();
 }
 
-/** 课程地图页：按层展开，已上线的可点，没写的显示成灰卡。 */
+/** 课程地图页：部分 → 层 → 节。没写的章节渲染成不可点的灰卡，写了就自动可点。 */
 function renderMap() {
   const host = document.querySelector('[data-map]');
   if (!host) return;
   const root = rootPrefix();
 
-  host.innerHTML = TIERS.map((tier) => `
-    <section class="map-tier">
-      <h2>${tier.title}</h2>
-      <p class="blurb">${tier.blurb}</p>
-      <div class="map-grid">
-        ${tier.lessons.map((l) => {
-          const inner = `
-            <span class="no">第 ${l.no} 节</span>
-            <h3>${l.title}</h3>
-            <p>${l.sub}</p>
-            ${l.status === 'ready'
-              ? '<span class="tag tag-amber">已上线</span>'
-              : '<span class="tag tag-plain">待写</span>'}`;
-          return l.status === 'ready'
-            ? `<a class="map-card" href="${root}${hrefOf(l)}">${inner}</a>`
-            : `<div class="map-card soon">${inner}</div>`;
-        }).join('')}
-      </div>
+  const card = (l, rootPath) => {
+    const inner = `
+      <span class="no">第 ${l.no} 节</span>
+      <h4>${l.title}</h4>
+      <p>${l.sub}</p>`;
+    return l.status === 'ready'
+      ? `<a class="map-card" href="${rootPath}${hrefOf(l)}">${inner}</a>`
+      : `<div class="map-card soon">${inner}</div>`;
+  };
+
+  host.innerHTML = PARTS.map((part) => `
+    <section class="map-part">
+      <h2>${part.no} · ${part.title}</h2>
+      <p class="blurb">${part.blurb}</p>
+      ${part.tiers.map((tier) => `
+        <h3 class="map-sub">${tier.title}</h3>
+        <p class="blurb">${tier.blurb}</p>
+        <div class="map-grid">${tier.lessons.map((l) => card(l, root)).join('')}</div>
+      `).join('')}
+      ${!part.tiers.length && part.reserved
+        ? `<div class="map-reserved">${part.reserved}</div>` : ''}
     </section>`).join('');
+}
+
+/**
+ * 顶栏的站内导航。所有页面的 HTML 里只写一条兜底链接，
+ * 真正的导航在这里统一生成，加新页面时只改这一处。
+ */
+function renderTopnav() {
+  const host = document.querySelector('.topnav');
+  if (!host) return;
+  const root = rootPrefix();
+  const page = document.body.dataset.page || '';
+  host.innerHTML = `
+    <a href="${root}lessons/"${page === 'lessons' ? ' aria-current="page"' : ''}>课程地图</a>
+    <a href="${root}glossary/"${page === 'glossary' ? ' aria-current="page"' : ''}>术语表</a>`;
 }
 
 installUnlockOnGesture();
@@ -165,6 +201,7 @@ renderRail();
 renderMeter();
 renderFoot();
 renderMap();
+renderTopnav();
 mountWidgets();
 wireSoundToggle();
 

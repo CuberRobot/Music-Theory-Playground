@@ -14,13 +14,18 @@ const TONIC = 60;
 const PAD = spectrumToAmps('organ', 10);
 
 /** 相对主音的半音偏移。borrowed 记来源调式，secondary 记它推向谁。 */
+/**
+ * flats 决定拼写方向。多数借用和弦来自降号一侧的调式，用降号；
+ * 但从 Lydian 借来的 II 里那个音是升四度，必须写成 F♯ 而不是 G♭ ——
+ * 否则和弦音读起来会变成 D-G♭-A，看起来像含了降五度，完全走了样。
+ */
 const BORROWED = [
-  { name: '♭VII', steps: [10, 14, 17], from: 'Mixolydian', why: '大调第七级降半音，摇滚里最常见的一个外来和弦' },
-  { name: 'iv',   steps: [5, 8, 12],  from: 'Aeolian',   why: '把大调的四级小三化，瞬间变暗 —— 流行歌里的"叹气"就是它' },
-  { name: '♭VI',  steps: [8, 12, 15], from: 'Aeolian',   why: '和 iv 是一对，常连在一起用' },
-  { name: '♭III', steps: [3, 7, 10],  from: 'Aeolian',   why: '关系大调的主和弦，接手很自然' },
-  { name: '♭II',  steps: [1, 5, 8],   from: 'Phrygian',  why: '离主音只有半音，最刺的一个，弗里吉亚的招牌' },
-  { name: 'II',   steps: [2, 6, 9],   from: 'Lydian',    why: '大调第二级是大三，因为第四级升高了半音' },
+  { name: '♭VII', steps: [10, 14, 17], from: 'Mixolydian', flats: true,  why: '大调第七级降半音，摇滚里最常见的一个外来和弦' },
+  { name: 'iv',   steps: [5, 8, 12],  from: 'Aeolian',   flats: true,  why: '把大调的四级小三化，瞬间变暗 —— 流行歌里的"叹气"就是它' },
+  { name: '♭VI',  steps: [8, 12, 15], from: 'Aeolian',   flats: true,  why: '和 iv 是一对，常连在一起用' },
+  { name: '♭III', steps: [3, 7, 10],  from: 'Aeolian',   flats: true,  why: '关系大调的主和弦，接手很自然' },
+  { name: '♭II',  steps: [1, 5, 8],   from: 'Phrygian',  flats: true,  why: '离主音只有半音，最刺的一个，弗里吉亚的招牌' },
+  { name: 'II',   steps: [2, 6, 9],   from: 'Lydian',    flats: false, why: '大调第二级是大三，因为第四级升高了半音' },
 ];
 
 const SECONDARY = [
@@ -64,7 +69,7 @@ export function mountBorrowedLab(root) {
       el.now.textContent = item.name;
       el.readout.innerHTML = kind === 'borrowed'
         ? `<div><dt>和弦</dt><dd>${item.name}</dd></div>
-           <div><dt>构成音</dt><dd>${item.steps.map((s) => spellMidi(TONIC + s, true).name.replace(/-?\d+$/, '')).join(' - ')}</dd></div>
+           <div><dt>构成音</dt><dd>${item.steps.map((s) => spellMidi(TONIC + s, item.flats).name.replace(/-?\d+$/, '')).join(' - ')}</dd></div>
            <div><dt>来自</dt><dd>${item.from}</dd></div>
            <div><dt>为什么</dt><dd style="text-align:right;max-width:60%">${item.why}</dd></div>`
         : `<div><dt>和弦</dt><dd>${item.name}</dd></div>

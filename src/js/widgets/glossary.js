@@ -173,6 +173,11 @@ export function mountGlossary(root) {
     el.list.innerHTML = list.map((t) => {
       const lesson = findLesson(t.lesson);
       const cat = CATEGORIES.find((c) => c.id === t.cat);
+      // 指向还没写的章节时不给链接，否则点了是 404
+      const where = !lesson ? ''
+        : lesson.status === 'ready'
+          ? ` · <a href="../../${hrefOf(lesson)}">第 ${lesson.no} 节 ${lesson.title}</a>`
+          : ` · 第 ${lesson.no} 节 ${lesson.title}（待写）`;
       return `<div class="term">
         <dt>
           <span class="term-en">${t.en}</span>
@@ -180,8 +185,7 @@ export function mountGlossary(root) {
         </dt>
         <dd>
           <span class="term-def">${t.def}</span>
-          <span class="term-meta">${cat?.title ?? ''}${
-            lesson ? ` · <a href="../../${hrefOf(lesson)}">第 ${lesson.no} 节 ${lesson.title}</a>` : ''}</span>
+          <span class="term-meta">${cat?.title ?? ''}${where}</span>
         </dd>
       </div>`;
     }).join('');

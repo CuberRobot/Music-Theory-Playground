@@ -10,7 +10,7 @@
  */
 
 import { midiToHz } from '../music/pitch.js';
-import { diatonicSet } from '../music/chords.js';
+import { diatonicSet, degreeMidi } from '../music/chords.js';
 import { playNote, playChord, hat, now, stopAll } from '../audio/engine.js';
 import { spectrumToAmps } from '../music/tuning.js';
 import { TEMPO } from '../audio/tempo.js';
@@ -36,6 +36,9 @@ const LAYERS = [
 ];
 
 const MELODY = [72, 71, 69, 69, 71, 72, 74, 72, 71, 69, 67, 69, 71, 72, 71, 69];
+
+/** 给审计用的裸数据。 */
+export const TEXTURE_DEMO = { tonic: TONIC, prog: PROG, melody: MELODY, layers: LAYERS };
 
 export function mountTextureLab(root) {
   const state = { on: { bass: true, chord: true, melody: true, drums: false }, bass: 'root5', playing: false, timer: null };
@@ -102,12 +105,21 @@ export function mountTextureLab(root) {
     const s = style();
     PROG.forEach((deg, bar) => {
       const at = bar * barLen;
-      const root = TONIC + deg;
-      const chord = set()[deg].midis;
+      const chordObj = set()[deg];
+      // 和弦整体下移一个八度，让它真的待在"中间"：
+      // 低音 41–48、和弦 53–64、旋律 67–74，三层各占一个音区。
+      // （原先把和弦摆在旋律同一个音区上，旋律音和和弦音会撞出小二度。）
+      const chord = chordObj.midis.map((m) => m - 12);
+      // 低音根音要按音阶算：vi 是 A 不是 F，IV 是 F 不是 D♯。
+      // 三级以上的音再往下挪一个八度，低音线就是 C–A–F–G。
+      const root = degreeMidi(TONIC, 'major', deg, deg >= 3 ? 1 : 0);
+      // boogie 走法里的"六度"要跟着和弦性质走：小和弦上是大六度会跟和弦打架
+      const offsets = (style().id === 'boogie' && chordObj.quality === 'minor')
+        ? [0, 7, 8, 10] : style().offsets;
 
       if (state.on.bass) {
-        s.offsets.forEach((off, k) => {
-          const slot = s.offsets.length === 1 ? (state.bass === 'pedal' ? bar : 0) : k;
+        offsets.forEach((off, k) => {
+          const slot = offsets.length === 1 ? (state.bass === 'pedal' ? bar : 0) : k;
           playNote(midiToHz(root + off), {
             at: at + slot * BEAT, duration: BEAT * 0.9, level: 0.26,
           });

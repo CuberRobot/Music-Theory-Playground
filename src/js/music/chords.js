@@ -123,6 +123,25 @@ export function diatonic(rootMidi, scaleKey, degree, size = 3) {
   };
 }
 
+/**
+ * 级数下标 → 该级音的实际音高。
+ *
+ * 为什么要有这个函数：**"第几级"不是半音数。** C 大调的第 5 级（vi）是 A，
+ * 不是根音上方 5 个半音的 F。把下标直接加到根音上，低音线就整体跑调——
+ * 第 27 节（织体）和第 29 节（曲式）的实验台都犯过这个错：
+ * vi 的低音成了 F、IV 的低音成了 D♯，和上方的和弦互相打架。
+ *
+ * @param rootMidi 主音的音高
+ * @param scaleKey 音阶类型（major / minor / ... 见 SCALES）
+ * @param degree   0 起算的级数下标（0=I, 1=ii, 2=iii, 3=IV, 4=V, 5=vi, 6=vii）
+ * @param octaveDrop 往下移几个八度，用来把低音放在低音区
+ */
+export function degreeMidi(rootMidi, scaleKey, degree, octaveDrop = 0) {
+  const steps = (SCALES[scaleKey] ?? SCALES.major).steps;
+  const i = ((degree % 7) + 7) % 7;
+  return rootMidi + steps[i] - octaveDrop * 12;
+}
+
 /** 一个调里全部的调内三和弦（I 到 vii°）。 */
 export function diatonicSet(rootMidi, scaleKey, size = 3) {
   return [0, 1, 2, 3, 4, 5, 6].map((d) => diatonic(rootMidi, scaleKey, d, size));

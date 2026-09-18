@@ -9,7 +9,7 @@
  */
 
 import { midiToHz } from '../music/pitch.js';
-import { diatonicSet } from '../music/chords.js';
+import { diatonicSet, degreeMidi } from '../music/chords.js';
 import { playChordSequence, playNote, hat, now, stopAll } from '../audio/engine.js';
 import { spectrumToAmps } from '../music/tuning.js';
 import { TEMPO } from '../audio/tempo.js';
@@ -143,8 +143,11 @@ export function mountFormLab(root) {
     f.bars.forEach((bar) => {
       const chords = bar.chords.map((d) => set()[d].midis.map(midiToHz));
       playChordSequence(chords, { gap: BAR / chords.length, duration: BAR / chords.length * 0.8, amps: PAD, level: 0.15, at });
-      // 每小节开头给一下低音，让段落边界听得出来
-      playNote(midiToHz(TONIC + bar.chords[0]), { at, duration: BAR * 0.9, level: 0.24 });
+      // 每小节开头给一下低音，让段落边界听得出来。
+      // 低音按音阶算，不能把级数下标当半音数（vi 是 A，不是 F）。
+      const d0 = bar.chords[0];
+      playNote(midiToHz(degreeMidi(TONIC, 'major', d0, d0 >= 3 ? 1 : 0)),
+        { at, duration: BAR * 0.9, level: 0.24 });
       for (let i = 0; i < 8; i++) hat(at + (i / 2) * (BAR / 4), i % 2 ? 0.04 : 0.07);
       at += BAR;
     });

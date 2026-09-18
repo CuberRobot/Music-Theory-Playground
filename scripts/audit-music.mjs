@@ -12,7 +12,7 @@ import {
   JUST, justCents, tetCents, centsError, harmonicDeviation,
   PYTHAGOREAN_COMMA, JUST_FIFTH, wolfFifth, SPECTRA, spectrumToAmps,
 } from '../src/js/music/tuning.js';
-import { identify, diatonicSet, invert } from '../src/js/music/chords.js';
+import { identify, diatonicSet, invert, degreeMidi } from '../src/js/music/chords.js';
 import { SCALES, CIRCLE_MAJOR, relativeMinorPc, SHARP_ORDER, FLAT_ORDER } from '../src/js/music/scales.js';
 import { METERS, fitsMeasure } from '../src/js/music/rhythm.js';
 import { TERMS, TEMPO_TERMS, DYNAMICS } from '../src/js/music/glossary.js';
@@ -20,6 +20,7 @@ import { LESSONS, findLesson } from '../src/js/music/curriculum.js';
 import { TEMPO } from '../src/js/audio/tempo.js';
 import { SCORE_TEMPO } from '../src/js/audio/tempo.js';
 import { ODE_THEME } from '../src/js/widgets/ode-lab.js';
+import { TEXTURE_DEMO } from '../src/js/widgets/texture-lab.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 let fails = 0;
@@ -167,6 +168,37 @@ section('★ 贝多芬第九 · 欢乐颂主题（第四乐章第 92 小节起�
   const DEGREES = new Set([0, 2, 4, 5, 7, 9, 11]);
   eq(ODE_THEME.notes.every((n) => DEGREES.has(((n.s % 12) + 12) % 12)), true,
     '主题只用 D 大调音阶里的音（低音 A 记作 -5，即下五度）');
+}
+
+section('★ 级数不是半音数（低音线的老 bug）');
+{
+  // 第 27、29 节的实验台曾经把"第几级"当半音数加到根音上：
+  // C 大调的 vi（A）被算成 F、IV（F）被算成 D♯，和上方的和弦直接打架。
+  const C3 = 48;
+  eq(degreeMidi(C3, 'major', 0, 0), 48, 'I 级 = C3（这一级原来就是对的，所以没被发现）');
+  eq(degreeMidi(C3, 'major', 5, 1), 45, 'vi 级低音 = A2，不是 F3');
+  eq(degreeMidi(C3, 'major', 3, 1), 41, 'IV 级低音 = F2，不是 D♯3');
+  eq(degreeMidi(C3, 'major', 4, 1), 43, 'V 级低音 = G2，不是 E3');
+  eq(degreeMidi(C3, 'major', 5, 0), 57, '同一个 vi 级不降八度就是 A3');
+  // 低音必须是那个和弦的根音，不然和声就散了
+  const set = diatonicSet(60, 'major', 3);
+  eq(set.every((c, d) => degreeMidi(C3, 'major', d, 0) % 12 === c.midis[0] % 12), true,
+    '每个级数的低音都必须和该级和弦的根音同音名');
+
+  // 织体台（第 27 节 / J 节）：三层各占一个音区，谁也不撞谁
+  const demo = TEXTURE_DEMO;
+  const bass = demo.prog.map((d) => degreeMidi(demo.tonic, 'major', d, d >= 3 ? 1 : 0));
+  const chordTop = 60 - 12 + 12;      // 和弦下移一个八度后最高音的上限（C5→C4 一带）
+  const chordMidis = demo.prog.flatMap((d) => diatonicSet(60, 'major', 3)[d].midis.map((m) => m - 12));
+  const melodyLo = Math.min(...demo.melody);
+  // I 级上低音与和弦的最低音是同一个 C3 —— 那是根音加倍，正常，所以允许相等
+  eq(Math.max(...bass) <= Math.min(...chordMidis), true,
+    '低音不能跑到和弦中间去（低音 41–48，和弦 48–64）');
+  eq(Math.max(...chordMidis) < melodyLo, true,
+    '和弦必须全部低于旋律，否则旋律音会和和弦音撞出小二度');
+  eq(demo.melody.every((m) => ((m % 12) + 12) % 12 in { 0: 1, 2: 1, 4: 1, 5: 1, 7: 1, 9: 1, 11: 1 }), true,
+    '旋律必须全部落在 C 大调音阶里');
+  eq(chordTop > 0, true, '（占位：和弦音区上限常量）');
 }
 
 section('★ 十二小节布鲁斯');

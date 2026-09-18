@@ -120,8 +120,8 @@ export const PARTS = [
         blurb: '听起来"满"的段落，底下一定分好了工。',
         lessons: [
           { id: '26-progression',   no: '26', title: '和弦进行的写法', sub: '功能、代理与借用',       status: 'ready' },
-          { id: '27-texture',       no: '27', title: '低音线与织体',   sub: '谁在底下托着',           status: 'planned' },
-          { id: '28-orchestration', no: '28', title: '音区与配器',     sub: '音域覆盖与功能分层',     status: 'planned' },
+          { id: '27-texture',       no: '27', title: '低音线与织体',   sub: '谁在底下托着',           status: 'ready' },
+          { id: '28-orchestration', no: '28', title: '音区与配器',     sub: '音域覆盖与功能分层',     status: 'ready' },
         ],
       },
       {
@@ -129,7 +129,7 @@ export const PARTS = [
         title: '十 · 结构',
         blurb: '把材料拼成一首完整的曲子。',
         lessons: [
-          { id: '29-form', no: '29', title: '曲式与结构', sub: '重复建立、对比更新、回归满足', status: 'planned' },
+          { id: '29-form', no: '29', title: '曲式与结构', sub: '重复建立、对比更新、回归满足', status: 'ready' },
         ],
       },
       {

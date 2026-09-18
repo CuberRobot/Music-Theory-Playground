@@ -36,6 +36,9 @@ import { mountMotifLab } from './widgets/motif-lab.js';
 import { mountContourLab } from './widgets/contour-lab.js';
 import { mountGrooveLab } from './widgets/groove-lab.js';
 import { mountProgressionLab } from './widgets/progression-lab.js';
+import { mountTextureLab } from './widgets/texture-lab.js';
+import { mountOrchestrationLab } from './widgets/orchestration-lab.js';
+import { mountFormLab } from './widgets/form-lab.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -65,6 +68,9 @@ const WIDGETS = {
   'contour-lab': mountContourLab,
   'groove-lab': mountGrooveLab,
   'progression-lab': mountProgressionLab,
+  'texture-lab': mountTextureLab,
+  'orchestration-lab': mountOrchestrationLab,
+  'form-lab': mountFormLab,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

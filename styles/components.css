@@ -488,6 +488,17 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 /* --- 和弦进行编辑器 ---------------------------------------------------------- */
 
+/* --- 曲式积木 ---------------------------------------------------------------- */
+
+.form-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.form-block {
+  flex: 1 1 82px; min-width: 82px; min-height: 76px; border-radius: var(--r-md);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; color: var(--ink-1);
+}
+.form-letter { font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 1; }
+.form-bar { font-size: var(--fs-tiny); color: color-mix(in srgb, var(--ink-1) 70%, transparent); }
+
 .prog-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .prog-slot {
   flex: 1 1 76px; min-width: 76px; min-height: 84px; padding: 8px 6px;

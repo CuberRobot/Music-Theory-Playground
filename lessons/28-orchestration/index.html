@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 28 节 · 音区与配器 · Music Theory Playground</title>
+<meta name="description" content="配器的两个维度：音域覆盖与功能分层。勾乐器，看音域盖住没有。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="28-orchestration">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">九 · 纵向与层次 / <b>第 28 节 音区与配器</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 28 节 · 音区与配器</p>
+      <h1>选谁，站在哪儿</h1>
+      <p class="lead-p">配器听起来像"选音色"，其实是两件很朴素的事。</p>
+      <p>一是<b>音域覆盖</b>：低、中低、中高、高，四个区间有没有人。
+      二是<b>功能分层</b>：旋律、和声、低音、节奏，四件事有没有人干。</p>
+      <p>缺低音就头重脚轻，缺中声部就空洞，两件乐器挤在同一音区干同一件事就打架。
+      实验台把这三件事变成可查的——勾几件乐器，看音域条盖没盖住。</p>
+    </section>
+
+    <div class="card wide" data-widget="orchestration-lab"></div>
+
+    <section>
+      <h2>均衡 ≠ 一样响</h2>
+      <p>均衡的真正含义是：<b>每个功能层都有人，而且彼此听得见。</b></p>
+      <p>所以一件声音很小的乐器，只要它承担的功能没有别人在做，它就是必要的；
+      而一件很响的乐器，如果它在做别人已经在做的事，它就是多余的。</p>
+      <p>实验台会检查两件事：四个音区有没有空的、四件功能有没有没人做的。
+      它还会标出<b>音区打架</b>——两件乐器主要音域重叠超过四分之三、而且干同一件事时，
+      写在一起必然互相盖住。</p>
+    </section>
+
+    <section>
+      <h2>经典编制是怎么解这道题的</h2>
+      <p><strong>弦乐四重奏</strong>（两把小提琴 + 中提琴 + 大提琴）被公认最均衡，
+      因为四件同族乐器正好盖满四个音区，音色又能完全融合。</p>
+      <p><strong>木管五重奏</strong>（长笛 + 双簧管 + 单簧管 + 圆号 + 大管）里硬塞了一个铜管。
+      为什么？因为纯木管组合缺厚度和低音支撑，宁可牺牲一点音色融合，也要把脚下填上。
+      这说明编制不是照抄一份名单，是<b>解决问题</b>。</p>
+      <p><strong>爵士四重奏</strong>（号 + 钢琴 + 贝斯 + 鼓）的分工完全不同：
+      它不追求音域盖满，而是按功能分层——旋律、和声、低音、节奏各一件，边界清清楚楚。</p>
+    </section>
+
+    <section>
+      <h2>写编制时的两个警告</h2>
+      <p><strong>一是别让支撑声部唱主角。</strong>上低音号、大号这类乐器一旦被写成主旋律，
+      会把上面的木管整个压住。它们的功能是"托"，不是"说"。</p>
+      <p><strong>二是混族编制的音准与融合都更难。</strong>同族编制（全弦乐、全萨克斯）
+      最容易融合；混三个以上家族色彩更丰富，但排练和写作都更费劲。
+      这是取舍，不是优劣。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>配器两个维度：音域覆盖（四个区间有没有人）与功能分层（四件事有没有人干）。</li>
+        <li>均衡不是一样响，而是每个功能层都有人、且彼此听得见。</li>
+        <li>音区打架 = 主要音域重叠 + 干同一件事。</li>
+        <li>经典编制是在解具体问题：弦乐四重奏解"盖满"，木管五重奏解"缺厚度"。</li>
+        <li>别让支撑声部唱主角；同族易融合，混族色彩多但更难。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

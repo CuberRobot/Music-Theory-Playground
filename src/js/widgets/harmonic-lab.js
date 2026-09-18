@@ -224,7 +224,7 @@ export function mountHarmonicLab(root) {
     if (!state.voice) return;
     state.voice.setFrequency(baseHz(), 0);
     state.voice.setAmps(fullAmps(), 0);
-    state.voice.start(0.3);
+    state.voice.start(0.3, 0.02, null, true);   // 持续音：不要滤波器包络
     state.playing = true;
     el.play.textContent = '停止';
   });

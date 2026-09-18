@@ -88,6 +88,14 @@ export const PARTS = [
           { id: '21-transposing', no: '21', title: '移调乐器',    sub: '为什么单簧管写的和听的不一样', status: 'planned' },
         ],
       },
+      {
+        id: 'oneStyle',
+        title: '八 · 一个真实风格：布鲁斯',
+        blurb: '把前面二十节学的东西，一次性用在一种真实存在的音乐上。',
+        lessons: [
+          { id: '22-blues', no: '22', title: '布鲁斯的元素组成', sub: '蓝调音、十二小节、shuffle', status: 'ready' },
+        ],
+      },
     ],
   },
   {
@@ -101,9 +109,9 @@ export const PARTS = [
         title: '八 · 写作的材料',
         blurb: '一段音乐是怎么从一个小念头长出来的。',
         lessons: [
-          { id: '22-motif',   no: '22', title: '动机与乐句', sub: '重复、模进、倒影与句读',   status: 'planned' },
-          { id: '23-contour', no: '23', title: '旋律的轮廓', sub: '级进、跳进与拱形',         status: 'planned' },
-          { id: '24-groove',  no: '24', title: '节奏与律动', sub: '律动型、奇数拍、复节奏',   status: 'planned' },
+          { id: '23-motif',   no: '23', title: '动机与乐句', sub: '重复、模进、倒影与句读',   status: 'planned' },
+          { id: '24-contour', no: '24', title: '旋律的轮廓', sub: '级进、跳进与拱形',         status: 'planned' },
+          { id: '25-groove',  no: '25', title: '节奏与律动', sub: '律动型、奇数拍、复节奏',   status: 'planned' },
         ],
       },
       {
@@ -111,9 +119,9 @@ export const PARTS = [
         title: '九 · 纵向与层次',
         blurb: '听起来"满"的段落，底下一定分好了工。',
         lessons: [
-          { id: '25-progression',   no: '25', title: '和弦进行的写法', sub: '功能、代理与借用',       status: 'planned' },
-          { id: '26-texture',       no: '26', title: '低音线与织体',   sub: '谁在底下托着',           status: 'planned' },
-          { id: '27-orchestration', no: '27', title: '音区与配器',     sub: '音域覆盖与功能分层',     status: 'planned' },
+          { id: '26-progression',   no: '26', title: '和弦进行的写法', sub: '功能、代理与借用',       status: 'planned' },
+          { id: '27-texture',       no: '27', title: '低音线与织体',   sub: '谁在底下托着',           status: 'planned' },
+          { id: '28-orchestration', no: '28', title: '音区与配器',     sub: '音域覆盖与功能分层',     status: 'planned' },
         ],
       },
       {
@@ -121,7 +129,7 @@ export const PARTS = [
         title: '十 · 结构',
         blurb: '把材料拼成一首完整的曲子。',
         lessons: [
-          { id: '28-form', no: '28', title: '曲式与结构', sub: '重复建立、对比更新、回归满足', status: 'planned' },
+          { id: '29-form', no: '29', title: '曲式与结构', sub: '重复建立、对比更新、回归满足', status: 'planned' },
         ],
       },
       {
@@ -129,9 +137,9 @@ export const PARTS = [
         title: '十一 · 工具：MuseScore',
         blurb: '用 MuseScore 4 把心里的东西变成能打印、能播放的谱子。',
         lessons: [
-          { id: '29-musescore-basics',   no: '29', title: 'MuseScore 入门', sub: '新建乐谱、输入第一个音符', status: 'planned' },
-          { id: '30-musescore-notation', no: '30', title: '记谱进阶',       sub: '记号、连线、力度与速度',   status: 'planned' },
-          { id: '31-musescore-publish',  no: '31', title: '排版与导出',     sub: '整理成能给别人看的谱',     status: 'planned' },
+          { id: '30-musescore-basics',   no: '30', title: 'MuseScore 入门', sub: '新建乐谱、输入第一个音符', status: 'planned' },
+          { id: '31-musescore-notation', no: '31', title: '记谱进阶',       sub: '记号、连线、力度与速度',   status: 'planned' },
+          { id: '32-musescore-publish',  no: '32', title: '排版与导出',     sub: '整理成能给别人看的谱',     status: 'planned' },
         ],
       },
     ],
@@ -142,6 +150,14 @@ export const PARTS = [
     title: '作品分析',
     blurb: '拿真实作品当例子，看前面学到的规则在别人手里是怎么用的。',
     reserved: '这一部分先占个位置。要分析哪些作品还没定，定了再往里放。',
+    tiers: [],
+  },
+  {
+    id: 'styles',
+    no: '第四部分',
+    title: '音乐风格解析',
+    blurb: '布鲁斯、爵士、摇滚、前卫摇滚、世界音乐……每种风格都由一组有限的手法和习惯组成。这一部分把它们拆开看。',
+    reserved: '这一部分慢慢补。放在最后是有意的 —— 新内容往后加，前面章节的编号就不用反复改。',
     tiers: [],
   },
 ];

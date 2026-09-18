@@ -44,6 +44,23 @@ let master = null;
 let muted = false;
 const liveVoices = new Set();
 
+/**
+ * 起音瞬态用的噪声。真实乐器起音瞬间都有一小段宽带噪声 ——
+ * 槌子击弦、弓毛摩擦、气流声。缺了它，音头永远是"电子"的。
+ * 只生成一次，之后所有音符复用同一段 buffer。
+ */
+let noiseBuf = null;
+function getNoiseBuffer(c) {
+  if (noiseBuf) return noiseBuf;
+  const len = Math.max(64, Math.floor(c.sampleRate * 0.05));
+  noiseBuf = c.createBuffer(1, len, c.sampleRate);
+  const d = noiseBuf.getChannelData(0);
+  for (let i = 0; i < len; i++) {
+    d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.5);
+  }
+  return noiseBuf;
+}
+
 function ensureContext() {
   if (ctx) return ctx;
   const AC = window.AudioContext || window.webkitAudioContext;
@@ -60,7 +77,7 @@ function ensureContext() {
  * 之后所有播放都不用再等。
  */
 export function installUnlockOnGesture() {
-  const handler = () => { unlock(); };
+  const handler = () => { unlock(); preloadPluck(); };
   document.addEventListener('pointerdown', handler, { passive: true });
   document.addEventListener('keydown', handler);
 }
@@ -113,7 +130,12 @@ class AdditiveVoice {
 
     this.out = this.ctx.createGain();
     this.out.gain.value = 0;
-    this.out.connect(master);
+    // 每个声部一个低通：起音时开、随后关下去，这是"击弦感"的另一半
+    this.filter = this.ctx.createBiquadFilter();
+    this.filter.type = 'lowpass';
+    this.filter.Q.value = 0.7;
+    this.filter.frequency.value = 12000;
+    this.out.connect(this.filter).connect(master);
 
     this.osc = [];
     this.gains = [];
@@ -167,7 +189,9 @@ class AdditiveVoice {
     const norm = Math.max(1, sum);
 
     for (let i = 0; i < this.count; i++) {
-      const hz = this.freq * (i + 1);
+      // 真实弦不是精确谐波：高次泛音会略偏高（inharmonicity）。
+      // 这一点点"不准"正是"活"的来源，纯整数倍反而死板。
+      const hz = this.freq * (i + 1) * (1 + 0.00012 * i * i);
       const safe = hz < nyquistSafe;
       const target = safe ? (this.amps[i] || 0) / norm : 0;
       ramp(this.gains[i].gain, target, ampGlide, t);
@@ -176,13 +200,45 @@ class AdditiveVoice {
   }
 
   /** at 是绝对时间（ctx.currentTime 的坐标系），用来排时间表。 */
-  start(level = 0.3, attack = 0.02, at = null) {
+  /**
+   * @param {boolean} sustained 持续音（实验台里那种一直响的）跳过滤波器包络，
+   *   否则拖竖条的过程中音色会自己越变越暗，干扰判断。
+   */
+  start(level = 0.3, attack = 0.02, at = null, sustained = false) {
     if (this.disposed) return this;
     const t = at ?? this.ctx.currentTime;
     this.level = level;
     this.out.gain.cancelScheduledValues(t);
     this.out.gain.setValueAtTime(t <= this.ctx.currentTime ? this.out.gain.value : 0, t);
     this.out.gain.linearRampToValueAtTime(level, t + attack);
+
+    // 滤波器包络：起音亮、随后收暗。截止跟着基频走，免得高音被削掉。
+    const open = Math.min(13000, Math.max(3000, this.freq * 10));
+    const closed = sustained ? open : Math.min(7000, Math.max(1100, this.freq * 3.4));
+    this.filter.frequency.cancelScheduledValues(t);
+    this.filter.frequency.setValueAtTime(open, t);
+    this.filter.frequency.exponentialRampToValueAtTime(closed, t + 0.45);
+    return this;
+  }
+
+  /**
+   * 起音瞬态：一小段带通噪声叠在音头上。
+   * 音量压得很低（默认只有主音的 15%），多了像噪声，少了像电子琴。
+   */
+  transient(hz, level, at) {
+    if (this.disposed) return this;
+    const c = this.ctx;
+    const src = c.createBufferSource();
+    src.buffer = getNoiseBuffer(c);
+    const bp = c.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = Math.min(6500, Math.max(400, hz * 5));
+    bp.Q.value = 0.9;
+    const g = c.createGain();
+    g.gain.value = Math.max(0.01, level * 0.15);
+    src.connect(bp).connect(g).connect(master);
+    src.start(at);
+    src.onended = () => { src.disconnect(); bp.disconnect(); g.disconnect(); };
     return this;
   }
 
@@ -202,6 +258,27 @@ class AdditiveVoice {
   releaseAfter(duration, release = 0.25) {
     if (this.disposed) return this;
     this.releaseAt(this.ctx.currentTime + Math.max(0.02, duration), release);
+    return this;
+  }
+
+  /**
+   * 每个泛音按自己的速度衰减。
+   *
+   * 这是"像真乐器"和"像电子琴"之间最要紧的一条：真实乐器的泛音不是一起断的，
+   * 高次泛音衰减得快得多，所以起音亮、余音暖。以前所有泛音走同一个包络，
+   * 听起来就是一块静止的板。
+   *
+   * @param {number} baseTau 基音的时间常数（秒），高次泛音按 1/(1+0.9i) 递减
+   * @param {number} [at] 绝对起始时间，默认现在
+   */
+  setDecay(baseTau = 1.1, at = null) {
+    if (this.disposed) return this;
+    const t = (at ?? this.ctx.currentTime) + 0.008;
+    for (let i = 0; i < this.count; i++) {
+      if ((this.amps[i] ?? 0) <= 0.0005) continue;   // 本来就没响的泛音不用管
+      const tau = Math.max(0.04, baseTau / (1 + i * 0.9));
+      this.gains[i].gain.setTargetAtTime(0, t, tau);
+    }
     return this;
   }
 
@@ -225,6 +302,7 @@ class AdditiveVoice {
       osc.disconnect();
     }
     for (const g of this.gains) g.disconnect();
+    this.filter.disconnect();
     this.out.disconnect();
   }
 }
@@ -234,15 +312,24 @@ export function createVoice(count = VOICE_HARMONICS) {
   return new AdditiveVoice(count);
 }
 
-/** 放一个音，duration 秒后自动收尾。 */
+/**
+ * 放一个音，duration 秒后自动收尾。
+ * decay 传一个秒数就会开启"高次泛音先衰减"的包络（推荐 0.8–1.6），
+ * 不传则所有泛音一起断（实验台里需要听静态配比时用这种）。
+ */
 export function playNote(hz, opts = {}) {
-  const { duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25, at = 0 } = opts;
+  const {
+    duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25,
+    at = 0, decay = 1.2,
+  } = opts;
   const v = createVoice(harmonicsNeeded(amps));
   if (!v) return null;
   const t0 = v.ctx.currentTime + Math.max(0, at);
   v.setFrequency(hz, 0);
   if (amps) v.setAmps(amps, 0);
   v.start(level, attack, t0);
+  if (decay) v.setDecay(decay, t0);
+  if (attack > 0.004) v.transient(hz, level, t0);
   v.releaseAt(t0 + duration, release);
   return v;
 }
@@ -254,8 +341,10 @@ export function playChord(freqs, opts = {}) {
 
 /** 依次放一串音。at 是从现在算起的秒数偏移。 */
 export function playSequence(hzs, opts = {}) {
-  const { gap = 0.34, duration = 0.55, amps = null, level = 0.3, at = 0 } = opts;
-  return hzs.map((hz, i) => playNote(hz, { duration, amps, level, at: at + i * gap }));
+  const { gap = 0.34, duration = 0.55, amps = null, level = 0.3, at = 0, decay = 0.9 } = opts;
+  return hzs.map((hz, i) => playNote(hz, {
+    duration, amps, level, at: at + i * gap, decay,
+  }));
 }
 
 /** 依次放一组和弦，每个和弦是一个频率数组。 */
@@ -297,4 +386,69 @@ export function stopAll() {
 /** 给界面用：判断音频是否真的可用。 */
 export function isAvailable() {
   return !!(window.AudioContext || window.webkitAudioContext);
+}
+
+/* --------------------------------------------------------------------------
+   拨弦音色：Karplus-Strong。见 karplus-worklet.js 里的原理说明。
+   worklet 是异步加载的，所以在它准备好之前先退回加法合成，不让按钮失灵。
+   -------------------------------------------------------------------------- */
+
+let pluckState = 'idle';   // idle | loading | ready | failed
+
+/** 提前把 worklet 拉下来。第一次用户手势时调用，省得按播放键才等。 */
+export function preloadPluck() {
+  if (pluckState !== 'idle') return;
+  const c = ensureContext();
+  if (!c || !c.audioWorklet) { pluckState = 'failed'; return; }
+  pluckState = 'loading';
+  c.audioWorklet
+    .addModule(new URL('./karplus-worklet.js', import.meta.url))
+    .then(() => { pluckState = 'ready'; })
+    .catch((err) => {
+      // 失败不致命：playPluck 会退回加法合成，只是不像吉他。留个记录便于排查。
+      pluckState = 'failed';
+      console.warn('[Music Theory Playground] 拨弦合成器加载失败，已退回加法合成', err);
+    });
+}
+
+export function pluckReady() { return pluckState === 'ready'; }
+
+/**
+ * 拨一个音。frequency 是音高，duration 大致决定余音长短。
+ * worklet 还没就绪时自动退回加法合成，听感差一些但不静音。
+ */
+export function playPluck(hz, opts = {}) {
+  const {
+    duration = 2.0, level = 0.3, at = 0,
+    brightness = 0.55, damping = 0.5,
+  } = opts;
+
+  if (pluckState !== 'ready') {
+    preloadPluck();
+    // 回退：高次泛音快速衰减，能听出"拨"的意思
+    return playNote(hz, { duration, level, at, decay: 0.5 });
+  }
+
+  const c = ctx;
+  const node = new AudioWorkletNode(c, 'karplus-strong', {
+    numberOfInputs: 0,
+    numberOfOutputs: 1,
+    outputChannelCount: [1],
+  });
+  node.parameters.get('damping').value = damping;
+  node.parameters.get('decayTime').value = Math.max(0.5, duration * 1.4);
+
+  const g = c.createGain();
+  const t0 = c.currentTime + Math.max(0, at);
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(level, t0 + 0.003);
+  g.gain.setValueAtTime(level, t0 + duration);
+  g.gain.linearRampToValueAtTime(0, t0 + duration + 0.2);
+  node.connect(g).connect(master);
+  node.port.postMessage({ type: 'pluck', frequency: hz, brightness });
+
+  setTimeout(() => {
+    try { node.disconnect(); g.disconnect(); } catch { /* 已断开 */ }
+  }, (Math.max(0, at) + duration + 0.45) * 1000);
+  return node;
 }

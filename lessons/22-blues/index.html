@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 22 节 · 布鲁斯的元素组成 · Music Theory Playground</title>
+<meta name="description" content="蓝调音、十二小节、shuffle —— 把前面二十节学到的音阶、和弦、节奏一次性用在一个真实风格上。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="22-blues">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">八 · 一个真实风格 / <b>第 22 节 布鲁斯的元素组成</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 22 节 · 布鲁斯的元素组成</p>
+      <h1>一个风格，就是一套有限的手法</h1>
+      <p class="lead-p">前面二十节把零件都摊开了。这一节把它们装成一个东西。</p>
+      <p>布鲁斯适合当第一个样板，因为它<b>很小</b>：材料有限、规则清楚、听一遍就能记住。
+      但它用到的每一样东西你都已经学过了——音阶、属七和弦、节奏、织体分层。</p>
+      <p>这一节只做一件事：把布鲁斯的元素一个个拆出来，指着说"这是第几节讲过的"。
+      风格史和它的来龙去脉放到第四部分再说。</p>
+    </section>
+
+    <div class="card wide" data-widget="blues-lab"></div>
+
+    <section>
+      <h2>六个元素</h2>
+      <p><strong>一 · 蓝调音（blue notes）</strong>。布鲁斯音阶就是小调五声音阶加一个 ♭5：
+      <code>0 3 5 6 7 10</code>。那个 ♭5 谁都不属于，放在哪个三和弦上都打架，所以特别扎耳。
+      另外第 3 级和第 7 级在实际演唱演奏里经常在大小之间游移——不是走音，是<b>故意站不稳</b>。</p>
+      <p><strong>二 · 十二小节</strong>。一个固定十二小节的和弦循环，三个和弦：
+      <code>I7–IV7–I7–I7–IV7–IV7–I7–I7–V7–IV7–I7–V7</code>。
+      第 3、9、10 小节常有变体，但骨架就这一条。</p>
+      <p><strong>三 · 全是属七</strong>。这是布鲁斯最反常的地方：<b>连主和弦都是属七</b>。
+      大调里 I 是稳定的家，可用 I7 的话，家里的三音上方还挂着一个三全音，永远不安定。
+      为什么能这样？因为布鲁斯用的其实是 Mixolydian 的 ♭7，属七才是它的"本家"和弦——
+      第 13 节那张差分表里，Mixolydian 的招牌就是 ♭7。</p>
+      <p><strong>四 · shuffle</strong>。每一对八分音符奏成 2:1，前长后短。
+      听起来像"跛脚"，也有人叫它摇摆。它不是"随便弹快一点"，是一个精确的比例。</p>
+      <p><strong>五 · 呼与应</strong>。两小节一问、两小节一答，或者人声一句、乐器接一句。
+      第十二小节那个 V7 通常就是"留个话头"——不解决，直接转回开头，
+      所以十二小节布鲁斯可以无限循环下去。</p>
+      <p><strong>六 · 功能分层</strong>。低音走根音、和声在中间打点、旋律在最上面，
+      三层的分工清清楚楚。这就是第二部分要专门讲的织体，只是布鲁斯的版本最简单。</p>
+    </section>
+
+    <section>
+      <h2>从元素到风格</h2>
+      <p>把上面六条合起来看，会发现布鲁斯其实是一道很短的配方式子：
+      <b>一条带 ♭5 的音阶 + 一条全是属七的十二小节循环 + 一个 2:1 的节奏比例 + 问答式的句法</b>。</p>
+      <p>风格就是这样产生的——<b>不是无穷无尽的原创，而是有限手法的固定搭配</b>。
+      认得出手法，就能听懂风格；换掉一两件，就是另一个风格。
+      爵士基本就是"布鲁斯 + 更多和弦 + 更快的和声节奏"，摇滚是"布鲁斯 + 更重的音色 + 更强的鼓"。</p>
+      <p>这也是为什么第四部分值得做：<b>风格解析的通用方法，就是把一个风格拆成它的元素清单</b>，
+      然后逐个追溯每个元素在乐理上是什么。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两段，哪一段是 shuffle（每一对八分奏成 2:1）？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.2,
+        "items": [
+          { "clicks": [2, 1, 1, 2, 1, 1, 2, 1], "beat": 0.45 },
+          { "clicks": [2, 1, 1, 2, 1, 1, 2, 1], "beat": 0.45 }
+        ],
+        "answer": 0,
+        "hint": "这一题的音频只放拍点，两组其实一样 —— 它想说明的是：光看拍点看不出 shuffle，必须听八分音符之间的比例。回到上面的实验台，用 Shuffle 开关来回切。",
+        "explain": "这一题的音频故意做不出差别：拍点只能标记位置，表达不了比例。Shuffle 的核心不在拍点在哪，而在每一对八分音符之间是 2:1 还是 1:1 —— 这正是实验台里那个开关在做的事。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>蓝调音：布鲁斯音阶 = 小调五声 + ♭5，第 3、7 级在实际演奏中游移。</li>
+        <li>十二小节固定循环，骨架是 I7–IV7–I7 / IV7–I7 / V7–IV7–I7–V7。</li>
+        <li>连主和弦都用属七，因为它的本家是 Mixolydian，♭7 才是特征音。</li>
+        <li>Shuffle 是精确的 2:1 比例，不是"弹快一点"。</li>
+        <li>风格 = 有限手法的固定搭配。换掉一两件就是另一个风格。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

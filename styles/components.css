@@ -339,6 +339,8 @@ input[type="range"] {
   background: var(--amber-soft); border-color: var(--amber-deep); color: var(--ink-1);
 }
 .tile.tone-green[aria-pressed="true"] { background: var(--green-soft); border-color: var(--green); }
+/* 只作指示用、不可点的方块（比如正在播放到第几小节） */
+.tile.is-on { background: var(--amber); border-color: var(--amber-deep); color: var(--ink-1); }
 
 /* 两个面板并排（左图右读数），窄屏堆叠 */
 .lab-split {

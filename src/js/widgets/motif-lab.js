@@ -5,7 +5,7 @@
  * 主题（theme）才是完整的旋律句子。古典发展用的是动机，
  * 所以"发展"的本质是：用有限的几种变形，把一个小念头撑成一大段音乐。
  *
- * 例子用贝多芬第五开头那四个音 —— 三个同音加一个下行小三度。
+ * 例子用贝多芬第五开头那四个音 —— 三个同音加一个下行大三度（G G G E♭）。
  */
 
 import { midiToHz, spellMidi } from '../music/pitch.js';
@@ -19,7 +19,7 @@ const MOTIF = [
   { semi: 0, beats: 1 },
   { semi: 0, beats: 1 },
   { semi: 0, beats: 1 },
-  { semi: -3, beats: 4 },
+  { semi: -4, beats: 4 },
 ];
 const REST = { rest: true, beats: 1.5 };
 const mapSounding = (m, f) => m.map((n) => (n.rest ? n : f(n)));
@@ -58,7 +58,7 @@ export function mountMotifLab(root) {
       <h2>动机变形台</h2>
       <p class="hint">同一个念头，换一种变形再听一遍</p>
     </div>
-    <p class="hint" style="margin-top:0">起点是贝多芬第五开头那四个音：三短一长，最后下行小三度</p>
+    <p class="hint" style="margin-top:0">起点是贝多芬第五开头那四个音：三短一长，最后下行大三度（G G G E♭）</p>
     <div class="tiles" data-ops role="group" aria-label="变形方式"></div>
     <div data-strip style="margin-top:var(--sp-5)"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">

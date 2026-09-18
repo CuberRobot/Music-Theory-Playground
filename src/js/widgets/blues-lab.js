@@ -30,19 +30,26 @@ const BEAT = 0.48;         // 一拍多少秒，约 125 BPM
 const BOOGIE = [0, 7, 9, 10];
 
 /**
- * Riff。每一格是一个八分音符，数字是相对和弦根音的半音数（已经含高八度）。
- * 全部落在布鲁斯音阶上：0 ♭3 4 ♭5 5 ♭7。
- * A 是"问句"（半音上行再回来），B 是"答句"（下行落回根音）——
- * 两小节构成一次呼与应，正好呼应正文里那条"呼与应"的元素。
+ * Riff。每一格是一个八分音符，数字是相对和弦根音的半音数（不含高八度，
+ * 实际发音时统一加 24，让 riff 落在和弦上方，三个层次不会糊在一起）。
+ *
+ * shuffle riff 的关键不是音多，是**反复回到同一个音**：
+ * A 句前三拍一直在「根音 ↔ ♭3」之间来回蹭（这就是 shuffle 的踏板），
+ * 最后一拍才往上拐一下，把人送进下一小节。
+ * 上一版写成了一路半音上行再下行 —— 那是音阶跑动，不是 riff：
+ * 八个音占满、没有重音、没有空隙，听起来自然平铺。
+ *
+ * B 句是答句：从五度往下滑，落在根音上，并且**留出最后一拍的空隙**。
+ * Riff 的呼吸感靠的就是这种"说完就停"，不是一直说。
  */
-const RIFF_A = [[0, 12], [1, 15], [2, 17], [3, 18], [4, 19], [5, 18], [6, 17], [7, 15]];
-const RIFF_B = [[0, 19], [1, 18], [2, 17], [3, 15], [4, 12], [6, 12]];
+const RIFF_A = [[0, 0], [1, 3], [2, 0], [3, 3], [4, 0], [5, 3], [6, 7], [7, 6]];
+const RIFF_B = [[0, 7], [1, 6], [2, 5], [4, 3], [6, 0]];
 /**
  * 第 12 小节的 turnaround：从 ♭7 半音下行到五度，制造"回头"的拉力。
  * 相对主音算，不随小节的和弦移调 —— 它的任务是把你送回开头。
  * 从 ♭7 起而不是从根音起，是为了避开大七度和和弦里小七度的硬撞。
  */
-const TURNAROUND = [[0, 10], [2, 9], [4, 8], [6, 7]];
+const TURNAROUND = [[0, 10], [1, 10], [2, 9], [4, 8], [5, 7], [6, 7]];
 
 export function mountBluesLab(root) {
   const state = { shuffle: true, riff: true, playing: false, bar: -1, timer: null, raf: null };
@@ -166,7 +173,9 @@ export function mountBluesLab(root) {
       if (state.riff) {
         const isTurn = i === FORM.length - 1;
         const notes = isTurn ? TURNAROUND : (i % 2 === 0 ? RIFF_A : RIFF_B);
-        const base = isTurn ? TONIC : root;
+        // riff 落在和弦上方两个八度：低音 48–58、和弦 64–70、riff 72–79，
+        // 三层各占一段音区，不会互相糊掉。
+        const base = (isTurn ? TONIC : root) + 24;
         notes.forEach(([e, s]) => {
           playPluck(midiToHz(base + s), {
             at: at + (e / 2) * BEAT, duration: BEAT * 1.1, level: 0.15,

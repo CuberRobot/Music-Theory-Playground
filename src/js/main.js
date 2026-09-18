@@ -17,6 +17,11 @@ import { mountIntervalLab } from './widgets/interval-lab.js';
 import { mountConsonanceLab } from './widgets/consonance-lab.js';
 import { mountDurationBuilder } from './widgets/duration-builder.js';
 import { mountMeterGrid } from './widgets/meter-grid.js';
+import { mountChordBuilder } from './widgets/chord-builder.js';
+import { mountScaleLab } from './widgets/scale-lab.js';
+import { mountCircleFifths } from './widgets/circle-fifths.js';
+import { mountChordMap } from './widgets/chord-map.js';
+import { mountNotationLab } from './widgets/notation-lab.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -27,6 +32,11 @@ const WIDGETS = {
   'consonance-lab': mountConsonanceLab,
   'duration-builder': mountDurationBuilder,
   'meter-grid': mountMeterGrid,
+  'chord-builder': mountChordBuilder,
+  'scale-lab': mountScaleLab,
+  'circle-fifths': mountCircleFifths,
+  'chord-map': mountChordMap,
+  'notation-lab': mountNotationLab,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */
@@ -107,7 +117,8 @@ function mountWidgets() {
     const mount = WIDGETS[host.dataset.widget];
     if (!mount) continue;
     try {
-      mount(host);
+      // data-* 上的配置原样传给组件，比如 data-size="4"
+      mount(host, { ...host.dataset });
     } catch (err) {
       // 一个实验台坏掉不应该带走整页
       console.error(`[Music Theory Playground] 挂载 ${host.dataset.widget} 失败`, err);

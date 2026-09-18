@@ -41,7 +41,11 @@ export function mountListenChallenge(root) {
   };
 
   const play = (item) => {
-    if (Array.isArray(item.clicks)) {
+    if (Array.isArray(item.chord)) {
+      // 和弦题：给了根音之上的半音偏移，比如 [0,4,7] 是大三和弦
+      playChord(item.chord.map((s) => rootHz * Math.pow(2, s / 12)),
+        { duration, level, amps: ampsFor(item) });
+    } else if (Array.isArray(item.clicks)) {
       // 节奏题：0 不响、1 响、2 重音。beat 是一拍多少秒。
       const beat = item.beat ?? 0.5;
       item.clicks.forEach((v, i) => {

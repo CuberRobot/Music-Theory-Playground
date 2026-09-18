@@ -40,8 +40,8 @@ export const TIERS = [
     title: '四 · 纵向结构',
     blurb: '把三个以上的音同时叠起来。',
     lessons: [
-      { id: '07-triad',   no: '7', title: '三和弦', sub: '四种性质与转位', status: 'planned' },
-      { id: '08-seventh', no: '8', title: '七和弦', sub: '属七与它的同类', status: 'planned' },
+      { id: '07-triad',   no: '7', title: '三和弦', sub: '四种性质与转位', status: 'ready' },
+      { id: '08-seventh', no: '8', title: '七和弦', sub: '属七与它的同类', status: 'ready' },
     ],
   },
   {
@@ -49,10 +49,10 @@ export const TIERS = [
     title: '五 · 调',
     blurb: '给一堆音找一个引力中心。',
     lessons: [
-      { id: '09-scale',      no: '9',  title: '音阶与调式',   sub: '大调、小调、五声', status: 'planned' },
-      { id: '10-keysig',     no: '10', title: '调号与关系调', sub: '五度圈',           status: 'planned' },
-      { id: '11-harmony',    no: '11', title: '调内和声',     sub: '功能与终止式',     status: 'planned' },
-      { id: '12-modulation', no: '12', title: '调性关系',     sub: '离调、转调、移调', status: 'planned' },
+      { id: '09-scale',      no: '9',  title: '音阶与调式',   sub: '大调、小调、五声', status: 'ready' },
+      { id: '10-keysig',     no: '10', title: '调号与关系调', sub: '五度圈',           status: 'ready' },
+      { id: '11-harmony',    no: '11', title: '调内和声',     sub: '功能与终止式',     status: 'ready' },
+      { id: '12-modulation', no: '12', title: '调性关系',     sub: '离调、转调、移调', status: 'ready' },
     ],
   },
   {
@@ -60,7 +60,7 @@ export const TIERS = [
     title: '六 · 记谱',
     blurb: '把上面这些写成别人读得懂的符号。',
     lessons: [
-      { id: '13-notation', no: '13', title: '记谱法与记号', sub: '谱号、装饰音、术语', status: 'planned' },
+      { id: '13-notation', no: '13', title: '记谱法与记号', sub: '谱号、装饰音、术语', status: 'ready' },
     ],
   },
 ];

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 8 节 · 七和弦 · Music Theory Playground</title>
+<meta name="description" content="再叠一个三度就有了七和弦。属七和弦与它的同类，以及它们为什么那么想解决。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="08-seventh">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">四 · 纵向结构 / <b>第 8 节 七和弦</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 8 节 · 七和弦</p>
+      <h1>再叠一个三度</h1>
+      <p class="lead-p">上一节叠了两个三度。再叠一个，就是七和弦。</p>
+      <p>名字里的"七"来自最高的那个音到根音是七度。
+      多出来的这个音让和弦从"稳定的一块"变成了"带着推力的一块"——
+      七和弦几乎从来不是为了停在那里，而是为了往前走。</p>
+      <p>下面这个实验台是上一节那个的扩展版，多了一层可以改的七度。</p>
+    </section>
+
+    <div class="card wide" data-widget="chord-builder" data-size="4"></div>
+
+    <section>
+      <h2>最常用的几个</h2>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">名称</th><th scope="col">结构（半音）</th><th scope="col">常见场合</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>属七和弦</td><td class="num">0 4 7 10</td><td>大调第 V 级，最经典的"要回家"</td></tr>
+            <tr><td>大七和弦</td><td class="num">0 4 7 11</td><td>爵士、流行里安静的收尾</td></tr>
+            <tr><td>小七和弦</td><td class="num">0 3 7 10</td><td>流行歌里最常见的小和弦</td></tr>
+            <tr><td>半减七和弦</td><td class="num">0 3 6 10</td><td>大调第 vii 级、小调第 ii 级</td></tr>
+            <tr><td>减七和弦</td><td class="num">0 3 6 9</td><td>强烈的过渡与转调</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>属七和弦为什么特殊？因为它内部同时含有一个<b>三全音</b>：
+      三音到七音正好是 6 个半音，也就是第 4 节里那个最难对上的音程。
+      三音想往上解决，七音想往下解决，两个方向相反的拉力同时存在，
+      所以它听起来最不安定、最急着回到主和弦。</p>
+    </section>
+
+    <section>
+      <h2>转位与省略</h2>
+      <p>七和弦有四个位置，中文名字依次是：原位、五六和弦、三四和弦、二和弦。</p>
+      <p>实际演奏时，七和弦的五个音（四个构成音加根音）经常被省略掉一个。
+      最常见的是省略五音——因为它对和弦的性格影响最小，去掉之后三音和七音那个三全音反而更清楚。
+      贝斯手和吉他手在爵士里几乎一直在做这件事。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两组，哪一组是属七和弦（0 4 7 10）？",
+        "root": 55,
+        "spectrum": "organ",
+        "duration": 1.8,
+        "items": [
+          { "label": "A 组", "chord": [0, 4, 7, 11] },
+          { "label": "B 组", "chord": [0, 4, 7, 10] }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。属七听起来更脏、更想往前走；大七干净得多，像一张不动的照片。",
+        "explain": "对，B 组是属七。A 组是大七和弦，只差一个半音，但一个大七安静、一个属七紧张，这个差别是整个功能和声的动力来源。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>七和弦 = 三和弦再叠一个三度，最高音到根音是七度。</li>
+        <li>最常用的是属七（0 4 7 10），流行里最常用的是小七。</li>
+        <li>属七内部含一个三全音，两个音想往相反方向解决，所以最不安定。</li>
+        <li>七和弦的四个位置：原位、五六和弦、三四和弦、二和弦。</li>
+        <li>实际演奏常省掉五音，因为三音和七音才是性格的所在。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

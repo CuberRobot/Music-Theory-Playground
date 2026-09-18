@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 9 节 · 音阶与调式 · Music Theory Playground</title>
+<meta name="description" content="大调、小调、五声与教会调式。用一条引力曲线看清主音是怎么把一堆音组织起来的。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="09-scale">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">五 · 调 / <b>第 9 节 音阶与调式</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 9 节 · 音阶与调式</p>
+      <h1>给一堆音找个引力中心</h1>
+      <p class="lead-p">把十二个音随便排一排，那不是音阶。音阶的关键不在音，在<b>它们围着谁转</b>。</p>
+      <p>这个"中心"叫主音。它像重力一样，让别的音各有各的稳定程度：
+      有的听起来很踏实，有的悬着，有的明显要往主音那儿落。</p>
+      <p>下面这条曲线就是把这种感觉画出来。换音阶，看形状怎么变。</p>
+    </section>
+
+    <div class="card wide" data-widget="scale-lab"></div>
+
+    <section>
+      <h2>大调的形状</h2>
+      <p>大调音阶的结构是：<b>全 全 半 全 全 全 半</b>。
+      用半音数写就是 0 2 4 5 7 9 11。</p>
+      <p>注意第 3 级到第 4 级、第 7 级到第 8 级是半音，其余都是全音。
+      正是这两个半音的位置，决定了大调听起来的样子。
+      把半音挪到别的位置，就成了另一种调式——这也是所有教会调式的由来：
+      <b>用的音可以完全一样，只是中心换了。</b></p>
+      <p>这一点值得停下来想一下：C 大调和 D 多利亚用的是同一批音。
+      区别只在于你让谁当主音。所以"调式"不是音的问题，是关系的问题。</p>
+    </section>
+
+    <section>
+      <h2>音级的名字</h2>
+      <p>音阶里的七个音各有名字，而且名字本身就说明了它们的性格：</p>
+      <p><b>主音</b>（最稳）、<b>上主音</b>、<b>中音</b>、<b>下属音</b>、<b>属音</b>（第二稳）、
+      <b>下中音</b>、<b>导音</b>（离主音只有半音，最想解决）。</p>
+      <p>第 7 级之所以叫导音，是因为它离主音只有半音，像被磁铁吸着一样往上走。
+      在自然小调里，第 7 级离主音是全音，没有那么强的拉力，所以那个音级不叫导音，
+      而叫<b>下主音</b>。和声小调把第 7 级升高半音，就是为了造出一个真正的导音。</p>
+    </section>
+
+    <section>
+      <h2>五声音阶为什么怎么弹都好听</h2>
+      <p>五声音阶去掉了两个音：第 4 级和第 7 级。
+      这两个音正好是离主音和属音都只有半音的音，也就是最有张力的两个。</p>
+      <p>把最有张力的东西拿掉，剩下的怎么组合都很难难听。
+      这就是它被大量用于民族音乐、布鲁斯和即兴演奏的原因——
+      不是为了简单，而是为了在一个宽松的框架里自由地动。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两条音阶，哪一条是小调？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 0.5,
+        "items": [
+          { "label": "A 组", "notes": [
+            { "beats": 1, "transpose": 0 }, { "beats": 1, "transpose": 2 },
+            { "beats": 1, "transpose": 4 }, { "beats": 1, "transpose": 5 },
+            { "beats": 1, "transpose": 7 }, { "beats": 1, "transpose": 9 },
+            { "beats": 1, "transpose": 11 }, { "beats": 1, "transpose": 12 }
+          ], "secPerBeat": 0.34 },
+          { "label": "B 组", "notes": [
+            { "beats": 1, "transpose": 0 }, { "beats": 1, "transpose": 2 },
+            { "beats": 1, "transpose": 3 }, { "beats": 1, "transpose": 5 },
+            { "beats": 1, "transpose": 7 }, { "beats": 1, "transpose": 8 },
+            { "beats": 1, "transpose": 10 }, { "beats": 1, "transpose": 12 }
+          ], "secPerBeat": 0.34 }
+        ],
+        "answer": 1,
+        "hint": "再听一遍，注意第三个音。大调的第三个音听起来亮，小调的第三个音听起来暗。",
+        "explain": "对，B 组是小调。两组只差三个音（第 3、6、7 级各低半音），但性格完全不同。其中第三个音最关键，它就是那个明暗开关。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>音阶的本质是"一批音围绕主音组织"，主音决定一切。</li>
+        <li>大调结构：全全半全全全半。两个半音的位置决定了大调的样子。</li>
+        <li>同样的音换一个主音，就是另一个调式。调式是关系问题，不是音的问题。</li>
+        <li>音级名字本身就描述了性格：主音最稳，属音次稳，导音最想解决。</li>
+        <li>五声音阶拿掉了最有张力的两个音，所以自由度高、不易难听。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

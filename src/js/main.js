@@ -22,6 +22,7 @@ import { mountScaleLab } from './widgets/scale-lab.js';
 import { mountCircleFifths } from './widgets/circle-fifths.js';
 import { mountChordMap } from './widgets/chord-map.js';
 import { mountNotationLab } from './widgets/notation-lab.js';
+import { mountGlossary } from './widgets/glossary.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -37,6 +38,7 @@ const WIDGETS = {
   'circle-fifths': mountCircleFifths,
   'chord-map': mountChordMap,
   'notation-lab': mountNotationLab,
+  glossary: mountGlossary,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */
@@ -178,11 +180,26 @@ function renderMap() {
     </section>`).join('');
 }
 
+/**
+ * 顶栏的站内导航。所有页面的 HTML 里只写一条兜底链接，
+ * 真正的导航在这里统一生成，加新页面时只改这一处。
+ */
+function renderTopnav() {
+  const host = document.querySelector('.topnav');
+  if (!host) return;
+  const root = rootPrefix();
+  const page = document.body.dataset.page || '';
+  host.innerHTML = `
+    <a href="${root}lessons/"${page === 'lessons' ? ' aria-current="page"' : ''}>课程地图</a>
+    <a href="${root}glossary/"${page === 'glossary' ? ' aria-current="page"' : ''}>术语表</a>`;
+}
+
 installUnlockOnGesture();
 renderRail();
 renderMeter();
 renderFoot();
 renderMap();
+renderTopnav();
 mountWidgets();
 wireSoundToggle();
 

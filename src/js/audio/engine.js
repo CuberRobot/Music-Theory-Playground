@@ -16,6 +16,29 @@ const VOICE_HARMONICS = 24;
 /** 输出总电平。单声部峰值约 0.3，两个声部叠加也不至于削波。 */
 const MASTER_LEVEL = 0.9;
 
+/** 同时最多几个声部。每个声部是一组振荡器，点太快不加限制会把音频线程压垮。 */
+const MAX_LIVE_VOICES = 16;
+
+/**
+ * 默认音色。以前这里是全 0，导致所有没显式指定音色的播放调用都是静音的。
+ * 指数 1.8 的衰减出来的音色温和，不会像纯正弦那么单薄，也不像锯齿那么刺。
+ */
+function defaultAmps(count) {
+  const out = [];
+  for (let i = 0; i < count; i++) out.push(1 / Math.pow(i + 1, 1.8));
+  return out;
+}
+
+/** 一份泛音配比实际用到第几个泛音。用来少建几个振荡器。 */
+function harmonicsNeeded(amps) {
+  if (!amps) return 8;
+  let last = 0;
+  for (let i = 0; i < amps.length; i++) {
+    if (Math.abs(amps[i] ?? 0) > 0.0005) last = i;
+  }
+  return Math.min(VOICE_HARMONICS, Math.max(6, last + 1));
+}
+
 let ctx = null;
 let master = null;
 let muted = false;
@@ -85,7 +108,7 @@ class AdditiveVoice {
     this.ctx = ensureContext();
     this.count = count;
     this.freq = 220;
-    this.amps = new Array(count).fill(0);
+    this.amps = defaultAmps(count);
     this.disposed = false;
 
     this.out = this.ctx.createGain();
@@ -106,6 +129,12 @@ class AdditiveVoice {
       this.gains.push(g);
     }
     liveVoices.add(this);
+
+    // 超过上限就把最早的那个声部淡出，防止连点造成节点堆积
+    if (liveVoices.size > MAX_LIVE_VOICES) {
+      const oldest = liveVoices.values().next().value;
+      if (oldest && oldest !== this) oldest.stop(0.03);
+    }
   }
 
   /** 基频。glide 是过渡时间常数，拖动时给 0.01 左右会很顺滑。 */
@@ -208,7 +237,7 @@ export function createVoice(count = VOICE_HARMONICS) {
 /** 放一个音，duration 秒后自动收尾。 */
 export function playNote(hz, opts = {}) {
   const { duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25, at = 0 } = opts;
-  const v = createVoice();
+  const v = createVoice(harmonicsNeeded(amps));
   if (!v) return null;
   const t0 = v.ctx.currentTime + Math.max(0, at);
   v.setFrequency(hz, 0);

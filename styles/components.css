@@ -433,6 +433,46 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 /* --- 落地首页：毛玻璃门面 -------------------------------------------------- */
 
+/* --- 术语表 ---------------------------------------------------------------- */
+
+.gloss-search { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.form-input {
+  flex: 1; min-width: 220px; min-height: 44px;
+  font: inherit; font-size: var(--fs-body);
+  padding: 10px var(--sp-4);
+  border: 1px solid var(--line-strong); border-radius: var(--r-pill);
+  background: var(--surface); color: var(--ink-1);
+}
+.form-input::placeholder { color: var(--ink-4); }
+.form-input:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.term-list { margin: 0; display: flex; flex-direction: column; }
+.term {
+  display: grid; grid-template-columns: 14rem minmax(0, 1fr);
+  gap: var(--sp-4); align-items: baseline;
+  padding: var(--sp-4) 0; border-bottom: 1px solid var(--line);
+}
+.term dt { display: flex; flex-direction: column; gap: 2px; }
+.term-en { color: var(--ink-1); font-weight: 500; }
+.term-zh { font-size: var(--fs-tiny); color: var(--ink-3); }
+.term dd { margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.term-def { color: var(--ink-2); font-size: var(--fs-small); }
+.term-meta { font-size: var(--fs-tiny); color: var(--ink-4); }
+.term-meta a { color: var(--ink-3); }
+.term-meta a:hover { color: var(--ink-1); }
+
+details.quick { border-top: 1px solid var(--line); padding: var(--sp-3) 0; }
+details.quick summary {
+  cursor: pointer; font-family: var(--font-serif);
+  font-size: var(--fs-h3); color: var(--ink-1);
+}
+details.quick summary:hover { color: var(--amber-deep); }
+details.quick[open] summary { margin-bottom: var(--sp-2); }
+
+@media (max-width: 640px) {
+  .term { grid-template-columns: 1fr; gap: var(--sp-1); }
+}
+
 .landing {
   min-height: 100dvh;
   display: flex; flex-direction: column;

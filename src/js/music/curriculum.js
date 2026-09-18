@@ -165,7 +165,7 @@ export const PARTS = [
         blurb: '重复与低音驱动的时代。',
         lessons: [
           { id: 'c-vivaldi-seasons', no: 'C', title: '维瓦尔第 · 四季', sub: '先有诗，还是先有音乐', status: 'ready' },
-          { id: 'd-pachelbel-canon', no: 'D', title: '帕赫贝尔 · 卡农', sub: '一条进行走到底', status: 'planned' },
+          { id: 'd-pachelbel-canon', no: 'D', title: '帕赫贝尔 · 卡农', sub: '一条循环，三百年', status: 'ready' },
           { id: 'e-bach-wtc1', no: 'E', title: '巴赫 · 平均律第一册 C 大调前奏曲', sub: '为平均律写的第一批作品', status: 'planned' },
         ],
       },

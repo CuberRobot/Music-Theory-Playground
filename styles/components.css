@@ -286,6 +286,19 @@ input[type="range"] {
 }
 .ode-phrase[aria-current="true"] b { color: var(--amber-deep); }
 
+/* --- 卡农台：四个声部的进入图（作品分析 D 用） ------------------------- */
+
+.canon-lanes { display: flex; flex-direction: column; gap: 4px; margin-top: var(--sp-4); }
+.canon-lane { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-tiny); }
+.canon-name { flex: 0 0 5.2em; color: var(--ink-2); }
+.canon-cells { display: flex; gap: 3px; flex: 1; }
+.canon-cells i {
+  flex: 1; height: 14px; border-radius: 3px;
+  background: var(--surface-3); border: 1px solid var(--line);
+}
+.canon-cells i.on { background: var(--green); border-color: var(--green-deep); opacity: .8; }
+.canon-bar { flex: 0 0 6.5em; text-align: right; color: var(--ink-4); }
+
 /* --- 表格 ----------------------------------------------------------------- */
 
 .table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }

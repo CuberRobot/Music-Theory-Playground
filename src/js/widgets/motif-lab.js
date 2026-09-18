@@ -10,6 +10,7 @@
 
 import { midiToHz, spellMidi } from '../music/pitch.js';
 import { playPluck, preloadPluck } from '../audio/engine.js';
+import { createNoteStrip } from '../audio/transport.js';
 
 const BASE = 67;              // G4，那个动机的起点
 const SEC = 0.42;             // 一个"短音"多少秒
@@ -59,8 +60,7 @@ export function mountMotifLab(root) {
     </div>
     <p class="hint" style="margin-top:0">起点是贝多芬第五开头那四个音：三短一长，最后下行小三度</p>
     <div class="tiles" data-ops role="group" aria-label="变形方式"></div>
-    <svg data-curve viewBox="0 0 360 120" role="img" aria-label="变形后的旋律轮廓"
-      style="width:100%;height:auto;margin-top:var(--sp-5)"></svg>
+    <div data-strip style="margin-top:var(--sp-5)"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>再听一遍</button>
       <span class="tag" data-now>—</span>
@@ -71,7 +71,7 @@ export function mountMotifLab(root) {
 
   const el = {
     ops: root.querySelector('[data-ops]'),
-    curve: root.querySelector('[data-curve]'),
+    stripHost: root.querySelector('[data-strip]'),
     now: root.querySelector('[data-now]'),
     readout: root.querySelector('[data-readout]'),
     tip: root.querySelector('[data-tip]'),
@@ -85,6 +85,8 @@ export function mountMotifLab(root) {
     el.ops.appendChild(b);
   });
 
+  const strip = createNoteStrip(el.stripHost, { ariaLabel: '变形后的旋律与播放进度' });
+
   root.querySelector('[data-play]').addEventListener('click', () => play(state.notes));
 
   function apply(alsoPlay) {
@@ -97,18 +99,31 @@ export function mountMotifLab(root) {
 
   function play(notes) {
     preloadPluck();
-    let at = 0;
+    // 交给音符条统一排期：它负责发声，也负责把游标走过去
+    strip.load(timeline(notes));
+    strip.play((midi, at, dur) => playPluck(midiToHz(midi), {
+      at, duration: Math.max(0.18, dur), level: 0.26,
+      brightness: 0.7, damping: 0.4,
+    }));
+  }
+
+  /** 把动机展开成音符条要的时间轴：每个音算好起点、时长、音名。 */
+  function timeline(notes) {
+    const out = [];
+    let t = 0;
     notes.forEach((n) => {
       const d = n.beats * SEC;
       if (!n.rest) {
-        playPluck(midiToHz(BASE + n.semi), {
-          at, duration: Math.max(0.18, d * 0.9), level: 0.26,
-          brightness: 0.7, damping: 0.4,
+        out.push({
+          midi: BASE + n.semi,
+          start: t,
+          dur: d * 0.88,
+          label: spellMidi(BASE + n.semi, true).name,
         });
       }
-      at += d;
+      t += d;
     });
-    return at;
+    return out;
   }
 
   function intervals(notes) {
@@ -124,26 +139,8 @@ export function mountMotifLab(root) {
 
   function paint(op) {
     const sounding = state.notes.filter((n) => !n.rest);
-    const semis = sounding.map((n) => n.semi);
-    const lo = Math.min(...semis) - 1;
-    const hi = Math.max(...semis) + 1;
     const total = state.notes.reduce((a, n) => a + n.beats, 0);
-
-    let t = 0;
-    const pts = [];
-    state.notes.forEach((n) => {
-      if (!n.rest) {
-        pts.push([
-          20 + (t / total) * 320,
-          100 - ((n.semi - lo) / Math.max(1, hi - lo)) * 80,
-        ]);
-      }
-      t += n.beats;
-    });
-    const line = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
-    const dots = pts.map(([x, y]) => `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5" fill="var(--amber)"/>`).join('');
-    el.curve.innerHTML = `<line x1="12" y1="100" x2="348" y2="100" stroke="var(--line-strong)" stroke-width="1"/>
-      <path d="${line}" fill="none" stroke="var(--amber-deep)" stroke-width="2"/>${dots}`;
+    strip.load(timeline(state.notes));
 
     el.now.textContent = op.label;
     el.readout.innerHTML = `

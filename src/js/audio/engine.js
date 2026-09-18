@@ -44,6 +44,23 @@ let master = null;
 let muted = false;
 const liveVoices = new Set();
 
+/**
+ * 起音瞬态用的噪声。真实乐器起音瞬间都有一小段宽带噪声 ——
+ * 槌子击弦、弓毛摩擦、气流声。缺了它，音头永远是"电子"的。
+ * 只生成一次，之后所有音符复用同一段 buffer。
+ */
+let noiseBuf = null;
+function getNoiseBuffer(c) {
+  if (noiseBuf) return noiseBuf;
+  const len = Math.max(64, Math.floor(c.sampleRate * 0.05));
+  noiseBuf = c.createBuffer(1, len, c.sampleRate);
+  const d = noiseBuf.getChannelData(0);
+  for (let i = 0; i < len; i++) {
+    d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.5);
+  }
+  return noiseBuf;
+}
+
 function ensureContext() {
   if (ctx) return ctx;
   const AC = window.AudioContext || window.webkitAudioContext;
@@ -113,7 +130,12 @@ class AdditiveVoice {
 
     this.out = this.ctx.createGain();
     this.out.gain.value = 0;
-    this.out.connect(master);
+    // 每个声部一个低通：起音时开、随后关下去，这是"击弦感"的另一半
+    this.filter = this.ctx.createBiquadFilter();
+    this.filter.type = 'lowpass';
+    this.filter.Q.value = 0.7;
+    this.filter.frequency.value = 12000;
+    this.out.connect(this.filter).connect(master);
 
     this.osc = [];
     this.gains = [];
@@ -167,7 +189,9 @@ class AdditiveVoice {
     const norm = Math.max(1, sum);
 
     for (let i = 0; i < this.count; i++) {
-      const hz = this.freq * (i + 1);
+      // 真实弦不是精确谐波：高次泛音会略偏高（inharmonicity）。
+      // 这一点点"不准"正是"活"的来源，纯整数倍反而死板。
+      const hz = this.freq * (i + 1) * (1 + 0.00012 * i * i);
       const safe = hz < nyquistSafe;
       const target = safe ? (this.amps[i] || 0) / norm : 0;
       ramp(this.gains[i].gain, target, ampGlide, t);
@@ -176,13 +200,45 @@ class AdditiveVoice {
   }
 
   /** at 是绝对时间（ctx.currentTime 的坐标系），用来排时间表。 */
-  start(level = 0.3, attack = 0.02, at = null) {
+  /**
+   * @param {boolean} sustained 持续音（实验台里那种一直响的）跳过滤波器包络，
+   *   否则拖竖条的过程中音色会自己越变越暗，干扰判断。
+   */
+  start(level = 0.3, attack = 0.02, at = null, sustained = false) {
     if (this.disposed) return this;
     const t = at ?? this.ctx.currentTime;
     this.level = level;
     this.out.gain.cancelScheduledValues(t);
     this.out.gain.setValueAtTime(t <= this.ctx.currentTime ? this.out.gain.value : 0, t);
     this.out.gain.linearRampToValueAtTime(level, t + attack);
+
+    // 滤波器包络：起音亮、随后收暗。截止跟着基频走，免得高音被削掉。
+    const open = Math.min(13000, Math.max(3000, this.freq * 10));
+    const closed = sustained ? open : Math.min(7000, Math.max(1100, this.freq * 3.4));
+    this.filter.frequency.cancelScheduledValues(t);
+    this.filter.frequency.setValueAtTime(open, t);
+    this.filter.frequency.exponentialRampToValueAtTime(closed, t + 0.45);
+    return this;
+  }
+
+  /**
+   * 起音瞬态：一小段带通噪声叠在音头上。
+   * 音量压得很低（默认只有主音的 15%），多了像噪声，少了像电子琴。
+   */
+  transient(hz, level, at) {
+    if (this.disposed) return this;
+    const c = this.ctx;
+    const src = c.createBufferSource();
+    src.buffer = getNoiseBuffer(c);
+    const bp = c.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = Math.min(6500, Math.max(400, hz * 5));
+    bp.Q.value = 0.9;
+    const g = c.createGain();
+    g.gain.value = Math.max(0.01, level * 0.15);
+    src.connect(bp).connect(g).connect(master);
+    src.start(at);
+    src.onended = () => { src.disconnect(); bp.disconnect(); g.disconnect(); };
     return this;
   }
 
@@ -246,6 +302,7 @@ class AdditiveVoice {
       osc.disconnect();
     }
     for (const g of this.gains) g.disconnect();
+    this.filter.disconnect();
     this.out.disconnect();
   }
 }
@@ -272,6 +329,7 @@ export function playNote(hz, opts = {}) {
   if (amps) v.setAmps(amps, 0);
   v.start(level, attack, t0);
   if (decay) v.setDecay(decay, t0);
+  if (attack > 0.004) v.transient(hz, level, t0);
   v.releaseAt(t0 + duration, release);
   return v;
 }

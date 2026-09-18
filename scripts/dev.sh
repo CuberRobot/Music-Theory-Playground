@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# MusicL 本地预览：零依赖静态服务器
+# Music Theory Playground 本地预览：零依赖静态服务器
 set -euo pipefail
-MUSICL_PORT="${MUSICL_PORT:-5173}"
+MTP_PORT="${MTP_PORT:-5173}"
 cd "$(dirname "$0")/.."
-echo "MusicL → http://localhost:${MUSICL_PORT}"
-exec python3 -m http.server "${MUSICL_PORT}"
+echo "Music Theory Playground → http://localhost:${MTP_PORT}"
+exec python3 -m http.server "${MTP_PORT}"

@@ -1,4 +1,4 @@
-/* MusicL 基础层：重置 + 排版默认值。不写任何组件样式。 */
+/* Music Theory Playground 基础层：重置 + 排版默认值。不写任何组件样式。 */
 
 *, *::before, *::after { box-sizing: border-box; }
 

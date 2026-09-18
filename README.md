@@ -1,4 +1,6 @@
-# MusicL
+# Music Theory Playground
+
+> 看得见的乐理 · *See it, play it, hear it.*
 
 用**看得见的声音**讲乐理的交互式静态网站。每个概念都配一个能拖、能听、能立刻看到结果的实验台。
 
@@ -12,7 +14,7 @@
 
 ```bash
 ./scripts/dev.sh          # 默认 http://localhost:5173
-MUSICL_PORT=8080 ./scripts/dev.sh
+MTP_PORT=8080 ./scripts/dev.sh
 ```
 
 或者随意用一个静态服务器：`python3 -m http.server 5173`
@@ -29,7 +31,7 @@ MUSICL_PORT=8080 ./scripts/dev.sh
 ## 目录结构
 
 ```text
-MusicL/
+Music-Theory-Playground/
 ├── index.html            # 首页 / 学习地图
 ├── lessons/              # 章节页，一章一个目录
 ├── labs/                 # 独立实验台，可被多章复用

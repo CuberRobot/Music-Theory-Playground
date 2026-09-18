@@ -1,4 +1,4 @@
-# MusicL UI 设计规范 · v0.1 草案
+# Music Theory Playground UI 设计规范 · v0.1 草案
 
 > 具体数值写在 [`styles/tokens.css`](../styles/tokens.css)，这份文档解释"为什么是这些数值"。
 

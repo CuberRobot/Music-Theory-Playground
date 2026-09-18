@@ -57,6 +57,19 @@
   color: var(--ink-3); text-transform: none;
 }
 .rail .tier:first-child { margin-top: 0; }
+.rail .part {
+  margin: var(--sp-5) 0 var(--sp-2);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-serif);
+  font-size: var(--fs-small);
+  color: var(--ink-1);
+}
+.rail .part:first-child { margin-top: 0; }
+.rail .reserved {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-tiny); color: var(--ink-4); line-height: 1.6;
+}
 .rail a {
   display: flex; gap: var(--sp-2); align-items: baseline;
   padding: 6px var(--sp-3); border-radius: var(--r-sm);
@@ -390,9 +403,19 @@ input[type="range"] {
 
 /* --- 首页学习地图 --------------------------------------------------------- */
 
-.map-tier { margin-bottom: var(--sp-6); }
-.map-tier h2 { font-size: var(--fs-h3); margin-bottom: var(--sp-1); }
-.map-tier .blurb { font-size: var(--fs-small); color: var(--ink-3); margin: 0 0 var(--sp-4); }
+.map-part { margin-bottom: var(--sp-8); }
+.map-part > h2 {
+  font-size: var(--fs-h2); margin-bottom: var(--sp-2);
+  padding-bottom: var(--sp-3); border-bottom: 1px solid var(--line);
+}
+.map-part .blurb { font-size: var(--fs-small); color: var(--ink-3); margin: 0 0 var(--sp-4); }
+.map-sub { font-size: var(--fs-h3); margin: var(--sp-6) 0 var(--sp-1); }
+.map-sub + .blurb { margin-bottom: var(--sp-4); }
+.map-reserved {
+  padding: var(--sp-5); border: 1px dashed var(--line-strong);
+  border-radius: var(--r-card); background: var(--surface-2);
+  color: var(--ink-3); font-size: var(--fs-small); margin: 0;
+}
 .map-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: var(--sp-4); }
 .map-card {
   display: flex; flex-direction: column; gap: var(--sp-2);
@@ -402,7 +425,7 @@ input[type="range"] {
 }
 a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 .map-card .no { font-size: var(--fs-tiny); color: var(--ink-4); font-variant-numeric: tabular-nums; }
-.map-card h3 { font-family: var(--font-serif); font-size: var(--fs-h3); margin: 0; }
+.map-card h4 { font-family: var(--font-serif); font-size: var(--fs-h3); margin: 0; }
 .map-card p { font-size: var(--fs-small); color: var(--ink-3); margin: 0; }
 .map-card.soon { opacity: .62; box-shadow: none; }
 
@@ -561,6 +584,12 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
     white-space: nowrap; padding-right: var(--sp-2);
     border-right: 1px solid var(--line);
   }
+  .rail .part {
+    width: auto; margin: 0; align-self: center;
+    white-space: nowrap; padding: 0 var(--sp-3) 0 0;
+    border-bottom: 0; border-right: 2px solid var(--line-strong);
+  }
+  .rail .reserved { display: none; }
   .rail a { white-space: nowrap; flex-shrink: 0; }
 }
 

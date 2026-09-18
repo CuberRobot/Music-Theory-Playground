@@ -6,7 +6,7 @@
  *   4. 接管顶栏的声音开关
  */
 
-import { TIERS, LESSONS, findLesson, neighbours, hrefOf } from './music/curriculum.js';
+import { PARTS, LESSONS, findLesson, neighbours, hrefOf } from './music/curriculum.js';
 import { installUnlockOnGesture, isMuted, setMuted, isAvailable } from './audio/engine.js';
 
 import { mountHarmonicLab } from './widgets/harmonic-lab.js';
@@ -51,26 +51,30 @@ function renderRail() {
   const root = rootPrefix();
   const parts = [];
 
-  for (const tier of TIERS) {
-    parts.push(`<div class="tier">${tier.title}</div>`);
-    for (const lesson of tier.lessons) {
-      const here = lesson.id === current ? ' aria-current="page"' : '';
-      const label = `<em>${lesson.no}</em><span>${lesson.title}</span>`;
-      if (lesson.status === 'ready') {
-        parts.push(`<a href="${root}${hrefOf(lesson)}"${here}>${label}</a>`);
-      } else {
-        // 还没写的章节保留在目录里，让人看到全貌，但不可点
-        parts.push(`<a class="soon" aria-disabled="true">${label}</a>`);
+  for (const part of PARTS) {
+    parts.push(`<div class="part">${part.no} · ${part.title}</div>`);
+    for (const tier of part.tiers) {
+      parts.push(`<div class="tier">${tier.title}</div>`);
+      for (const lesson of tier.lessons) {
+        const here = lesson.id === current ? ' aria-current="page"' : '';
+        const label = `<em>${lesson.no}</em><span>${lesson.title}</span>`;
+        if (lesson.status === 'ready') {
+          parts.push(`<a href="${root}${hrefOf(lesson)}"${here}>${label}</a>`);
+        } else {
+          // 还没写的章节保留在目录里，让人看到全貌，但不可点
+          parts.push(`<a class="soon" aria-disabled="true">${label}</a>`);
+        }
       }
+    }
+    if (!part.tiers.length && part.reserved) {
+      parts.push(`<div class="reserved">${part.reserved}</div>`);
     }
   }
   host.innerHTML = parts.join('');
 
-  // 窄屏下目录是横滑条，把当前这一节滚进视野，不然永远停在第 0 节
+  // 目录会很长，把当前这一节滚进视野，不然每次都要自己找
   const here = host.querySelector('[aria-current="page"]');
-  if (here && host.scrollWidth > host.clientWidth) {
-    here.scrollIntoView({ inline: 'center', block: 'nearest' });
-  }
+  if (here) here.scrollIntoView({ inline: 'center', block: 'nearest' });
 }
 
 function renderMeter() {
@@ -144,27 +148,33 @@ function wireSoundToggle() {
   sync();
 }
 
-/** 课程地图页：按层展开。没写的章节渲染成不可点的灰卡，写了就自动可点。 */
+/** 课程地图页：部分 → 层 → 节。没写的章节渲染成不可点的灰卡，写了就自动可点。 */
 function renderMap() {
   const host = document.querySelector('[data-map]');
   if (!host) return;
   const root = rootPrefix();
 
-  host.innerHTML = TIERS.map((tier) => `
-    <section class="map-tier">
-      <h2>${tier.title}</h2>
-      <p class="blurb">${tier.blurb}</p>
-      <div class="map-grid">
-        ${tier.lessons.map((l) => {
-          const inner = `
-            <span class="no">第 ${l.no} 节</span>
-            <h3>${l.title}</h3>
-            <p>${l.sub}</p>`;
-          return l.status === 'ready'
-            ? `<a class="map-card" href="${root}${hrefOf(l)}">${inner}</a>`
-            : `<div class="map-card soon">${inner}</div>`;
-        }).join('')}
-      </div>
+  const card = (l, rootPath) => {
+    const inner = `
+      <span class="no">第 ${l.no} 节</span>
+      <h4>${l.title}</h4>
+      <p>${l.sub}</p>`;
+    return l.status === 'ready'
+      ? `<a class="map-card" href="${rootPath}${hrefOf(l)}">${inner}</a>`
+      : `<div class="map-card soon">${inner}</div>`;
+  };
+
+  host.innerHTML = PARTS.map((part) => `
+    <section class="map-part">
+      <h2>${part.no} · ${part.title}</h2>
+      <p class="blurb">${part.blurb}</p>
+      ${part.tiers.map((tier) => `
+        <h3 class="map-sub">${tier.title}</h3>
+        <p class="blurb">${tier.blurb}</p>
+        <div class="map-grid">${tier.lessons.map((l) => card(l, root)).join('')}</div>
+      `).join('')}
+      ${!part.tiers.length && part.reserved
+        ? `<div class="map-reserved">${part.reserved}</div>` : ''}
     </section>`).join('');
 }
 

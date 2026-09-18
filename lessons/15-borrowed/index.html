@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 15 节 · 借用与副属和弦 · Music Theory Playground</title>
+<meta name="description" content="从隔壁调式借颜色，从隔壁调借方向。♭VII、iv、♭II 与 V/V、V/ii 的用法与判定。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="15-borrowed">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">五 · 调 / <b>第 15 节 借用与副属和弦</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 15 节 · 借用与副属和弦</p>
+      <h1>借颜色，和借方向</h1>
+      <p class="lead-p">前十四节的调内和弦，全都在一个调里。这一节开始往外面拿东西。</p>
+      <p>有两种拿法，借到的东西完全不同：</p>
+      <p><b>借用和弦</b>（modal mixture）从同主音的<b>别的调式</b>拿一个和弦过来，借的是<b>颜色</b>。
+      <b>副属和弦</b>（secondary dominant）给某个和弦临时装一个它专属的 V7，借的是<b>方向</b>。</p>
+      <p>分不清这两种的人，会把它们统称为"离调"，然后就再也不知道自己借的是什么了。</p>
+    </section>
+
+    <div class="card wide" data-widget="borrowed-lab"></div>
+
+    <section>
+      <h2>借用和弦：判定不用背表</h2>
+      <p>第 13 节那张差分表在这里派上用场了。判定一个外来和弦"来自哪个调式"，
+      只要四步：</p>
+      <p><b>① 写出本调的七个音。② 写出想借的那个和弦的三个音。③ 看差在哪几个音上。
+      ④ 那些改动正好是某个调式的特征音。</b></p>
+      <p>特征音对照：<code>♯4</code> → Lydian，<code>♭7</code> → Mixolydian，
+      <code>♭3♭6</code> → Aeolian，<code>♭2</code> → Phrygian。</p>
+      <p>举个例子：Fm = F A♭ C。跟 C 大调的 F A C 比，多了个 ♭6 ——
+      所以 Fm 来自 Aeolian。要借一个 iv，就是去找 Aeolian 的这个 ♭6。</p>
+      <p>有一点要提醒：<b>来源常常不唯一。</b>B♭（B♭-D-F）在 Mixolydian 和 Aeolian 里都是本家。
+      所以"来自某调式"只是命名习惯，真正确定的事实是：<b>它不在本调里，但在某某调式里。</b></p>
+    </section>
+
+    <section>
+      <h2>副属和弦：给任意和弦装一个 V7</h2>
+      <p>思路很直接：任何一个和弦都可以临时被当成"主"，那就给它配一个属七。</p>
+      <p>C 大调里最常用的四个：<code>D7 → G</code>（V/V）、<code>A7 → Dm</code>（V/ii）、
+      <code>E7 → Am</code>（V/vi）、<code>C7 → F</code>（V/IV）。</p>
+      <p>注意最后那个：<b>C7 就是本调的主和弦加上一个小七度。</b>
+      主和弦本来是终点，加上 ♭7 之后它变成了通往 IV 的起点 —— 同一组音，换了个身份。</p>
+      <p>副属和弦里那个♭7 是从外面借来的（C 大调里 B 应该是还原的），
+      所以它一响，听者就知道"这里临时不是 C 大调了"。</p>
+    </section>
+
+    <section>
+      <h2>和声自由化的第一条路</h2>
+      <p>把前三节连起来看，其实是一张从"规矩"到"自由"的地图：</p>
+      <p><b>① 同功能替换</b>（第 12 节：ii 替 IV、vi 替 I —— 引擎不变、表面变）→
+      <b>② 临时借力</b>（本节：借用和弦换颜色、副属和弦换方向）→
+      <b>③ 换一种引力</b>（三度关系，比如用大三度把八度三等分）→
+      <b>④ 取消引力</b>（静态和声、持续低音、平行进行）。</p>
+      <p>绝大多数流行、摇滚、爵士的和声都在前两条里；三四条要到第二部分和风格解析再说。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>借用和弦借颜色（从别的调式拿），副属和弦借方向（给某和弦装 V7）。</li>
+        <li>判定借用和弦的来源：看它比本调多了哪些音，对应哪个调式的特征音。</li>
+        <li>特征音：♯4 = Lydian、♭7 = Mixolydian、♭3♭6 = Aeolian、♭2 = Phrygian。</li>
+        <li>来源常常不唯一，真正确定的是"它不在本调，但在某某调式里"。</li>
+        <li>副属和弦里那个 ♭7 是借来的，它一响就临时离开了本调。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

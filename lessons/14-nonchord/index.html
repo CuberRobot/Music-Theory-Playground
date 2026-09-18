@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 14 节 · 和弦外音 · Music Theory Playground</title>
+<meta name="description" content="经过音、辅助音、倚音、延留音。旋律与和声的接口：哪一拍该放和弦音，外音又该怎么走。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="14-nonchord">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">五 · 调 / <b>第 14 节 和弦外音</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 14 节 · 和弦外音</p>
+      <h1>旋律与和声的接口</h1>
+      <p class="lead-p">前面讲和声，讲的是同时响的音；讲旋律，讲的是先后响的音。这一节讲它们怎么接上。</p>
+      <p>一条旋律不是每个音都属于它下面的和弦。<b>不属于和弦的那些音，叫和弦外音</b>（non-chord tones）。</p>
+      <p>关键是：外音不是"错音"。它们是旋律能唱得动、能呼吸的原因。
+      如果每个音都必须是和弦音，旋律就只能在三个音里打转。</p>
+    </section>
+
+    <div class="card wide" data-widget="nonchord-lab"></div>
+
+    <section>
+      <h2>一句话的规矩</h2>
+      <p><b>强拍放和弦音，弱拍放外音。</b>这是最省事、也最好用的一条。</p>
+      <p>为什么？因为强拍是听者用来"定位"和弦的。如果强拍上的音不属于和弦，
+      听者会以为和弦换掉了。弱拍就没这个问题 —— 外音一闪而过，反而增加了旋律的流动感。</p>
+      <p>例外当然有，而且很重要：<b>倚音</b>就是故意把外音放在强拍上，
+      制造一瞬间的紧张，然后马上解决。这种"故意犯规"的效果极强，但用多了就失效了。</p>
+    </section>
+
+    <section>
+      <h2>四种外音，看的是"前后邻居"</h2>
+      <p>判断一个音属于哪一类，不看它自己，看它<b>两边的邻居</b>。这是这一节唯一需要记的方法。</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">类型</th><th scope="col">进来</th><th scope="col">出去</th><th scope="col">典型位置</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>经过音<br><span class="hint">passing tone</span></td><td>级进</td><td>同方向级进</td><td>弱拍</td></tr>
+            <tr><td>辅助音<br><span class="hint">neighbor tone</span></td><td>级进</td><td>原路返回</td><td>弱拍</td></tr>
+            <tr><td>倚音<br><span class="hint">appoggiatura</span></td><td>跳进</td><td>级进解决</td><td><b>常在强拍</b></td></tr>
+            <tr><td>延留音<br><span class="hint">suspension</span></td><td>上一和弦保持过来</td><td>下行级进解决</td><td>强拍</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>前三种实验台里都能造出来。第四种<b>延留音</b>需要两个和弦才能出现 ——
+      它的定义就是"上一个和弦里的和弦音，在换和弦之后被延留了下来，然后解决"。
+      所以它是四种里唯一必须依靠<b>和弦变化</b>才能成立的。</p>
+      <p>延留音之所以重要，是因为它把和声的换点和旋律的换点<b>错开了</b>。
+      和弦已经换了，旋律还在唱旧的音 —— 那一瞬间的错位，就是它全部的表现力所在。</p>
+    </section>
+
+    <section>
+      <h2>为什么这一节对写旋律的人最要紧</h2>
+      <p>因为它是唯一一个把两条线连起来的地方。前面十三节，音阶归音阶，和弦归和弦；
+      这一节之后，你可以问一个具体的问题：<b>我给这个和弦配的旋律，哪几个音该落下来？</b></p>
+      <p>答案是：落点和弦音，中间用外音填。这也是第二部分写旋律时最常用的第一招。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>和弦外音 = 不属于当前和弦的旋律音，它们不是错音。</li>
+        <li>最省事的规矩：强拍放和弦音，弱拍放外音。</li>
+        <li>类型的判断看前后邻居：经过音（级进进、级进出）、辅助音（级进进、原路出）、
+        倚音（跳进进、级进出）。</li>
+        <li>延留音需要两个和弦，它是"上一个和弦的音被留下来"。</li>
+        <li>倚音和延留音都故意在强拍上放外音 —— 那是有意的犯规，用多了失效。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

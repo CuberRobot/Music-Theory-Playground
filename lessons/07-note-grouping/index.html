@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 7 节 · 音值组合法 · Music Theory Playground</title>
+<meta name="description" content="符尾要按拍分组。为什么有些音符必须连起来、有些必须分开写。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="07-note-grouping">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">三 · 时间 / <b>第 7 节 音值组合法</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 7 节 · 音值组合法</p>
+      <h1>符尾在替你看拍子</h1>
+      <p class="lead-p">第 5 节讲了每个音符多长，第 6 节讲了拍怎么循环。这一节讲怎么把它们<b>写对</b>。</p>
+      <p>八分音符和十六分音符带符尾。当一串短音符连在一起时，它们的符尾会被横线连起来 ——
+      而<b>横线连到哪儿，就是在告诉读谱的人"拍在哪儿"</b>。</p>
+      <p>所以连法不是排版偏好，是信息。连错了，读谱的人会数不清拍子。</p>
+    </section>
+
+    <div class="card wide" data-widget="grouping-lab"></div>
+
+    <section>
+      <h2>规则只有一条</h2>
+      <p><b>符尾要按拍分组。</b>八分、十六分音符的横线，范围必须和拍对得上。</p>
+      <p>在 4/4 里，就是每拍一组，一共四组。一个八分音符如果被连到跨过拍线的横线上，
+      读谱的人就会以为那是一个跨拍的长音 —— 意思完全变了。</p>
+      <p>四分音符及更长的音本来就不带符尾，所以不参与连线。它们的位置和长度本身就是清楚的。</p>
+    </section>
+
+    <section>
+      <h2>三件常被忽略的事</h2>
+      <p><strong>一 · 复拍子按"大拍"连。</strong>6/8 不是六个八分音符各自分组，
+      也不是六拍连成一条。它的"大拍"是三拍，所以是<b>三拍一组、连成两组</b>。
+      这正是第 6 节说的"6/8 听起来像两拍各分三下"在谱面上的体现。</p>
+      <p><strong>二 · 不要跨小节线连。</strong>一条横线跨过小节线是根本性的错误 ——
+      小节线是音乐里最强的时间分界，跨过它会让两个小节糊在一起。
+      真需要一个跨小节的长音，用<b>延音线</b>把两个音连起来，那是两个音，只是要连着奏。</p>
+      <p><strong>三 · 三拍子中间那拍要能看见。</strong>3/4 里的强拍是第 1 拍，
+      但第 2、3 拍之间的关系也要靠连线区分开。全部连成一条的话，
+      读谱的人只能靠猜。</p>
+    </section>
+
+    <section>
+      <h2>为什么这件事值得单独一节</h2>
+      <p>因为它是"视奏能不能进行下去"的分水岭。一个音高写错了，演奏者会听出来；
+      一个时值组合写错了，演奏者会<b>卡住</b>——他得停下来重新数。</p>
+      <p>用 MuseScore 打谱时软件会自动按规则连线，所以很多人打谱很久都没意识到这条规则存在；
+      一旦手工改过连法，就会立刻明白为什么默认值长那样。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>符尾按拍分组：横线的范围要能看出拍在哪。</li>
+        <li>4/4 是每拍一组，共四组；四分音符及更长的音不参与连线。</li>
+        <li>6/8 按三拍一组连成两组 —— 它的"大拍"是三拍。</li>
+        <li>绝不跨小节线连。跨小节的长音用延音线，那是两个音。</li>
+        <li>连法不是排版偏好，是给读谱人的时间信息。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

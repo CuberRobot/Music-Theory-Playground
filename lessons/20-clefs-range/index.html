@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 20 节 · 谱号与音域 · Music Theory Playground</title>
+<meta name="description" content="位置本身没有意义，要先有谱号定基准。以及常见乐器和声部的实际音域。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="20-clefs-range">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">七 · 记谱 / <b>第 20 节 谱号与音域</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 20 节 · 谱号与音域</p>
+      <h1>位置要有基准才有意义</h1>
+      <p class="lead-p">第 19 节说"位置决定音高"。但位置本身是空的 —— 得先有谱号定基准。</p>
+      <p>谱号做的事只有一件：<b>指定五条线里的某一条代表哪个音</b>。
+      指定之后，其余位置就全都定下来了。</p>
+      <p>为什么需要好几种谱号？因为谱表只有五条线，能覆盖的范围有限。
+      给不同音区的乐器配不同的谱号，就能让它们都待在五线之内，
+      而不用写满加线 —— 加线多了，读谱会变得非常慢。</p>
+    </section>
+
+    <div class="card wide" data-widget="clef-range-lab"></div>
+
+    <section>
+      <h2>四种谱号，只差一件事</h2>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">谱号</th><th scope="col">它把哪个音定在哪</th><th scope="col">谁在用</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>高音谱号 G</td><td>G4 定在从下往上第二条线</td><td>长笛、小提琴、吉他、女高音</td></tr>
+            <tr><td>低音谱号 F</td><td>F3 定在从下往上第四条线</td><td>大提琴、低音提琴、长号、男低音</td></tr>
+            <tr><td>中音谱号 C</td><td>中央 C 定在第三条线</td><td>中提琴</td></tr>
+            <tr><td>次中音谱号 C</td><td>中央 C 定在第四条线</td><td>大提琴与长号的高音区</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>两个 C 谱号的区别只是中央 C 坐在第几条线上。之所以需要它们，
+      是因为中提琴和大提琴的音区正好卡在高音谱号和低音谱号的接缝上 ——
+      用哪个都不舒服，所以专门给它们一个"中央 C 就在中间"的谱号。</p>
+    </section>
+
+    <section>
+      <h2>音域：写曲子时最常犯的错</h2>
+      <p>谱号解决"怎么读"，音域解决"谁来唱"。这两件事经常被混在一起，
+      结果是写出一段谁都没法演奏的东西。</p>
+      <p>实验台里那十二条是常见乐器与声部的<b>实际音域</b>。几条值得记住的：</p>
+      <p><b>长笛在最高，低音提琴在最低</b>，两者之间隔了整整四个八度 ——
+      这就是为什么管弦乐能覆盖那么宽的范围。</p>
+      <p><b>木管五重奏为什么要塞一个圆号？</b>因为纯木管组合缺厚度和低音支撑，
+      圆号填的正是那个空档。这说明音域不是一张表，而是一个需要<b>配合</b>的系统。</p>
+      <p>还有一个反直觉的地方：<b>乐器的极限音区通常不好听</b>。
+      长笛能吹到 C7，但那几个音又细又难控制；低声区同样吃力。
+      所以实际写作时用的范围，会比表上的音域窄一些 ——
+      表上写的是"能发出"，不是"适合用"。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>位置本身没有意义，谱号指定某一条线代表哪个音之后，其余位置才定下来。</li>
+        <li>高音谱号定 G4 在第二条线，低音谱号定 F3 在第四条线，两个 C 谱号定中央 C 的位置。</li>
+        <li>中音与次中音谱号是给卡在高音、低音谱号接缝上的乐器用的。</li>
+        <li>乐器能发出的音域 ≠ 适合使用的音域，两端通常不好听也不好控制。</li>
+        <li>配器不是查表，是让几件乐器的音域互相补位。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

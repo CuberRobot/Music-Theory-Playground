@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 21 节 · 移调乐器 · Music Theory Playground</title>
+<meta name="description" content="为什么单簧管谱上写 C 实际响 B♭。移调乐器的记谱传统，以及写谱时要移多少。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="21-transposing">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">七 · 记谱 / <b>第 21 节 移调乐器</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 21 节 · 移调乐器</p>
+      <h1>写下的音，和听到的音</h1>
+      <p class="lead-p">单簧管演奏者按谱吹出 C，你听到的却是 B♭。他没有吹错 —— 这件乐器就是这么记谱的。</p>
+      <p><b>移调乐器</b>（transposing instrument）指的是：记谱音和实际发声音不一样高的乐器。
+      演奏者只需要按指法吹，不需要在脑子里做换算；<b>换算的责任在写谱的人身上。</b></p>
+      <p>所以如果你要写一段给中音萨克斯的旋律，不能直接抄钢琴谱 ——
+      那样出来的音会整体低一个大六度，整首曲子跑到别的调上去了。</p>
+    </section>
+
+    <div class="card wide" data-widget="transpose-lab"></div>
+
+    <section>
+      <h2>为什么会有这种奇怪的传统</h2>
+      <p>因为要<b>让指法统一</b>。一支降 B 调单簧管和一支 A 调单簧管，
+      如果都按"谱上写 C 就吹同一个指法"，演奏者换乐器时就不用重新学一套指法 ——
+      手指记住的位置永远对应谱上同一个位置，只是发出来的实际音高不同。</p>
+      <p>这个设计的代价由作曲者承担，收益归演奏者。历史上管乐器几乎都换过调，
+      所以这套传统就保留下来了。</p>
+      <p><b>例外是打击乐和大多数弦乐器</b>：小提琴、大提琴都是 C 调乐器，
+      谱上写什么就响什么。</p>
+    </section>
+
+    <section>
+      <h2>名字里的"调"是什么意思</h2>
+      <p>降 B 调乐器指的是：<b>它吹出谱面的 C 时，实际响的是 B♭。</b>
+      名字说的是"这件乐器的 C 出发的音是哪个音"，不是"它只能吹这个调"。</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">类别</th><th scope="col">谱上写 C，实际响</th><th scope="col">常见乐器</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>C 调乐器</td><td>C（不移调）</td><td>长笛、双簧管、小提琴、大提琴、钢琴</td></tr>
+            <tr><td>降 B 调</td><td>B♭（低大二度）</td><td>小号、单簧管、次中音萨克斯</td></tr>
+            <tr><td>降 E 调</td><td>E♭（低大六度）</td><td>中音萨克斯、上低音萨克斯</td></tr>
+            <tr><td>F 调</td><td>F（低纯五度）</td><td>圆号、英国管</td></tr>
+            <tr><td>八度移调</td><td>高或低一个八度</td><td>短笛（高）、低音提琴（低）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>最后一行值得注意：短笛和低音提琴的移调是<b>整八度</b>。
+      整八度不改变音名（第 2 节说过 2:1 是同一个音类），
+      所以它们严格说不算"移调乐器"，移调纯粹是为了少写加线。</p>
+    </section>
+
+    <section>
+      <h2>和前面几节的关系</h2>
+      <p>这一节其实是把第 12 节的<b>移调</b>和第 20 节的<b>音域</b>合在一起用：</p>
+      <p>一首曲子要改成给别的乐器演奏，先按第 12 节的方法整体移高或移低（内部关系不变），
+      再按第 20 节检查新乐器的音域够不够 —— 如果不够，就得连调一起换。</p>
+      <p>到这一步，第一部分的所有工具都用上了。第二部分开始，就是拿这些工具去写东西。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>移调乐器：记谱音与实际发声音不同高，演奏者按指法吹，写谱的人负责换算。</li>
+        <li>这个传统的目的是让不同调的同类乐器共用一套指法。</li>
+        <li>"降 B 调"指的是它谱上的 C 实际响 B♭，不是说它只能吹这个调。</li>
+        <li>降 B 低大二度、降 E 低大六度、F 低纯五度。</li>
+        <li>短笛与低音提琴是整八度移调，只为少写加线，不算真正的移调乐器。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

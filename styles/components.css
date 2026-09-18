@@ -162,6 +162,36 @@
   border-radius: 5px; color: var(--ink-1); white-space: nowrap;
 }
 
+/* --- 谱面音符符号：用 CSS 画，不依赖字体 ---------------------------------
+   ♩ 这个字符（U+2669）在部分中文字体里没有，系统回退时会被画成完全不相干的
+   形状（实测有机器把它显示成三道横线）。速度记号又非用它不可，所以干脆自己画：
+   符头 + 符干，两个伪元素解决，任何字体环境下都一样。
+   用法：<span class="note" role="img" aria-label="四分音符"></span>
+   附点：里面加一个 <i></i>（<span class="note"><i></i></span>）
+   二分音符：<span class="note note-half"></span>            */
+.note, .note-half {
+  position: relative; display: inline-block;
+  width: .68em; height: 1em; vertical-align: -.16em;
+}
+.note::before, .note-half::before {
+  content: ''; position: absolute; left: 0; bottom: 0;
+  width: .56em; height: .42em;
+  background: currentColor; border-radius: 50%;
+  transform: rotate(-20deg);
+}
+.note-half::before {
+  background: transparent; border: .11em solid currentColor;
+  box-sizing: border-box;
+}
+.note::after, .note-half::after {
+  content: ''; position: absolute; left: .5em; bottom: .18em;
+  width: .085em; height: .95em; background: currentColor; border-radius: 1px;
+}
+.note i {
+  position: absolute; right: -.28em; bottom: .1em;
+  width: .16em; height: .16em; border-radius: 50%; background: currentColor;
+}
+
 /* --- 按钮 ----------------------------------------------------------------- */
 
 .btn {

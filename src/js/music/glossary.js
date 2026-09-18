@@ -141,7 +141,7 @@ export const TERMS = [
   { en: 'Syncopation', zh: '切分音', cat: 'rhythm', lesson: '06-meter', def: '让音从弱拍起、持续到强拍，把重音抢过来。' },
   { en: 'Anacrusis', zh: '弱起', cat: 'rhythm', lesson: '06-meter', def: '音乐从弱拍或更早的位置进入，也叫不完全小节。' },
   { en: 'Tempo', zh: '速度', cat: 'rhythm', lesson: '19-notation', def: '整体快慢。改变它不影响音符之间的比例。' },
-  { en: 'BPM', zh: '每分钟拍数', cat: 'rhythm', lesson: '19-notation', def: '速度的精确写法，如 ♩= 120。' },
+  { en: 'BPM', zh: '每分钟拍数', cat: 'rhythm', lesson: '19-notation', def: '速度的精确写法，如 <span class="note" role="img" aria-label="四分音符"></span>= 120。' },
   { en: 'Dynamics', zh: '力度', cat: 'rhythm', lesson: '19-notation', def: '音量的大小，从 pp 到 ff。' },
   { en: 'Groove', zh: '律动', cat: 'rhythm', lesson: '25-groove', def: '一段反复出现、带推动力的节奏型。' },
 

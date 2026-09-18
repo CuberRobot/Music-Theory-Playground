@@ -95,7 +95,7 @@ export function mountGroupingLab(root) {
       const w = (d.beats / m.beats) * 100;
       const short = d.beats <= 0.5;
       parts.push(`<div class="grp-note" style="flex:0 0 ${w}%">
-        <span class="grp-head">${d.beats >= 0.5 ? d.label.replace('音符', '') : '♪'}</span>
+        <span class="grp-head">${d.beats >= 0.5 ? d.label.replace('音符', '') : '八分'}</span>
         <span class="grp-beats">${d.beats} 拍</span></div>`);
       if (short) beams.push([cursor, cursor + d.beats]);
       cursor += d.beats;

@@ -118,6 +118,20 @@ function ramp(param, value, glide, t) {
 }
 
 /**
+ * 声部数超限时淘汰最早的那个，防止连点堆出几百个节点。
+ * 关键：**只淘汰已经在响的**。排期里的音时间还没到，
+ * 淘汰它等于把整段序列里靠后的音全删掉 —— 之前就是这么错的。
+ */
+function enforceVoiceCap(keep) {
+  if (!ctx || liveVoices.size <= MAX_LIVE_VOICES) return;
+  const now = ctx.currentTime;
+  const sounding = [...liveVoices].filter((v) => v !== keep && v.startsAt <= now + 0.02);
+  while (liveVoices.size > MAX_LIVE_VOICES && sounding.length) {
+    sounding.shift().stop(0.03);
+  }
+}
+
+/**
  * 一个加法合成声部：若干个正弦振荡器分别控制强度，合起来就是任意音色。
  */
 class AdditiveVoice {
@@ -130,6 +144,8 @@ class AdditiveVoice {
 
     this.out = this.ctx.createGain();
     this.out.gain.value = 0;
+    /** 这个声部被排在什么时候响。Infinity 表示还没排期。 */
+    this.startsAt = Infinity;
     // 每个声部一个低通：起音时开、随后关下去，这是"击弦感"的另一半
     this.filter = this.ctx.createBiquadFilter();
     this.filter.type = 'lowpass';
@@ -151,12 +167,6 @@ class AdditiveVoice {
       this.gains.push(g);
     }
     liveVoices.add(this);
-
-    // 超过上限就把最早的那个声部淡出，防止连点造成节点堆积
-    if (liveVoices.size > MAX_LIVE_VOICES) {
-      const oldest = liveVoices.values().next().value;
-      if (oldest && oldest !== this) oldest.stop(0.03);
-    }
   }
 
   /** 基频。glide 是过渡时间常数，拖动时给 0.01 左右会很顺滑。 */
@@ -208,6 +218,8 @@ class AdditiveVoice {
     if (this.disposed) return this;
     const t = at ?? this.ctx.currentTime;
     this.level = level;
+    this.startsAt = t;
+    enforceVoiceCap(this);
     this.out.gain.cancelScheduledValues(t);
     this.out.gain.setValueAtTime(t <= this.ctx.currentTime ? this.out.gain.value : 0, t);
     this.out.gain.linearRampToValueAtTime(level, t + attack);
@@ -463,12 +475,17 @@ export function playPluck(hz, opts = {}) {
 
   const g = c.createGain();
   const t0 = c.currentTime + Math.max(0, at);
+  // 必须先置 0：GainNode 的默认增益是 1，而 setValueAtTime 在到点之前不生效，
+  // 不置零的话这个音从"现在"就以满音量在响 —— 所有排期播放会全部糊在一起。
+  g.gain.value = 0;
   g.gain.setValueAtTime(0, t0);
   g.gain.linearRampToValueAtTime(level, t0 + 0.003);
   g.gain.setValueAtTime(level, t0 + duration);
   g.gain.linearRampToValueAtTime(0, t0 + duration + 0.2);
   node.connect(g).connect(master);
-  node.port.postMessage({ type: 'pluck', frequency: hz, brightness });
+  // worklet 没有排期能力，收到消息就立刻拨弦。把目标时间一起传进去，
+  // 让它在处理器里等到那一刻再激励，否则排得越远的音衰减得越厉害。
+  node.port.postMessage({ type: 'pluck', frequency: hz, brightness, at: t0 });
 
   setTimeout(() => {
     try { node.disconnect(); g.disconnect(); } catch { /* 已断开 */ }

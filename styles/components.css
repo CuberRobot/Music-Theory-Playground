@@ -388,6 +388,12 @@ input[type="range"] {
 .timeline .tickbar i { flex: 1; border-left: 1px dashed color-mix(in srgb, var(--ink-4) 45%, transparent); }
 
 .challenge .choices { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
+.challenge .picks { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.challenge .choice-play {
+  min-width: 52px; padding-inline: var(--sp-3);
+  background: var(--amber-soft); border-color: var(--amber-deep);
+}
+.challenge .choice-pick { min-width: 86px; }
 .challenge .verdict {
   margin-top: var(--sp-3); font-size: var(--fs-small); min-height: 1.6em;
   color: var(--ink-2);

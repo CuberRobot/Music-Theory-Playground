@@ -221,11 +221,8 @@ input[type="range"] {
   padding: 2px var(--sp-2); border-radius: var(--r-pill);
   border: 1px solid transparent;
 }
-.tag-amber { background: var(--amber-soft); color: var(--amber-deep); border-color: color-mix(in srgb, var(--amber) 40%, transparent); }
 .tag-green { background: var(--green-soft); color: var(--green-deep); }
 .tag-clay  { background: var(--clay-soft);  color: var(--clay-deep); }
-.tag-slate { background: var(--slate-soft); color: var(--slate-deep); }
-.tag-plain { background: var(--surface-2); color: var(--ink-3); }
 
 /* --- 表格 ----------------------------------------------------------------- */
 

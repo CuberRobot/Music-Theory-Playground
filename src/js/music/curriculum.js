@@ -84,8 +84,3 @@ export function neighbours(id) {
   if (i < 0) return { prev: null, next: null };
   return { prev: LESSONS[i - 1] ?? null, next: LESSONS[i + 1] ?? null };
 }
-
-/** 已完成的课程数，用来画顶栏的进度格。 */
-export function readyCount() {
-  return LESSONS.filter((l) => l.status === 'ready').length;
-}

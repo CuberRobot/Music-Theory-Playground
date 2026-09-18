@@ -6,7 +6,7 @@
  *   4. 接管顶栏的声音开关
  */
 
-import { TIERS, LESSONS, findLesson, neighbours, hrefOf, readyCount } from './music/curriculum.js';
+import { TIERS, LESSONS, findLesson, neighbours, hrefOf } from './music/curriculum.js';
 import { installUnlockOnGesture, isMuted, setMuted, isAvailable } from './audio/engine.js';
 
 import { mountHarmonicLab } from './widgets/harmonic-lab.js';
@@ -91,7 +91,7 @@ function renderMeter() {
   host.innerHTML = parts.join('');
   host.setAttribute('aria-label', currentIndex >= 0
     ? `共 ${total} 节，当前第 ${LESSONS[currentIndex].no} 节`
-    : `共 ${total} 节，已写好 ${readyCount()} 节`);
+    : `共 ${total} 节`);
 }
 
 function renderFoot() {
@@ -144,7 +144,7 @@ function wireSoundToggle() {
   sync();
 }
 
-/** 课程地图页：按层展开，已上线的可点，没写的显示成灰卡。 */
+/** 课程地图页：按层展开。没写的章节渲染成不可点的灰卡，写了就自动可点。 */
 function renderMap() {
   const host = document.querySelector('[data-map]');
   if (!host) return;
@@ -159,10 +159,7 @@ function renderMap() {
           const inner = `
             <span class="no">第 ${l.no} 节</span>
             <h3>${l.title}</h3>
-            <p>${l.sub}</p>
-            ${l.status === 'ready'
-              ? '<span class="tag tag-amber">已上线</span>'
-              : '<span class="tag tag-plain">待写</span>'}`;
+            <p>${l.sub}</p>`;
           return l.status === 'ready'
             ? `<a class="map-card" href="${root}${hrefOf(l)}">${inner}</a>`
             : `<div class="map-card soon">${inner}</div>`;

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 1 节 · 十二平均律 · Music Theory Playground</title>
+<meta name="description" content="为什么一个八度正好分成十二份？十二平均律的定义、毕达哥拉斯逗号与狼五度，以及它换来了什么。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="01-temperament">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <span class="crumb">一 · 声音本身 / <b>第 1 节 十二平均律</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 1 节 · 十二平均律</p>
+      <h1>2^(1/12) 是怎么被逼出来的</h1>
+      <p class="lead-p">为什么一个八度里正好分成十二份，而不是十份或七份？
+      这不是审美选择，是一个除法算出来的结果。</p>
+      <p>上一节我们看到，泛音列自己给出了一整套音程：2:1、3:2、4:3、5:4。
+      如果完全按这些比例去调一件乐器，每个音程都会很纯、很好听。
+      问题是，这么调出来的琴有一个致命缺陷。</p>
+      <p>下面这个圆盘可以让你亲手复现那个缺陷，也能让你看见它是怎么被修好的。</p>
+    </section>
+
+    <div class="card wide" data-widget="temperament-lab"></div>
+
+    <section>
+      <h2>刚才发生了什么</h2>
+      <p><strong>音分（cent）</strong>：把八度分成 1200 份，每份叫 1 音分。
+      它只是一把尺子，不改变声音，只让我们能说清"差了多少"。
+      之所以分成 1200 而不是 100，是因为八度里有十二个半音，
+      这样每个半音刚好占 100 音分，念起来方便。</p>
+      <p><strong>纯律（just intonation）</strong>：完全按泛音列给的整数比调音。
+      纯五度是 3:2 = 701.955 音分，大三度是 5:4 = 386.31 音分。
+      这样调出来的音程最"干净"。</p>
+      <p><strong>毕达哥拉斯逗号（Pythagorean comma）</strong>：从任何一个音出发，
+      往上叠 12 个纯五度，会走到 12 × 701.955 = 8423.46 音分。
+      而 7 个八度是 8400 音分。按定义这两个位置应该是同一个音，
+      实际却差了 <b>23.46 音分</b>。这个差额就叫毕达哥拉斯逗号。</p>
+      <p><strong>狼五度（wolf fifth）</strong>：既然整圈多出来 23.46 音分，
+      就必须有一个五度被压小来把它吃掉。在纯五度链条上，
+      最后那个五度只剩 678.5 音分，比纯五度窄了 23.5 音分。
+      它听起来发抖、像狼嚎，"狼音"这个名字就是这么来的。</p>
+      <p>一个狼五度意味着什么？意味着从这个调转到相邻的调时，
+      你会撞上这个坏掉的音程。这就是"不能自由转调"的具体含义——
+      不是抽象的缺点，是某一个和弦按下去会很难听。</p>
+    </section>
+
+    <section>
+      <h2>十二平均律的定义</h2>
+      <p>它只做两件事：</p>
+      <p><strong>第一，八度严格保持 2:1。</strong>这一条不让步，
+      因为八度是所有音程里最不容妥协的，两个音的关系太明显了。</p>
+      <p><strong>第二，八度之内，十二个半音完全等分。</strong></p>
+      <p>第二条的意思是：相邻两个半音的频率比是一个固定的数 r，
+      连续乘 12 次，刚好等于 2。于是：</p>
+      <div class="formula">
+        r<sup>12</sup> = 2 &nbsp;&nbsp;→&nbsp;&nbsp; r = 2<sup>1/12</sup> ≈ 1.059463094
+      </div>
+      <p>所以 A4 = 440 Hz 时，A♯4 就是 440 × 1.059463 = 466.16 Hz；
+      再往上乘一次得到 B4 = 493.88 Hz。每一步乘的是同一个数，
+      所以十二平均律也叫<b>等比律</b>——它是唯一一种让所有半音关系完全相等的分法。</p>
+      <p>回到圆盘：当每个五度设成 700 音分时，12 个五度正好等于 8400 音分，
+      链条闭合，十二个点在圆上均匀分布。
+      <b>那个 700 音分，就是 2<sup>1/12</sup>。</b>
+      也就是说，十二平均律不是"选"出来的，是为了让五度链条闭合而算出来的唯一解。</p>
+    </section>
+
+    <section>
+      <h2>代价：没有任何一个音程是纯的</h2>
+      <p>等价于"每个五度亏 1.955 音分"，这个亏空摊到别的音程上有多严重：</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">音程</th>
+              <th scope="col">纯律</th>
+              <th scope="col">平均律</th>
+              <th scope="col">平均律偏高</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>纯五度</td><td class="num">701.96</td><td class="num">700.00</td><td class="num flag-ok">−1.96</td></tr>
+            <tr><td>纯四度</td><td class="num">498.04</td><td class="num">500.00</td><td class="num flag-ok">+1.96</td></tr>
+            <tr><td>大三度</td><td class="num">386.31</td><td class="num">400.00</td><td class="num flag-lo">+13.69</td></tr>
+            <tr><td>小六度</td><td class="num">813.69</td><td class="num">800.00</td><td class="num flag-lo">−13.69</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>五度和四度只差不到 2 音分，基本听不出来——这就是为什么钢琴的五度听起来还是"准"的。
+      但大三度偏了将近 14 音分，是明显能听出"有点打架"的程度。
+      钢琴上按一个 C 大三和弦，那个 E 其实比"纯"的要高一点。</p>
+      <p>那为什么还要用它？因为换来的东西更值钱：</p>
+      <p>十二个调的结构完全一样，换调只是整体平移；任何调都不会撞上狼五度；
+      乐器可以做成一格一格的固定音（钢琴的键、吉他的品格）；
+      电子合成器和 MIDI 只要一个公式就能算出所有音：
+      <code>频率 = 440 × 2<sup>(n−69)/12</sup></code>。</p>
+      <p>一句话总结：<b>用"每个音程都差一点点"，换"任何调都一样、可以自由转调"。</b>
+      这是整个西方音乐能自由转调的技术前提。</p>
+    </section>
+
+    <section>
+      <h2>顺带一提</h2>
+      <p>十二平均律不是一下子冒出来的。中国明代朱载堉在 1584 年就用数学方法算出了
+      2<sup>1/12</sup> 的精确数值（他称为"新法密率"），比欧洲通行这套算法早了大约一个世纪。
+      巴赫 1722 年的《平均律键盘曲集》则是把它用作品证明了一遍——
+      24 个大小调各写一首前奏曲与赋格，靠的就是这套律制让所有调都能用。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两个五度，哪一个是纯五度 3:2，哪一个是狼五度？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.8,
+        "items": [
+          { "label": "A 组", "cents": 678.5 },
+          { "label": "B 组", "cents": 701.955 }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。注意听有没有一种缓慢的抖动，像两个音在互相打架。",
+        "explain": "对，B 是纯五度 3:2。A 是狼五度 678.5 音分，比纯五度窄了 23.5 音分，两条泛音梯对不上，所以会听见明显的抖动。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>纯律按泛音列的整数比调音，音程很纯，但 12 个纯五度回不到 7 个八度，差 23.46 音分，这叫毕达哥拉斯逗号。</li>
+        <li>补不上的那个五度叫狼五度（约 678.5 音分），它是"不能自由转调"的根源。</li>
+        <li>十二平均律的定义只有两条：八度保持 2:1，八度内十二等分。由此得到半音比 2^(1/12) ≈ 1.059463。</li>
+        <li>代价是所有音程都不纯（大三度偏 +13.7 音分），收益是任何调都一样、可以自由转调。</li>
+        <li>700 音分的五度不是凑出来的，它是让 12 个五度正好等于 7 个八度的唯一解。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+
+<noscript>
+  <p style="padding: 0 24px 48px; color: #5A5346;">
+    这一页的实验台需要 JavaScript 才能发声和画圆盘。
+  </p>
+</noscript>
+
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

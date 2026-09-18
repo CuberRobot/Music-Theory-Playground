@@ -4,73 +4,57 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Music Theory Playground · 看得见的乐理</title>
+<meta name="description" content="从泛音列和十二平均律开始，用能拖、能听、能看见的交互实验台讲乐理。">
 <link rel="stylesheet" href="./styles/tokens.css">
 <link rel="stylesheet" href="./styles/base.css">
-<style>
-  body { padding: var(--sp-7) var(--sp-5); }
-  main { max-width: 880px; margin: 0 auto; }
-  h1 { font-size: var(--fs-display); margin-bottom: var(--sp-2); }
-  .lead { color: var(--ink-2); margin: 0 0 var(--sp-6); }
-  h2 { font-size: var(--fs-h3); margin: var(--sp-6) 0 var(--sp-3); }
-  .swatches { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
-  .sw {
-    width: 108px; padding: var(--sp-2); border-radius: var(--r-md);
-    border: 1px solid var(--line); background: var(--surface);
-    font-size: var(--fs-tiny); color: var(--ink-2);
-  }
-  .sw i { display: block; height: 44px; border-radius: var(--r-sm); margin-bottom: var(--sp-2); }
-  .card {
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: var(--r-lg); padding: var(--sp-5); box-shadow: var(--shadow-1);
-  }
-  button {
-    font: inherit; padding: var(--sp-2) var(--sp-4); border-radius: var(--r-pill);
-    border: 1px solid var(--amber-deep); background: var(--amber);
-    color: var(--ink-1); cursor: pointer;
-  }
-  button:active { transform: translateY(1px); }
-  .hint { color: var(--ink-3); font-size: var(--fs-small); }
-</style>
+<link rel="stylesheet" href="./styles/components.css">
 </head>
-<body>
-<main>
-  <h1>Music Theory Playground</h1>
-  <p class="lead">用看得见的声音讲乐理。当前处于 <strong>M0 · 目录初始化</strong>，这一页只是脚手架自检页，
-  用来验证「设计令牌能渲染」和「不加载任何音频素材也能出声」这两件事。</p>
+<body data-root="./">
 
-  <h2>基调色板</h2>
-  <div class="swatches">
-    <div class="sw"><i style="background:#F7F3E9"></i>bg 米白</div>
-    <div class="sw"><i style="background:#FFFDF7"></i>surface 纸面</div>
-    <div class="sw"><i style="background:#EFC24C"></i>amber 黄</div>
-    <div class="sw"><i style="background:#4C9A6A"></i>green 绿</div>
-    <div class="sw"><i style="background:#D4714C"></i>clay 陶土红</div>
-    <div class="sw"><i style="background:#6C8797"></i>slate 灰蓝</div>
-    <div class="sw"><i style="background:#2E2A22"></i>ink 暖黑</div>
-  </div>
+<header class="topbar">
+  <a class="brand" href="./">Music Theory Playground</a>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
 
-  <h2>音频自检</h2>
-  <div class="card">
-    <p style="margin-top:0">Web Audio 实时合成，不依赖任何音频文件。点一下应该听到一个带包络的 A4 = 440Hz。</p>
-    <button id="beep" type="button">播放 A4 (440Hz)</button>
-    <p class="hint">浏览器要求用户手势后才能启动音频，所以第一次点击是必需的。</p>
-  </div>
-</main>
-<script type="module">
-  let ctx;
-  document.getElementById('beep').addEventListener('click', () => {
-    ctx ??= new AudioContext();
-    const t = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.value = 440;
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.25, t + 0.01);  // attack
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.9); // release
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(t); osc.stop(t + 1);
-  });
-</script>
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+    <section>
+      <p class="kicker">看得见的乐理 · See it, play it, hear it.</p>
+      <h1>先把声音拆开，再谈音乐</h1>
+      <p class="lead-p">乐理难，通常不是因为概念多，而是因为它们被讲成了符号。</p>
+      <p>这里的每个概念都配一个能拖、能听、能立刻看到结果的实验台。不用先记住名字——
+      先玩，听见效果，再回头看它叫什么，以及为什么必须叫这个。</p>
+      <p>顺序是<b>从最底层往上搭</b>：先弄清楚一个音其实是一串音（泛音列），
+      再弄清楚音高之间的标尺是怎么被人为定出来的（十二平均律），然后才谈音程、和弦、调。
+      这样后面每一个规则都有出处，而不是凭空出现的约定。</p>
+    </section>
+
+    <div class="wide" data-map></div>
+
+    <section>
+      <h2>三条不动摇的规矩</h2>
+      <p><strong>先听见，后命名。</strong>每个术语出现之前，先让你玩过这个现象。
+      先听出"这两个音合不上"，再告诉你那叫狼五度。</p>
+      <p><strong>静音也读得懂。</strong>很多人在办公室或图书馆打开网页，声音是关着的。
+      所以每个声音事件都有视觉等价物：音高有高度，协和度有波形，偏差有数字。
+      声音是增强，不是载体。</p>
+      <p><strong>视觉与声音同帧。</strong>发声和动画共用同一个音频时钟，
+      你看到的抖动和你听到的抖动是同一个抖动。</p>
+    </section>
+
+    <section>
+      <h2>怎么用</h2>
+      <p>从左边目录的第一节开始，或者直接点上面任意一张"已上线"的卡片。
+      每一节的结构都一样：先一个能玩的东西，再解释它，然后一个小挑战，最后小结。</p>
+      <p class="hint">页面里的声音全部由浏览器实时合成，不加载任何音频文件，断网也能用。</p>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="./src/js/main.js"></script>
 </body>
 </html>

@@ -125,7 +125,7 @@ export function mountChordMap(root) {
         <td>${c.midis.map(nameOfMidi).map((n) => n.replace(/\d/, '')).join(' - ')}</td>
         <td>${c.label.replace('和弦', '')}</td>
         <td>${FUNCTION_NAME[FUNCTION[i]]}</td>
-        <td>${['最稳定，是"家"', '推向属', '推向主，最需要解决', '远离主', '最强的解决动力',
+        <td>${['最稳定，是"家"', '推向属', '属功能里拉力最弱的一个', '远离主', '最强的解决动力',
           '主功能的替身', '极不稳定，几乎一定要回主'][i]}</td>
       </tr>`).join('');
 

@@ -22,8 +22,30 @@ const BLUE_DEGREE = 3;
 const TONIC = 48;          // C3，低音放在这里
 const BEAT = 0.48;         // 一拍多少秒，约 125 BPM
 
+/**
+ * Boogie 低音走法：根音 → 五度 → 六度 → ♭7，四个四分音符。
+ * 这是布鲁斯低音的标准动作，光这一条就能消掉大半单调感 ——
+ * 原来的低音每小节只重复同一个音。
+ */
+const BOOGIE = [0, 7, 9, 10];
+
+/**
+ * Riff。每一格是一个八分音符，数字是相对和弦根音的半音数（已经含高八度）。
+ * 全部落在布鲁斯音阶上：0 ♭3 4 ♭5 5 ♭7。
+ * A 是"问句"（半音上行再回来），B 是"答句"（下行落回根音）——
+ * 两小节构成一次呼与应，正好呼应正文里那条"呼与应"的元素。
+ */
+const RIFF_A = [[0, 12], [1, 15], [2, 17], [3, 18], [4, 19], [5, 18], [6, 17], [7, 15]];
+const RIFF_B = [[0, 19], [1, 18], [2, 17], [3, 15], [4, 12], [6, 12]];
+/**
+ * 第 12 小节的 turnaround：从 ♭7 半音下行到五度，制造"回头"的拉力。
+ * 相对主音算，不随小节的和弦移调 —— 它的任务是把你送回开头。
+ * 从 ♭7 起而不是从根音起，是为了避开大七度和和弦里小七度的硬撞。
+ */
+const TURNAROUND = [[0, 10], [2, 9], [4, 8], [6, 7]];
+
 export function mountBluesLab(root) {
-  const state = { shuffle: true, playing: false, bar: -1, timer: null, raf: null };
+  const state = { shuffle: true, riff: true, playing: false, bar: -1, timer: null, raf: null };
 
   root.innerHTML = `
     <div class="card-head">
@@ -34,6 +56,7 @@ export function mountBluesLab(root) {
     <div class="lab-controls" style="margin-top: var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>播放一遍</button>
       <button class="btn" type="button" data-feel aria-pressed="true">Shuffle</button>
+      <button class="btn" type="button" data-riff aria-pressed="true">加 riff</button>
       <span class="tag" data-bar>—</span>
     </div>
     <p class="hint" data-note></p>
@@ -50,6 +73,7 @@ export function mountBluesLab(root) {
     note: root.querySelector('[data-note]'),
     scale: root.querySelector('[data-scale]'),
     feel: root.querySelector('[data-feel]'),
+    riff: root.querySelector('[data-riff]'),
   };
 
   const CHORD_NAME = { 0: 'I7', 5: 'IV7', 7: 'V7' };
@@ -83,6 +107,15 @@ export function mountBluesLab(root) {
       : '平均八分：两下一样长。同一个走向，改这一处，整个性格就变了。';
   });
 
+  el.riff.addEventListener('click', () => {
+    state.riff = !state.riff;
+    el.riff.setAttribute('aria-pressed', String(state.riff));
+    el.riff.textContent = state.riff ? '加 riff' : '只有伴奏';
+    el.note.textContent = state.riff
+      ? 'riff 是压在小节上的一句短旋律，两小节一问一答。它不改变和弦，但决定了这段音乐记不记得住。'
+      : '现在只剩 boogie 低音和和弦打点。同一套和弦走向，去掉 riff 之后明显垮下来 —— 这正是 riff 的作用。';
+  });
+
   root.querySelector('[data-play]').addEventListener('click', () => {
     if (state.playing) { stop(); return; }
     play();
@@ -107,17 +140,40 @@ export function mountBluesLab(root) {
 
     FORM.forEach((degree, i) => {
       const at = t0 + i * barLen - now();
-      const rootHz = midiToHz(TONIC + degree);
-      // 低音在第 1、3 拍，和弦（属七）在第 2、4 拍，这是最基本的布鲁斯伴奏型
-      // 全用拨弦音色 —— 这一节讲的是布鲁斯，没有吉他就不像
-      playPluck(rootHz, { at, duration: BEAT * 1.6, level: 0.3, brightness: 0.4 });
-      playPluck(rootHz, { at: at + BEAT * 2, duration: BEAT * 1.6, level: 0.28, brightness: 0.4 });
-      const chordHz = [0, 4, 7, 10].map((s) => midiToHz(TONIC + degree + 12 + s));
-      // 和弦各弦错开一点点，就像真的扫弦
-      chordHz.forEach((hz, k) => {
-        playPluck(hz, { at: at + BEAT + k * 0.012, duration: BEAT * 1.4, level: 0.11, brightness: 0.62 });
-        playPluck(hz, { at: at + BEAT * 3 + k * 0.012, duration: BEAT * 1.4, level: 0.11, brightness: 0.62 });
+      const root = TONIC + degree;
+
+      // 低音：boogie 走法，四个四分音符各走一个音。
+      // 原来这里每小节只重复同一个音，单调感大半出在这儿。
+      BOOGIE.forEach((s, b) => {
+        playPluck(midiToHz(root + s), {
+          at: at + b * BEAT, duration: BEAT * 1.5, level: 0.26,
+          brightness: 0.34, damping: 0.42,
+        });
       });
+
+      // 和弦：第 2、4 拍打点。省掉根音 —— 低音已经在走，
+      // 和弦里再放一个只会把低频糊掉；三音五音降七音照样听得出是属七。
+      [1, 3].forEach((b) => {
+        [4, 7, 10].forEach((s, k) => {
+          playPluck(midiToHz(root + 12 + s), {
+            at: at + b * BEAT + k * 0.01, duration: BEAT * 1.2, level: 0.085,
+            brightness: 0.58, damping: 0.5,
+          });
+        });
+      });
+
+      // riff：最后一小节换成 turnaround，其余 A / B 交替成一句一问一答
+      if (state.riff) {
+        const isTurn = i === FORM.length - 1;
+        const notes = isTurn ? TURNAROUND : (i % 2 === 0 ? RIFF_A : RIFF_B);
+        const base = isTurn ? TONIC : root;
+        notes.forEach(([e, s]) => {
+          playPluck(midiToHz(base + s), {
+            at: at + (e / 2) * BEAT, duration: BEAT * 1.1, level: 0.15,
+            brightness: 0.72, damping: 0.36,
+          });
+        });
+      }
       // 踩镲：shuffle 时奏成 2:1，平均八分时两下等长
       for (let e = 0; e < 8; e++) {
         const frac = state.shuffle

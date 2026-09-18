@@ -158,8 +158,4 @@ renderMap();
 mountWidgets();
 wireSoundToggle();
 
-// 页面标题里的当前章节名由 HTML 写死，这里只补一个"已写好 N 节"的角标
-const badge = document.querySelector('[data-ready-count]');
-if (badge) badge.textContent = `${readyCount()} 节已上线`;
-
 export { LESSONS, findLesson };

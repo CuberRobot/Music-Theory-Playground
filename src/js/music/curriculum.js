@@ -193,10 +193,10 @@ export const PARTS = [
         title: '晚期浪漫与二十世纪',
         blurb: '规则在这里被推到极限，然后被换掉。',
         lessons: [
-          { id: 'k-wagner-tristan', no: 'K', title: '瓦格纳 · 特里斯坦前奏曲', sub: '一个和弦悬了一百年', status: 'planned' },
+          { id: 'k-wagner-tristan', no: 'K', title: '瓦格纳 · 特里斯坦前奏曲', sub: '一个和弦，悬了一百多年', status: 'ready' },
           { id: 'l-debussy-clair', no: 'L', title: '德彪西 · 月光', sub: '把引力关掉', status: 'ready' },
-          { id: 'm-stravinsky-rite', no: 'M', title: '斯特拉文斯基 · 春之祭', sub: '节奏变成主角之后', status: 'planned' },
-          { id: 'n-ravel-bolero', no: 'N', title: '拉威尔 · 波莱罗', sub: '十六分钟的渐强', status: 'planned' },
+          { id: 'm-stravinsky-rite', no: 'M', title: '斯特拉文斯基 · 春之祭', sub: '节奏变成主角之后', status: 'ready' },
+          { id: 'n-ravel-bolero', no: 'N', title: '拉威尔 · 波莱罗', sub: '十五分钟的渐强', status: 'ready' },
         ],
       },
     ],

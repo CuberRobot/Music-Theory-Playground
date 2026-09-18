@@ -174,8 +174,8 @@ export const PARTS = [
         title: '莫扎特',
         blurb: '同样一套语法，写出来的东西能有多少差别。',
         lessons: [
-          { id: 'f-mozart-figaro', no: 'F', title: '费加罗的婚礼', sub: '音乐跟着剧情变', status: 'planned' },
-          { id: 'g-mozart-40', no: 'G', title: '第四十交响曲', sub: '小调能写多黑', status: 'planned' },
+          { id: 'f-mozart-figaro', no: 'F', title: '费加罗的婚礼', sub: '一个仆人赢了主人', status: 'ready' },
+          { id: 'g-mozart-40', no: 'G', title: '第四十交响曲', sub: '六个星期的三首', status: 'ready' },
         ],
       },
       {

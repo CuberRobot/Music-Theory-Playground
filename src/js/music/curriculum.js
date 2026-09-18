@@ -148,9 +148,58 @@ export const PARTS = [
     id: 'analysis',
     no: '第三部分',
     title: '作品分析',
-    blurb: '拿真实作品当例子，看前面学到的规则在别人手里是怎么用的。',
-    reserved: '这一部分先占个位置。要分析哪些作品还没定，定了再往里放。',
-    tiers: [],
+    blurb: '前面 29 节讲的是规则。这一部分把规则放回真实作品里，看它们在别人手里是怎么用的、什么时候被打破。',
+    tiers: [
+      {
+        id: 'beethoven',
+        title: '贝多芬',
+        blurb: '动机驱动这条路的终点，也是它最有说服力的证明。',
+        lessons: [
+          { id: 'a-beethoven-5', no: 'A', title: '第五交响曲', sub: '四个音的重量', status: 'ready' },
+          { id: 'b-beethoven-9', no: 'B', title: '第九交响曲', sub: '先翻旧账，再唱歌', status: 'ready' },
+        ],
+      },
+      {
+        id: 'baroque',
+        title: '巴洛克',
+        blurb: '重复与低音驱动的时代。',
+        lessons: [
+          { id: 'c-vivaldi-seasons', no: 'C', title: '维瓦尔第 · 四季', sub: '先有诗，还是先有音乐', status: 'ready' },
+          { id: 'd-pachelbel-canon', no: 'D', title: '帕赫贝尔 · 卡农', sub: '一条进行走到底', status: 'planned' },
+          { id: 'e-bach-wtc1', no: 'E', title: '巴赫 · 平均律第一册 C 大调前奏曲', sub: '为平均律写的第一批作品', status: 'planned' },
+        ],
+      },
+      {
+        id: 'mozart',
+        title: '莫扎特',
+        blurb: '同样一套语法，写出来的东西能有多少差别。',
+        lessons: [
+          { id: 'f-mozart-figaro', no: 'F', title: '费加罗的婚礼', sub: '音乐跟着剧情变', status: 'planned' },
+          { id: 'g-mozart-40', no: 'G', title: '第四十交响曲', sub: '小调能写多黑', status: 'planned' },
+        ],
+      },
+      {
+        id: 'russian',
+        title: '俄罗斯与东欧',
+        blurb: '民族调式、管弦乐色彩，以及乡愁。',
+        lessons: [
+          { id: 'h-borodin-dances', no: 'H', title: '鲍罗丁 · 波罗维茨舞曲', sub: '合唱与乐队的色彩块', status: 'planned' },
+          { id: 'i-borodin-quartet', no: 'I', title: '鲍罗丁 · 第二弦乐四重奏', sub: '四件乐器怎么分工', status: 'planned' },
+          { id: 'j-dvorak-9', no: 'J', title: '德沃夏克 · 第九交响曲', sub: '把家乡写进交响曲', status: 'planned' },
+        ],
+      },
+      {
+        id: 'modern',
+        title: '晚期浪漫与二十世纪',
+        blurb: '规则在这里被推到极限，然后被换掉。',
+        lessons: [
+          { id: 'k-wagner-tristan', no: 'K', title: '瓦格纳 · 特里斯坦前奏曲', sub: '一个和弦悬了一百年', status: 'planned' },
+          { id: 'l-debussy-clair', no: 'L', title: '德彪西 · 月光', sub: '把引力关掉', status: 'ready' },
+          { id: 'm-stravinsky-rite', no: 'M', title: '斯特拉文斯基 · 春之祭', sub: '节奏变成主角之后', status: 'planned' },
+          { id: 'n-ravel-bolero', no: 'N', title: '拉威尔 · 波莱罗', sub: '十六分钟的渐强', status: 'planned' },
+        ],
+      },
+    ],
   },
   {
     id: 'styles',

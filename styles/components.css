@@ -237,6 +237,25 @@ input[type="range"] {
 .tag-green { background: var(--green-soft); color: var(--green-deep); }
 .tag-clay  { background: var(--clay-soft);  color: var(--clay-deep); }
 
+/* --- 乐句条：四个小格，播到哪句哪句亮（作品分析用） --------------------- */
+
+.ode-phrases { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--sp-4); }
+.ode-phrase {
+  flex: 1; min-width: 8.5em;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: var(--surface-2); color: var(--ink-3);
+  font-size: var(--fs-tiny); line-height: 1.5;
+}
+.ode-phrase b {
+  font-family: var(--font-serif); font-size: var(--fs-small);
+  color: var(--ink-2); margin-right: 4px;
+}
+.ode-phrase[aria-current="true"] {
+  background: var(--amber-soft); border-color: var(--amber-deep); color: var(--ink-1);
+}
+.ode-phrase[aria-current="true"] b { color: var(--amber-deep); }
+
 /* --- 表格 ----------------------------------------------------------------- */
 
 .table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }

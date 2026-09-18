@@ -77,6 +77,16 @@ const FORMS = [
     ],
     tip: '和声完全不动，靠节奏、织体、音色的变化撑起整段。Fela Kuti、"So What"、大量电子乐都是这个思路。它把"重复建立"推到了极端。',
   },
+  {
+    id: 'ritornello',
+    label: '里托内洛（巴洛克协奏曲）',
+    bars: [
+      { letter: 'R', chords: [0, 0, 5, 0] }, { letter: 'S', chords: [1, 4, 3, 1] },
+      { letter: 'R', chords: [0, 0, 5, 0] }, { letter: 'S', chords: [5, 3, 4, 4] },
+      { letter: 'R', chords: [0, 5, 0, 0] },
+    ],
+    tip: '巴洛克协奏曲的基本套路：乐队反复说同一段（R），中间插进独奏带来的新东西（S），来回几次；最后一次 R 通常不再原样照搬，而是留在主调上收束。维瓦尔第《四季》的每一个第一乐章都是这么搭起来的。',
+  },
 ];
 
 export function mountFormLab(root) {
@@ -159,7 +169,7 @@ export function mountFormLab(root) {
     const letters = f.bars.map((b) => b.letter);
     const uniq = [...new Set(letters)];
     const KIND = { A: 'var(--amber)', B: 'var(--green)', C: 'var(--slate)', D: 'var(--clay)',
-      V: 'var(--green)', };
+      V: 'var(--green)', R: 'var(--amber)', S: 'var(--green)', };
 
     el.map.innerHTML = '<div class="form-row">' + f.bars.map((b, i) =>
       '<div class="form-block" style="background:' + (KIND[b.letter] ?? 'var(--amber)') + '">'

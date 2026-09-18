@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 2 节 · 音高与音名 · Music Theory Playground</title>
+<meta name="description" content="音名、唱名、八度、音组与等音。用可点的键盘看清同一个字母为什么会在钢琴上重复出现。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="02-pitch">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="../../lessons/">课程地图</a>
+  </nav>
+  <span class="crumb">一 · 声音本身 / <b>第 2 节 音高与音名</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 2 节 · 音高与音名</p>
+      <h1>七个字母，反复用</h1>
+      <p class="lead-p">钢琴上有 88 个键，但只有 7 个字母。</p>
+      <p>为什么同一个字母要重复那么多次？因为耳朵觉得它们是"同一类"的音。
+      上一节我们看到八度是 2:1，频率翻倍听起来就是同一个音高、高一层——
+      于是人们就用同一个字母，只在后面加个数字区分它是哪一组。</p>
+      <p>这一节要把三件事说清楚：<b>音名怎么排</b>、<b>八度为什么要重复</b>、
+      以及<b>为什么同一个键会有两个名字</b>。最后这件事是后面音程那一节的伏笔。</p>
+    </section>
+
+    <div class="card wide" data-widget="pitch-names"></div>
+
+    <section>
+      <h2>刚才发生了什么</h2>
+      <p><strong>音名</strong>：C D E F G A B，只有这七个字母，用完就回到 C。
+      它们之间的间隔并不均匀——E 到 F 之间、B 到 C 之间只有半音，其余都是全音。
+      这就是为什么钢琴上会有黑键、而黑键的排列是不规则的两个一组、三个一组。</p>
+      <p><strong>八度</strong>：从任何一个音往上，频率正好翻倍的那个音，就是它的高八度。
+      2:1 是全部音程里最稳定、最不容妥协的关系，上一节的十二平均律也把它完整保留了下来。</p>
+      <p><strong>音组</strong>：为了区分不同八度里的同名音，中文用"大字组""小字一组"这样的说法。
+      中央 C 叫<b>小字一组的 c</b>，记作 c¹。国际通用的写法是 C4，两者指的是同一个键。</p>
+      <p><strong>标准音</strong>：所有频率需要一个起点。现在通用的标准是 A4 = 440 Hz。
+      有了它和 2:1 的八度，再加上十二平均律，任何一个音的高度都能算出来。</p>
+      <p><strong>等音</strong>：同一个键、同一个频率，两个不同的名字。
+      C♯ 和 D♭ 就是一对。它们听起来完全一样，但在乐谱上的写法和含义不同——
+      这个区别要到下一节讲音程时才会显出后果。</p>
+    </section>
+
+    <section>
+      <h2>为什么音名只有七个，而不是十二个</h2>
+      <p>键盘上有十二个键，名字却只有七个字母，另外五个靠升降号来表示。
+      这不是偷懒，而是因为这七个字母来自更早的一套音阶——
+      它们之间的间隔是"不均匀"的，正好构成大调音阶的形状。</p>
+      <p>剩下的五个音是后来插进去的，所以只能借用旁边字母的名字，加个升降号来说明
+      "它比这个字母高一点"或者"低一点"。这也是为什么同一个键会有两个名字：
+      从下面那个字母看它是升，从上面那个字母看它就是降。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两组都是两个音一起响，哪一组是八度？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.5,
+        "items": [
+          { "label": "A 组", "cents": 700 },
+          { "label": "B 组", "cents": 1200 }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。八度听起来像同一个音的两层，而不是两个不同的音。",
+        "explain": "对，B 组是八度 2:1。它的两个音频率正好翻倍，所以听起来是同一个音高、只是高了一层，而不是两个彼此独立的音。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>音名只有 C D E F G A B 七个字母，用完循环。</li>
+        <li>字母之间的间隔不均匀：E–F 和 B–C 之间是半音，所以黑键是两个一组、三个一组。</li>
+        <li>八度是 2:1，是唯一一个被十二平均律完整保留的纯音程。</li>
+        <li>音组用来区分不同八度里的同名音。中央 C 是小字一组的 c，也就是 C4。</li>
+        <li>等音 = 同一个键、同一个频率、两个名字。名字不同，含义也不同，下一节见分晓。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

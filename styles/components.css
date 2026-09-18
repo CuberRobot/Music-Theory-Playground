@@ -280,6 +280,101 @@ input[type="range"] {
 
 /* --- 挑战 ----------------------------------------------------------------- */
 
+/* --- 键盘组件（widgets/keyboard.js） --------------------------------------- */
+
+.kb {
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* 窄屏时键盘整块横滑，不要压扁琴键 */
+.kb-scroll { overflow-x: auto; padding-bottom: var(--sp-2); }
+
+.kb-key {
+  position: absolute; top: 0; padding: 0; cursor: pointer;
+  border-radius: 0 0 6px 6px;
+  transition: background var(--dur-fast) linear;
+}
+.kb-white {
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+}
+.kb-white:hover { background: var(--surface-2); }
+.kb-black {
+  background: var(--ink-1);
+  border: 1px solid var(--ink-1);
+  border-radius: 0 0 4px 4px;
+  z-index: 2;
+}
+.kb-black:hover { background: var(--ink-2); }
+.kb-key:focus-visible { outline: none; box-shadow: var(--focus-ring); z-index: 3; }
+.kb-label {
+  position: absolute; left: 0; right: 0; bottom: 5px;
+  text-align: center; font-size: 10px; color: var(--ink-3);
+  pointer-events: none;
+}
+
+/* --- 通用小控件 ------------------------------------------------------------ */
+
+/* 一排可点的小方格，用于把音级/时值/和弦摆出来 */
+.tiles { display: flex; flex-wrap: wrap; gap: 4px; }
+.tile {
+  font: inherit; font-size: var(--fs-small);
+  padding: 4px var(--sp-3); min-height: 28px;
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: var(--surface); color: var(--ink-2); cursor: pointer;
+}
+.tile:hover { background: var(--surface-2); }
+.tile[aria-pressed="true"] {
+  background: var(--amber-soft); border-color: var(--amber-deep); color: var(--ink-1);
+}
+.tile.tone-green[aria-pressed="true"] { background: var(--green-soft); border-color: var(--green); }
+
+/* 两个面板并排（左图右读数），窄屏堆叠 */
+.lab-split {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
+  gap: var(--sp-5); align-items: start;
+}
+@media (max-width: 760px) { .lab-split { grid-template-columns: 1fr; } }
+
+/* 小节网格：节奏用 */
+.grid-notes {
+  display: flex; gap: 2px; align-items: flex-end;
+  height: 84px; margin-top: var(--sp-3);
+}
+.grid-notes .cell {
+  flex: 1; background: var(--surface-2); border-radius: var(--r-sm);
+  display: flex; align-items: flex-end; justify-content: center;
+  font-size: var(--fs-tiny); color: var(--ink-4);
+  padding-bottom: 4px; min-height: 84px;
+}
+
+/* 强弱梯度条 */
+.accent-bar { display: flex; gap: 2px; align-items: flex-end; height: 56px; margin-top: var(--sp-2); }
+.accent-bar span {
+  flex: 1; background: var(--amber); border-radius: 3px 3px 0 0;
+  min-height: 2px; transition: height var(--dur) var(--ease-out);
+}
+
+/* 时间轴上的时值块 */
+.timeline {
+  position: relative; height: 56px; margin-top: var(--sp-3);
+  background: var(--surface-2); border-radius: var(--r-md);
+  display: flex; align-items: stretch; overflow: hidden;
+}
+.timeline .seg {
+  border-right: 1px solid var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--fs-tiny); color: var(--ink-1);
+  background: var(--amber);
+  overflow: hidden; white-space: nowrap;
+}
+.timeline .seg.rest { background: var(--surface-3); color: var(--ink-4); }
+.timeline .tickbar {
+  position: absolute; inset: 0; display: flex; pointer-events: none;
+}
+.timeline .tickbar i { flex: 1; border-left: 1px dashed color-mix(in srgb, var(--ink-4) 45%, transparent); }
+
 .challenge .choices { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
 .challenge .verdict {
   margin-top: var(--sp-3); font-size: var(--fs-small); min-height: 1.6em;

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 4 节 · 协和与不协和 · Music Theory Playground</title>
+<meta name="description" content="为什么有的音程听起来合、有的扎。用泛音梯看清协和度的来源，以及纯律与平均律的差别。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="04-consonance">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="../../lessons/">课程地图</a>
+  </nav>
+  <span class="crumb">二 · 两个音之间 / <b>第 4 节 协和与不协和</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 4 节 · 协和与不协和</p>
+      <h1>为什么有的音"合"，有的"扎"</h1>
+      <p class="lead-p">这不是审美偏好，是一个可以看出来的物理事实。</p>
+      <p>两个音一起响的时候，各自都带着一整串泛音。如果两串泛音里有能重合的，
+      它们就互相加强，听起来是"合"的；如果一个都对不上，它们就互相干扰，听起来是"扎"的。</p>
+      <p>下面这个实验台把两串泛音画成两排点。切换不同的音程，
+      看点能不能对上、在第几阶对上。</p>
+    </section>
+
+    <div class="card wide" data-widget="consonance-lab"></div>
+
+    <section>
+      <h2>判据只有一句话</h2>
+      <p>两个音的最简整数比，如果两个数字都不超过 8，就是协和音程；
+      其中如果都不超过 4，就是完全协和。</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">音程</th>
+              <th scope="col">最简比</th>
+              <th scope="col">最简泛音阶</th>
+              <th scope="col">分类</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>纯八度</td><td class="num">2 : 1</td><td class="num">2</td><td class="flag-ok">完全协和</td></tr>
+            <tr><td>纯五度</td><td class="num">3 : 2</td><td class="num">3</td><td class="flag-ok">完全协和</td></tr>
+            <tr><td>纯四度</td><td class="num">4 : 3</td><td class="num">4</td><td class="flag-ok">完全协和</td></tr>
+            <tr><td>大三度</td><td class="num">5 : 4</td><td class="num">5</td><td>不完全协和</td></tr>
+            <tr><td>小三度</td><td class="num">6 : 5</td><td class="num">6</td><td>不完全协和</td></tr>
+            <tr><td>大六度</td><td class="num">5 : 3</td><td class="num">5</td><td>不完全协和</td></tr>
+            <tr><td>小六度</td><td class="num">8 : 5</td><td class="num">8</td><td>不完全协和</td></tr>
+            <tr><td>大二度</td><td class="num">9 : 8</td><td class="num">9</td><td class="flag-lo">不协和</td></tr>
+            <tr><td>大七度</td><td class="num">15 : 8</td><td class="num">15</td><td class="flag-lo">不协和</td></tr>
+            <tr><td>增四度</td><td class="num">45 : 32</td><td class="num">45</td><td class="flag-lo">不协和</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>大二度只差 9:8，看着很接近，为什么算不协和？
+      因为它的重合点在两个音的<b>第 8、9 阶泛音</b>上——那么高的泛音早就弱到听不见了，
+      真正落在耳朵里的是两个只差两个半音的基础频率，它们挤在同一个听觉临界带里互相打架。
+      所以"≤8"这条线不是随便定的，它大致就是人耳能分辨的低阶泛音的范围。</p>
+    </section>
+
+    <section>
+      <h2>纯律和平均律在这一节碰面了</h2>
+      <p>实验台里那个「换成平均律听」的按钮，可以让你直接比较同一个音程的两种版本。</p>
+      <p>纯五度在纯律里是 3:2，精确、没有拍频；在平均律里是 700 音分，
+      比纯律窄 1.96 音分。这个差距小到基本听不出来——这也是为什么钢琴的五度听起来还是"准"的。</p>
+      <p>但大三度就不一样了：纯律 5:4 = 386.31 音分，平均律 400 音分，<b>高了 13.69 音分</b>。
+      这个差距已经能听出来，表现为一种轻微的、持续的抖动。钢琴上按一个 C 大三和弦，
+      那个 E 其实是偏高的。</p>
+      <p>所以协和度不是绝对的，它取决于你用哪套律制。
+      十二平均律的代价，在这里第一次变得可以听见。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面三组音程，哪一组是完全协和的？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.8,
+        "items": [
+          { "label": "A 组", "cents": 400 },
+          { "label": "B 组", "cents": 700 },
+          { "label": "C 组", "cents": 200 }
+        ],
+        "answer": 1,
+        "hint": "完全协和的音程听起来最空，两个音几乎融成一个。",
+        "explain": "对，B 组是纯五度 3:2，完全协和。A 组是大三度 5:4（不完全协和），C 组是大二度 9:8（不协和），后两组的泛音在低阶对不上，能听出粗糙感。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>协和度来自泛音：两串泛音能在低阶重合就协和，对不上就不协和。</li>
+        <li>判据：最简整数比的两个数都不超过 8 是协和，都不超过 4 是完全协和。</li>
+        <li>完全协和：纯八度 2:1、纯五度 3:2、纯四度 4:3。</li>
+        <li>不完全协和：大小三度、大小六度。其余是不协和。</li>
+        <li>协和度依赖律制。十二平均律把五度只挪了 1.96 音分，却把大三度挪了 13.69 音分。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

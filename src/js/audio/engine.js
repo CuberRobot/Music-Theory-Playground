@@ -50,6 +50,11 @@ export function unlock() {
 
 export function isMuted() { return muted; }
 
+/** 当前音频时钟。做节拍器和排时间表要用它，不能用 Date.now()。 */
+export function now() {
+  return ctx ? ctx.currentTime : 0;
+}
+
 export function setMuted(next) {
   muted = !!next;
   if (ctx && master) {
@@ -141,23 +146,33 @@ class AdditiveVoice {
     }
   }
 
-  start(level = 0.3, attack = 0.02) {
+  /** at 是绝对时间（ctx.currentTime 的坐标系），用来排时间表。 */
+  start(level = 0.3, attack = 0.02, at = null) {
     if (this.disposed) return this;
-    const t = this.ctx.currentTime;
+    const t = at ?? this.ctx.currentTime;
+    this.level = level;
     this.out.gain.cancelScheduledValues(t);
-    this.out.gain.setValueAtTime(this.out.gain.value, t);
+    this.out.gain.setValueAtTime(t <= this.ctx.currentTime ? this.out.gain.value : 0, t);
     this.out.gain.linearRampToValueAtTime(level, t + attack);
     return this;
   }
 
-  /** 淡出，默认把结束时间排在 duration 之后。 */
+  /** 在指定的绝对时间开始淡出。 */
+  releaseAt(at, release = 0.25) {
+    if (this.disposed) return this;
+    const t = Math.max(this.ctx.currentTime + 0.01, at);
+    this.out.gain.cancelScheduledValues(t);
+    this.out.gain.setValueAtTime(this.level ?? 0.3, t);
+    this.out.gain.linearRampToValueAtTime(0.0001, t + release);
+    const wait = (t - this.ctx.currentTime + release + 0.05) * 1000;
+    setTimeout(() => this.dispose(), Math.max(50, wait));
+    return this;
+  }
+
+  /** 淡出，把结束时间排在 duration 之后。 */
   releaseAfter(duration, release = 0.25) {
     if (this.disposed) return this;
-    const t = this.ctx.currentTime + Math.max(0.02, duration);
-    this.out.gain.cancelScheduledValues(t);
-    this.out.gain.setValueAtTime(this.out.gain.value, t);
-    this.out.gain.linearRampToValueAtTime(0.0001, t + release);
-    setTimeout(() => this.dispose(), (Math.max(0.02, duration) + release + 0.05) * 1000);
+    this.releaseAt(this.ctx.currentTime + Math.max(0.02, duration), release);
     return this;
   }
 
@@ -192,19 +207,58 @@ export function createVoice(count = VOICE_HARMONICS) {
 
 /** 放一个音，duration 秒后自动收尾。 */
 export function playNote(hz, opts = {}) {
-  const { duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25 } = opts;
+  const { duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25, at = 0 } = opts;
   const v = createVoice();
   if (!v) return null;
+  const t0 = v.ctx.currentTime + Math.max(0, at);
   v.setFrequency(hz, 0);
   if (amps) v.setAmps(amps, 0);
-  v.start(level, attack);
-  v.releaseAfter(duration, release);
+  v.start(level, attack, t0);
+  v.releaseAt(t0 + duration, release);
   return v;
 }
 
 /** 同时放几个音。用于对比两种律制、听音程的拍频。 */
 export function playChord(freqs, opts = {}) {
   return freqs.map((hz) => playNote(hz, opts));
+}
+
+/** 依次放一串音。at 是从现在算起的秒数偏移。 */
+export function playSequence(hzs, opts = {}) {
+  const { gap = 0.34, duration = 0.55, amps = null, level = 0.3, at = 0 } = opts;
+  return hzs.map((hz, i) => playNote(hz, { duration, amps, level, at: at + i * gap }));
+}
+
+/** 依次放一组和弦，每个和弦是一个频率数组。 */
+export function playChordSequence(chords, opts = {}) {
+  const { gap = 0.9, duration = 0.85, amps = null, level = 0.22, at = 0 } = opts;
+  const out = [];
+  chords.forEach((freqs, i) => {
+    const t = at + i * gap;
+    freqs.forEach((hz) => out.push(playNote(hz, { duration, amps, level, at: t })));
+  });
+  return out;
+}
+
+/**
+ * 短促的点击声。第二参数可以传布尔（是否重音）或一个对象。
+ * 重音更高更亮，用来做节拍器；自定义 freq 可以做鼓点。
+ */
+export function click(at = 0, opts = {}) {
+  const o = typeof opts === 'boolean' ? { accented: opts } : opts;
+  const accented = !!o.accented;
+  const freq = o.freq ?? (accented ? 1568 : 988);
+  const level = o.level ?? (accented ? 0.30 : 0.14);
+  const v = createVoice();
+  if (!v) return null;
+  const t0 = v.ctx.currentTime + Math.max(0, at);
+  const amps = new Array(VOICE_HARMONICS).fill(0);
+  amps[0] = 1;
+  v.setFrequency(freq, 0);
+  v.setAmps(amps, 0);
+  v.start(level, 0.002, t0);
+  v.releaseAt(t0 + 0.015, 0.05);
+  return v;
 }
 
 export function stopAll() {

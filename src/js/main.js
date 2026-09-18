@@ -12,11 +12,21 @@ import { installUnlockOnGesture, isMuted, setMuted, isAvailable } from './audio/
 import { mountHarmonicLab } from './widgets/harmonic-lab.js';
 import { mountTemperamentLab } from './widgets/temperament-lab.js';
 import { mountListenChallenge } from './widgets/listen-challenge.js';
+import { mountPitchNames } from './widgets/pitch-names.js';
+import { mountIntervalLab } from './widgets/interval-lab.js';
+import { mountConsonanceLab } from './widgets/consonance-lab.js';
+import { mountDurationBuilder } from './widgets/duration-builder.js';
+import { mountMeterGrid } from './widgets/meter-grid.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
   'temperament-lab': mountTemperamentLab,
   'listen-challenge': mountListenChallenge,
+  'pitch-names': mountPitchNames,
+  'interval-lab': mountIntervalLab,
+  'consonance-lab': mountConsonanceLab,
+  'duration-builder': mountDurationBuilder,
+  'meter-grid': mountMeterGrid,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

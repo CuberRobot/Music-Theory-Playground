@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 5 节 · 音的长短 · Music Theory Playground</title>
+<meta name="description" content="时值、附点、休止符。把音符块放进小节里，听听每个符号到底响多久。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="05-duration">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="../../lessons/">课程地图</a>
+  </nav>
+  <span class="crumb">三 · 时间 / <b>第 5 节 音的长短</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 5 节 · 音的长短</p>
+      <h1>一个个对半切下去</h1>
+      <p class="lead-p">前面四节都在讲音高，也就是纵向的高度。从这一节开始讲横向，也就是时间。</p>
+      <p>时值体系的设计非常省事：<b>每一级都是上一级的一半</b>。
+      全音符切一刀变二分音符，再切一刀变四分音符，往下是八分、十六分、三十二分。
+      所以记住一个基准，其余全是除法。</p>
+      <p>下面这个实验台把音符变成可以放进小节的方块。放几个，听一听它们到底响多久。</p>
+    </section>
+
+    <div class="card wide" data-widget="duration-builder"></div>
+
+    <section>
+      <h2>刚才发生了什么</h2>
+      <p><strong>时值</strong>就是一个音持续多久。它和音高是两个独立的维度：
+      同一个音可以又长又低，也可以又短又高，两者互不影响。</p>
+      <p><strong>为什么要以四分音符为基准</strong>：因为拍号的分子分母需要一个共同语言。
+      写成 4/4 时，分子 4 表示每小节四拍，分母 4 表示以四分音符为一拍。
+      所以 4/4 的意思是"每小节四个四分音符"，也就是四拍。</p>
+      <p><strong>附点</strong>：在音符右边加一个点，时值增加一半。
+      附点四分音符 = 1 + 0.5 = 1.5 拍。附点的作用不是"加一点点"，
+      而是精确地加二分之一，这让人能写出 3 拍、1.5 拍、0.75 拍这类不为整数的长度。</p>
+      <p><strong>休止符</strong>：不发音，但占时间。它和音符一样有整套时值。
+      很多人练习时会把休止符当"空过去"，实际上休止符是音乐的一部分，
+      它的长度需要被精确地数出来。</p>
+    </section>
+
+    <section>
+      <h2>两个容易卡住的地方</h2>
+      <p><strong>延音线</strong>：把两个相同音高的音连起来，时值相加。
+      如果需要一个 4 拍半的音，而小节只有 4 拍，就把一个 4 拍的音和下一小节一个 0.5 拍的音用延音线连起来。
+      这和写一个附点音符是两种不同的写法，用哪个取决于能不能跨小节。</p>
+      <p><strong>连音符</strong>：把原本的等分改成另一种等分。最常见的是三连音——
+      把本来该放两个音的时间，均匀地放三个。它不是"快一点"，
+      而是精确地把 2 等分变成 3 等分，所以三个音加起来的长度等于原来的两个音。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两组都是三个音，总长度一样，但长音的位置不同。哪一组的长音在开头？",
+        "root": 60,
+        "spectrum": "organ",
+        "secPerBeat": 0.42,
+        "items": [
+          { "label": "A 组", "notes": [{ "beats": 2 }, { "beats": 1, "transpose": 4 }, { "beats": 1, "transpose": 7 }] },
+          { "label": "B 组", "notes": [{ "beats": 1 }, { "beats": 1, "transpose": 4 }, { "beats": 2, "transpose": 7 }] }
+        ],
+        "answer": 0,
+        "hint": "再听一遍。注意第一个音是停得久一点，还是马上就走了。",
+        "explain": "对，A 组的长音在开头。两组的总长度一样，只是把长音从开头挪到了结尾 —— 时值改变的是重心，不只是快慢。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>时值体系是反复对半切：全、二分、四分、八分、十六分。</li>
+        <li>拍号的分母规定以什么音符为一拍，分子规定每小节几拍。4/4 = 每小节四个四分音符。</li>
+        <li>附点 = 增加一半时值。附点四分音符是 1.5 拍。</li>
+        <li>休止符同样占时间，需要被精确数出来，不是"空过去"。</li>
+        <li>延音线用于跨小节或不好写的长度；三连音是把 2 等分改成 3 等分。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

@@ -20,7 +20,7 @@
 
 import { midiToHz } from '../music/pitch.js';
 import { spectrumToAmps } from '../music/tuning.js';
-import { playNote, playChord } from '../audio/engine.js';
+import { playNote, playChord, click } from '../audio/engine.js';
 
 export function mountListenChallenge(root) {
   const script = root.querySelector('script[type="application/json"]');
@@ -41,7 +41,26 @@ export function mountListenChallenge(root) {
   };
 
   const play = (item) => {
-    if (typeof item.cents === 'number') {
+    if (Array.isArray(item.clicks)) {
+      // 节奏题：0 不响、1 响、2 重音。beat 是一拍多少秒。
+      const beat = item.beat ?? 0.5;
+      item.clicks.forEach((v, i) => {
+        if (v) click(i * beat, { accented: v === 2, level: v === 2 ? 0.26 : 0.15 });
+      });
+    } else if (Array.isArray(item.notes)) {
+      // 时值题：每个音真的响够那么长，不然听不出长短
+      const sec = item.secPerBeat ?? 0.5;
+      let at = 0;
+      item.notes.forEach((n) => {
+        playNote(rootHz * Math.pow(2, (n.transpose ?? 0) / 12), {
+          at,
+          duration: Math.max(0.12, n.beats * sec * 0.9),
+          level,
+          amps: ampsFor(item),
+        });
+        at += n.beats * sec;
+      });
+    } else if (typeof item.cents === 'number') {
       playChord([rootHz, rootHz * Math.pow(2, item.cents / 1200)], {
         duration, level: level * 0.8, amps: spectrumToAmps(cfg.spectrum ?? 'organ', 8),
       });

@@ -14,7 +14,7 @@ export const TIERS = [
     lessons: [
       { id: '00-harmonics',   no: '0', title: '泛音列',     sub: '一个音其实是一串音',       status: 'ready' },
       { id: '01-temperament', no: '1', title: '十二平均律', sub: '2^(1/12) 是怎么被逼出来的', status: 'ready' },
-      { id: '02-pitch',       no: '2', title: '音高与音名', sub: '音名、八度、等音',         status: 'planned' },
+      { id: '02-pitch',       no: '2', title: '音高与音名', sub: '音名、八度、等音',         status: 'ready' },
     ],
   },
   {
@@ -22,8 +22,8 @@ export const TIERS = [
     title: '二 · 两个音之间',
     blurb: '有了可以测量的音高坐标，谈距离才有意义。',
     lessons: [
-      { id: '03-interval',   no: '3', title: '音程',         sub: '度数、音数、性质',       status: 'planned' },
-      { id: '04-consonance', no: '4', title: '协和与不协和', sub: '为什么有的音会打起来',   status: 'planned' },
+      { id: '03-interval',   no: '3', title: '音程',         sub: '度数、音数、性质',       status: 'ready' },
+      { id: '04-consonance', no: '4', title: '协和与不协和', sub: '为什么有的音会打起来',   status: 'ready' },
     ],
   },
   {
@@ -31,8 +31,8 @@ export const TIERS = [
     title: '三 · 时间',
     blurb: '音高是纵向的，节奏是横向的。',
     lessons: [
-      { id: '05-duration', no: '5', title: '音的长短',   sub: '音符与休止符',       status: 'planned' },
-      { id: '06-meter',    no: '6', title: '节奏与节拍', sub: '拍号、强弱、切分音', status: 'planned' },
+      { id: '05-duration', no: '5', title: '音的长短',   sub: '音符与休止符',       status: 'ready' },
+      { id: '06-meter',    no: '6', title: '节奏与节拍', sub: '拍号、强弱、切分音', status: 'ready' },
     ],
   },
   {

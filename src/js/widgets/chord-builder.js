@@ -8,6 +8,7 @@ import { midiToHz, spellMidi } from '../music/pitch.js';
 import { TRIADS, SEVENTHS, identify, invert, inversionLabel } from '../music/chords.js';
 import { createKeyboard } from './keyboard.js';
 import { playChord, playSequence } from '../audio/engine.js';
+import { TEMPO } from '../audio/tempo.js';
 
 const FROM = 55;
 const TO = 79;
@@ -134,7 +135,8 @@ export function mountChordBuilder(root, opts = {}) {
     playChord(chordMidis().map(midiToHz), { duration: 1.5, level: 0.18 });
   });
   root.querySelector('[data-arp]').addEventListener('click', () => {
-    playSequence(chordMidis().map(midiToHz), { gap: 0.26, duration: 0.5, level: 0.22 });
+    // 分解和弦：每个音要听得清，不能像走句那样快
+    playSequence(chordMidis().map(midiToHz), { gap: TEMPO.scale, duration: 0.6, level: 0.22 });
   });
 
   function paint() {

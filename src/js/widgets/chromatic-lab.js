@@ -9,6 +9,7 @@
 
 import { midiToHz, spellMidi, nameOfMidi } from '../music/pitch.js';
 import { playSequence, playChord } from '../audio/engine.js';
+import { TEMPO } from '../audio/tempo.js';
 import { createKeyboard } from './keyboard.js';
 import { spectrumToAmps } from '../music/tuning.js';
 
@@ -68,25 +69,25 @@ export function mountChromaticLab(root) {
     const up = document.createElement('button');
     up.type = 'button'; up.className = 'tile';
     up.textContent = spellMidi(TONIC + i, false).name.replace(/\d/, '');
-    up.addEventListener('click', () => playSequence([midiToHz(TONIC + i)], { gap: 0.4, duration: 0.6, amps: PAD, level: 0.26 }));
+    up.addEventListener('click', () => playSequence([midiToHz(TONIC + i)], { gap: TEMPO.single, duration: 0.7, amps: PAD, level: 0.26 }));
     el.up.appendChild(up);
 
     const dn = document.createElement('button');
     dn.type = 'button'; dn.className = 'tile';
     dn.textContent = spellMidi(TONIC + 12 - i, true).name.replace(/\d/, '');
-    dn.addEventListener('click', () => playSequence([midiToHz(TONIC + 12 - i)], { gap: 0.4, duration: 0.6, amps: PAD, level: 0.26 }));
+    dn.addEventListener('click', () => playSequence([midiToHz(TONIC + 12 - i)], { gap: TEMPO.single, duration: 0.7, amps: PAD, level: 0.26 }));
     el.down.appendChild(dn);
   }
 
   const upSeq = Array.from({ length: 13 }, (_, i) => TONIC + i);
   const downSeq = Array.from({ length: 13 }, (_, i) => TONIC + 12 - i);
   root.querySelector('[data-play-up]').addEventListener('click', () => {
-    playSequence(upSeq.map(midiToHz), { gap: 0.24, duration: 0.42, amps: PAD, level: 0.24 });
+    playSequence(upSeq.map(midiToHz), { gap: TEMPO.run, duration: 0.4, amps: PAD, level: 0.24 });
     el.note.innerHTML = '<b>上行：</b>读作 C C♯ D D♯ E F F♯ G G♯ A A♯ B C。'
       + '中间的五个音都写成"升"，因为它们是在往上走 —— 记谱跟着走向走。';
   });
   root.querySelector('[data-play-down]').addEventListener('click', () => {
-    playSequence(downSeq.map(midiToHz), { gap: 0.24, duration: 0.42, amps: PAD, level: 0.24 });
+    playSequence(downSeq.map(midiToHz), { gap: TEMPO.run, duration: 0.4, amps: PAD, level: 0.24 });
     el.note.innerHTML = '<b>下行：</b>读作 C B B♭ A A♭ G G♭ F E E♭ D D♭ C。'
       + '同一批键，名字全换了 —— 因为现在是往下走。'
       + '<b>半音阶的写法由方向决定</b>，这是它和音阶最不一样的地方。';

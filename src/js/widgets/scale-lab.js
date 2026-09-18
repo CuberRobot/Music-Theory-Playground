@@ -8,6 +8,7 @@ import { midiToHz, nameOfMidi, spellMidi } from '../music/pitch.js';
 import { SCALES, STABILITY, degreeName } from '../music/scales.js';
 import { createKeyboard } from './keyboard.js';
 import { playSequence, playChord, playNote } from '../audio/engine.js';
+import { SCALE_ARGS } from '../audio/tempo.js';
 
 const FROM = 55;
 const TO = 84;
@@ -78,7 +79,7 @@ export function mountScaleLab(root) {
   }
 
   function playScale() {
-    playSequence(scaleMidis().map(midiToHz), { gap: 0.28, duration: 0.5, level: 0.24 });
+    playSequence(scaleMidis().map(midiToHz), SCALE_ARGS);
   }
 
   root.querySelector('[data-play]').addEventListener('click', playScale);

@@ -9,6 +9,7 @@
 
 import { midiToHz, nameOfMidi, spellMidi } from '../music/pitch.js';
 import { playSequence, playChord } from '../audio/engine.js';
+import { SCALE_ARGS } from '../audio/tempo.js';
 import { createKeyboard } from './keyboard.js';
 import { spectrumToAmps } from '../music/tuning.js';
 
@@ -103,10 +104,10 @@ export function mountChineseModesLab(root) {
       const seven = PENTA.map((p) => (p - base + 12) % 12).sort((a, b) => a - b).concat(s.add);
       const uniq = [...new Set(seven)].sort((a, b) => a - b);
       const seq = uniq.map((v) => GONG + base + v).concat([GONG + base + 12]);
-      playSequence(seq.map(midiToHz), { gap: 0.28, duration: 0.5, amps: PAD, level: 0.24 });
+      playSequence(seq.map(midiToHz), { ...SCALE_ARGS, amps: PAD });
       return;
     }
-    playSequence(modeMidis().map(midiToHz), { gap: 0.3, duration: 0.5, amps: PAD, level: 0.24 });
+    playSequence(modeMidis().map(midiToHz), { ...SCALE_ARGS, amps: PAD });
   }
 
   function paint() {

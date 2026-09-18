@@ -17,6 +17,7 @@ import { SCALES, CIRCLE_MAJOR, relativeMinorPc, SHARP_ORDER, FLAT_ORDER } from '
 import { METERS, fitsMeasure } from '../src/js/music/rhythm.js';
 import { TERMS, TEMPO_TERMS, DYNAMICS } from '../src/js/music/glossary.js';
 import { LESSONS, findLesson } from '../src/js/music/curriculum.js';
+import { TEMPO } from '../src/js/audio/tempo.js';
 
 let fails = 0;
 let checks = 0;
@@ -237,6 +238,12 @@ section('★ 速度与力度');
 
 section('节奏、词典引用、课程编号、泛音配方');
 {
+  // 播放速度统一：以前各实验台各写各的，同类素材在不同页面差一倍
+  const order = ['single', 'chord', 'melody', 'scale', 'run', 'ornament'];
+  const vals = order.map((k) => TEMPO[k]);
+  eq(vals.every((v, i) => i === 0 || v < vals[i - 1]), true, '播放速度必须由慢到快');
+  eq(vals.every((v) => v >= 0.08 && v <= 1.2), true, '速度必须落在可听范围 0.08–1.2 秒');
+  eq(TEMPO.ornament >= 0.06, true, '装饰音也不能快到听不见');
   eq(fitsMeasure([4], 4), true, '一个全音符填满 4/4');
   eq(fitsMeasure([2, 2, 1], 4), false, '超拍判否');
   eq(METERS.find((m) => m.sig === '6/8').kind, '复拍子', '6/8 是复拍子');

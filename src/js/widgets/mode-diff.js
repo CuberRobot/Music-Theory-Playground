@@ -11,6 +11,7 @@ import { midiToHz, nameOfMidi, spellMidi, pitchClassOfMidi } from '../music/pitc
 import { SCALES, SHARP_ORDER, FLAT_ORDER } from '../music/scales.js';
 import { diatonicSet } from '../music/chords.js';
 import { playChord, playSequence } from '../audio/engine.js';
+import { SCALE_ARGS } from '../audio/tempo.js';
 import { spectrumToAmps } from '../music/tuning.js';
 
 const PAD = spectrumToAmps('organ', 10);
@@ -107,7 +108,7 @@ export function mountModeDiff(root) {
   });
 
   root.querySelector('[data-play-scale]').addEventListener('click', () => {
-    playSequence(scaleMidis().map(midiToHz), { gap: 0.28, duration: 0.5, amps: PAD, level: 0.24 });
+    playSequence(scaleMidis().map(midiToHz), { ...SCALE_ARGS, amps: PAD });
   });
 
   root.querySelector('[data-play-vamp]').addEventListener('click', () => {

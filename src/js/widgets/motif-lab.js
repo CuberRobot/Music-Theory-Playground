@@ -11,9 +11,10 @@
 import { midiToHz, spellMidi } from '../music/pitch.js';
 import { playPluck, preloadPluck } from '../audio/engine.js';
 import { createNoteStrip } from '../audio/transport.js';
+import { TEMPO } from '../audio/tempo.js';
 
 const BASE = 67;              // G4，那个动机的起点
-const SEC = 0.42;             // 一个"短音"多少秒
+const SEC = TEMPO.melody;             // 一个"短音"多少秒
 
 const MOTIF = [
   { semi: 0, beats: 1 },

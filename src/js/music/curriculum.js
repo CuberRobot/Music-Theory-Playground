@@ -205,9 +205,19 @@ export const PARTS = [
     id: 'styles',
     no: '第四部分',
     title: '音乐风格解析',
-    blurb: '布鲁斯、爵士、摇滚、前卫摇滚、世界音乐……每种风格都由一组有限的手法和习惯组成。这一部分把它们拆开看。',
+    blurb: '爵士、摇滚、世界音乐……每种风格都由一组有限的手法和习惯组成。这一部分把它们拆开看：先说清这套音乐是用什么做的，再说它是从哪儿来的、谁把它带出去的。',
     reserved: '这一部分慢慢补。放在最后是有意的 —— 新内容往后加，前面章节的编号就不用反复改。',
-    tiers: [],
+    tiers: [
+      {
+        id: 'styles-core',
+        title: '一 · 一套音乐是怎么做出来的',
+        blurb: '一种风格能被认出来，靠的往往不是音色，而是几条固定的手法。',
+        lessons: [
+          { id: 'o-afrobeat', no: 'O', title: 'Afrobeat', sub: '鼓是主旋律', status: 'ready' },
+          { id: 'p-raga', no: 'P', title: '拉格（Raga）', sub: '一个框架，九成靠即兴', status: 'ready' },
+        ],
+      },
+    ],
   },
 ];
 

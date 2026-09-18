@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P · 拉格（Raga） · Music Theory Playground</title>
+<meta name="description" content="拉格不是一首曲子，是一套规定：用 Yaman 讲清上行下行、持续音与塔拉循环，以及拉维·香卡是怎么把印度古典音乐讲给西方听的。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="p-raga">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">四 · 音乐风格解析 / <b>P · 拉格（Raga）</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">P · 拉格（Raga）· 以 Yaman 为例</p>
+      <h1>一个框架，九成靠即兴</h1>
+      <p class="lead-p">拉格不是"一首曲子"，是一套规定：
+      用哪些音、怎么上去怎么下来、哪个音是中心、哪些走法是它的指纹。</p>
+      <p>演奏者在这套规定上即兴。拉维·香卡（Ravi Shankar）说的数字是——
+      <b>一场演出里大约九成是即兴</b>。</p>
+    </section>
+
+    <section>
+      <h2>一 · 两根柱子</h2>
+      <p>印度古典音乐由两件事构成：<b>拉格</b>（旋律的框架）和<b>塔拉</b>（节奏的循环）。
+      前者规定音高怎么走，后者规定时间怎么转。</p>
+      <p>还有一件几乎每场演出都会有的东西：<b>持续音</b>。
+      一根（或几根）弦从头响到尾，只出声两三个音——
+      它没有旋律，但它是整套音乐的参照面。少了它，音准关系和"回到哪里"都听不出来。</p>
+      <p>两套传统要分清：北印度的 <b>Hindustani</b>（西塔琴、萨罗德琴、塔布拉鼓）和
+      南印度的 <b>Carnatic</b>。同一条拉格在两边名字常常不同——
+      下面要讲的 Yaman，在南边叫 Kalyani。</p>
+    </section>
+
+    <section>
+      <h2>二 · 一场演出的形状</h2>
+      <p>北印度的一场演出，通常按这个顺序展开：</p>
+      <p><strong>Alap</strong>：没有鼓、没有拍子。演奏者一个音一个音地把这条拉格的骨架铺开，
+      让你先认识它的"性格"。这一段可能占掉整场演出的三分之一。</p>
+      <p><strong>Jor / Jhala</strong>：开始有节奏了，但仍然没有塔拉；速度一层层加上去。</p>
+      <p><strong>Gat</strong>：塔布拉鼓进来，出现一段有拍子的"作曲"——到这里你才听到
+      像"曲子"的东西。之后是独奏者与鼓手的互相接招，
+      每一次都把音乐推回循环的第一拍（sam）。</p>
+      <p>所以听这类音乐的关键不是"记住旋律"，
+      而是<b>跟着一个循环数拍，听演奏者怎么离开它、又怎么回来</b>。</p>
+    </section>
+
+    <div class="card wide" data-widget="raga-lab"></div>
+    <p class="hint">上面用 Yaman 做例子：听它的上行和下行（顺序不一样），
+    打开持续音听"参照面"，再听一遍 tintal 的循环——
+    第 1、5、13 拍是拍手，第 9 拍是"空"（khali）。
+    那条示范乐句是本站写的，不是某首曲子的原样。</p>
+
+    <section>
+      <h2>三 · 以 Yaman 为例</h2>
+      <p>Yaman（也叫 Kalyan）是北印度最常被当作"第一条"教的拉格，
+      通常在夜里第一场演奏。</p>
+      <p>它的音阶是七个音，<b>只有第四级升高半音</b>（tivra Ma）：</p>
+      <p style="font-family:var(--font-mono)">上行 S R G M↑ P D N S′　/　下行 S′ N D P M↑ G R S</p>
+      <p>两件事值得注意：</p>
+      <p><strong>一、上下行不一样。</strong>上行时 Sa 和 Pa 常常被省掉或轻轻带过，
+      下行才是七个音全用。所以它"看着是音阶，走起来不是音阶"。</p>
+      <p><strong>二、每个音的地位不一样。</strong>主音（vadi）是 G，次主音（samvadi）是 N——
+      它们不是"最响的音"，而是音乐反复围绕、反复回到的音。
+      另外每条拉格都有自己的"指纹句"（pakad），听到那句话就知道是哪一条。</p>
+      <p>顺带一个巧合：把 Yaman 的音按高矮排开，正好是西方调式里的
+      <b>利底亚（Lydian）</b>——升高第四级。你在第 13 节听过这个调式，
+      但同一条音阶在两种体系里的用法完全不同：那边是"一种色彩"，
+      这边是一整套关于中心的规矩。</p>
+    </section>
+
+    <section>
+      <h2>四 · 香卡是怎么把它讲出去的</h2>
+      <p>拉维·香卡（1920–2012）年轻时跟着哥哥的舞蹈团在欧洲巡演，
+      学法语、听西方古典乐和爵士；18 岁那年他放弃跳舞，
+      去迈哈尔跟宫廷乐师 Allauddin Khan 学了七年西塔琴——
+      吃住都在老师家里，这就是传统的师徒制（gurukul）。</p>
+      <p>之后他做的事可以看成一条很清楚的线：<b>把印度古典音乐讲给外面的人听。</b></p>
+      <p><strong>1956</strong>：他辞去全印广播电台的职位，去欧美巡演。
+      他刻意接小场子，因为那样能一边演一边讲解——这在当时是很少见的选择。</p>
+      <p><strong>1957</strong>：《The Sounds of India》——一张边讲边演的唱片，
+      从出版说明到曲目都在做同一件事：介绍并解释北印度古典音乐给西方听众。
+      今天看，它是这类"讲课式唱片"的早期样本。</p>
+      <p><strong>1966–67</strong>：他在巴斯音乐节与小提琴家梅纽因（Yehudi Menuhin）同台，
+      随后出了合作专辑《West Meets East》。这张唱片在 1967 年拿下葛莱美最佳室内乐演奏奖——
+      <b>第一次有亚洲音乐家拿到葛莱美</b>，并在《公告牌》古典榜榜首待了十八周。</p>
+      <p><strong>1967</strong>：蒙特雷流行音乐节。他把印度音乐带到了摇滚观众面前，
+      他的现场专辑也成了他在这类榜单上名次最高的一张（第 43 名）。
+      同一场音乐节上，他看到亨德里克斯在台上烧吉他，后来说了一句：
+      "在我们文化里，乐器是受到那样的尊重的，它们像神的一部分。"</p>
+      <p><strong>1968</strong>：出版自传《My Music, My Life》。</p>
+      <p><strong>1969</strong>：伍德斯托克。他去了，但后来明确说不喜欢那个场合，
+      并逐渐与嬉皮和毒品文化保持距离——他要的不是"神秘体验"，是让人认真听音乐。</p>
+      <p><strong>1971</strong>：为孟加拉音乐会（麦迪逊广场花园）。
+      他和阿里·阿克巴·汗在台上调音调了一分半钟，观众鼓掌，
+      他说："如果你们这么喜欢我们调音，我希望你们更喜欢演奏。"
+      那张现场专辑后来拿到了 1973 年葛莱美年度专辑。</p>
+      <p>再往后：为电影《甘地》配乐（1982，奥斯卡提名）、
+      1986–1992 年被任命为印度国会上院议员、1999 年获印度最高平民荣誉
+      Bharat Ratna。</p>
+    </section>
+
+    <section>
+      <h2>五 · 听的时候注意什么</h2>
+      <p><strong>一、别把它当"冥想音乐"。</strong>它是一套严格的体系：
+      哪些音能用、怎么走、什么时候回到第一拍，都有规定。
+      "放松"是结果，不是目的。</p>
+      <p><strong>二、先找持续音。</strong>那个一直响的音就是 Sa（主音）。
+      整场演出都围着它转。</p>
+      <p><strong>三、数塔拉的循环。</strong>tintal 是十六拍，四拍一组。
+      听鼓手什么时候换"空的"那一组，就知道循环走到哪了。</p>
+      <p><strong>四、听"回到 sam"的那一下。</strong>独奏者会故意离开循环，
+      然后在某一拍精准地落回来——这是这类音乐最刺激的地方。</p>
+    </section>
+
+    <section>
+      <h2>六 · 推荐</h2>
+      <div class="card">
+        <div class="card-head"><h2>香卡的几张"传播型"作品</h2></div>
+        <div class="scroll-x">
+          <table class="table">
+            <thead><tr><th scope="col">专辑</th><th scope="col">为什么听它</th></tr></thead>
+            <tbody>
+              <tr><td>《The Sounds of India》· 1957</td>
+                <td>讲解式唱片：边讲边演，专门为不熟悉这套音乐的听众做的。最像"课程"的一张</td></tr>
+              <tr><td>《Three Ragas》· 1956</td><td>他的第一张 LP，伦敦录的。三条拉格，入门最直接</td></tr>
+              <tr><td>《West Meets East》· 1967（与梅纽因）</td>
+                <td>西塔琴与小提琴的对话；1967 年葛莱美最佳室内乐，第一次由亚洲音乐家拿下</td></tr>
+              <tr><td>《Live at the Monterey International Pop Festival》· 1967</td>
+                <td>他把这套音乐放到摇滚观众面前的现场记录</td></tr>
+              <tr><td>《The Concert for Bangladesh》· 1971</td>
+                <td>与阿里·阿克巴·汗同台。1973 年葛莱美年度专辑</td></tr>
+              <tr><td>Ali Akbar Khan 的萨罗德琴录音</td>
+                <td>香卡的同门（同一位老师）。1955 年他是第一个在美国电视上演印度古典音乐的人</td></tr>
+              <tr><td>Anoushka Shankar（香卡的女儿）· 近年的专辑</td>
+                <td>同一套体系在今天的样子：与弗拉门戈、电子、爵士的合作</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="hint">想按一条线听：<b>先《The Sounds of India》（听懂规矩），
+        再《West Meets East》（听它和另一种传统怎么对话），最后听一场完整的现场</b>——
+        那时候你才听得出什么叫"九成是即兴"。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>七 · 参考</h2>
+      <div class="card">
+        <div class="card-head"><h2>延伸</h2></div>
+        <p style="margin:0">
+          <a href="https://en.wikipedia.org/wiki/Ravi_Shankar">Ravi Shankar · 维基百科</a>（生平、师承、蒙特雷与伍德斯托克、葛莱美与 Bharat Ratna）<br>
+          <a href="https://en.wikipedia.org/wiki/West_Meets_East">West Meets East · 维基百科</a>（1966 巴斯音乐节、1967 年葛莱美与榜单成绩）<br>
+          <a href="https://en.wikipedia.org/wiki/The_Sounds_of_India">The Sounds of India · 维基百科</a>（1957 年那张讲解式唱片）<br>
+          <a href="https://en.wikipedia.org/wiki/Yaman_(raga)">Yaman (raga) · 维基百科</a>（上下行、tivra Ma、vadi/samvadi、夜晚第一条）<br>
+          <a href="https://en.wikipedia.org/wiki/Teental">Tintal · 维基百科</a>（16 拍、4+4+4+4、三次拍手与第 9 拍的空）
+        </p>
+        <p class="hint">这一节的音阶、塔拉结构、年份与奖项出处都在上面这些条目里核过。
+        "九成是即兴"这个说法来自香卡本人对演出的说明。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>一句话带走</h2>
+      <p><strong>规定越多，即兴的余地反而越大。</strong>
+      拉格把能用的音、能走的路线卡得很死，演奏者就在这条窄路上做文章——
+      这和即兴爵士、和布鲁斯是同一个道理，只是换了另一套坐标。</p>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

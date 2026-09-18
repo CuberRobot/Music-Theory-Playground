@@ -1,0 +1,50 @@
+/* Music Theory Playground 基础层：重置 + 排版默认值。不写任何组件样式。 */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink-1);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--sp-3);
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+
+p { margin: 0 0 var(--sp-4); max-width: var(--measure); }
+
+a { color: var(--green-deep); text-underline-offset: 3px; }
+a:hover { color: var(--ink-1); }
+
+img, svg, canvas { max-width: 100%; display: block; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-6) 0; }
+
+code, kbd, samp { font-family: var(--font-mono); font-size: .9em; }
+
+:focus-visible { outline: 2px solid var(--amber-deep); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

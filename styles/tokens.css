@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Music Theory Playground 设计令牌 · v0.1 草案
+   规则：所有颜色/字号/间距/圆角/动效只能从这里取，页面里不写死数值。
+   基调：米白（纸）+ 黄（主音/焦点）+ 绿（稳定/正确）
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* --- 纸张层：从页面底色到卡片，再到分割线，色温统一偏暖 --------------- */
+  --bg: #F7F3E9;            /* 米白，页面底色 */
+  --surface: #FFFDF7;       /* 纸面，卡片/实验台背景 */
+  --surface-2: #F1EBDB;     /* 次级面，代码块/输入框底 */
+  --surface-3: #E9E1CE;     /* 三级面，hover/选中底色 */
+  --line: #E4DBC7;          /* 常规分割线 */
+  --line-strong: #CFC3A8;   /* 强分割线、坐标轴、谱表线 */
+
+  /* --- 墨色：暖黑，不用纯黑，避免和米白打架 ----------------------------- */
+  --ink-1: #2E2A22;         /* 标题、正文主色 */
+  --ink-2: #5A5346;         /* 次级文字 */
+  --ink-3: #857C69;         /* 辅助说明、单位 */
+  --ink-4: #A89E88;         /* 占位、禁用 */
+  --ink-inv: #FFFDF7;       /* 深底上的文字 */
+
+  /* --- 黄：主音 / 根音 / 当前焦点 / 主行动 ------------------------------ */
+  --amber-soft: #FBEFCE;    /* 黄色浅底，选中态背景 */
+  --amber: #EFC24C;         /* 主强调色 */
+  --amber-deep: #B9861F;    /* 需要作为文字/描边时的可读深黄 */
+
+  /* --- 绿：稳定 / 协和 / 正确 / 已完成 ---------------------------------- */
+  --green-soft: #E4EFE2;
+  --green: #4C9A6A;
+  --green-deep: #34714C;
+
+  /* --- 陶土红：张力 / 不协和 / 错误（功能色，使用场景受限） ------------- */
+  --clay-soft: #F7E4DA;
+  --clay: #D4714C;
+  --clay-deep: #A85033;
+
+  /* --- 灰蓝：中性冷色，用于明暗/大小调对比、次要数据 -------------------- */
+  --slate-soft: #E6ECEF;
+  --slate: #6C8797;
+  --slate-deep: #46606F;
+
+  /* --- 阴影：暖色调阴影，不用纯黑 rgba(0,0,0) --------------------------- */
+  --shadow-1: 0 1px 2px rgba(90, 78, 52, .06), 0 1px 1px rgba(90, 78, 52, .04);
+  --shadow-2: 0 4px 16px rgba(90, 78, 52, .08);
+  --shadow-3: 0 12px 32px rgba(90, 78, 52, .12);
+
+  /* --- 字体 ------------------------------------------------------------- */
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", serif;
+  --font-sans: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-music: "Bravura", "Noto Music", "Symbola", serif; /* SMuFL 乐谱记号 */
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+
+  --fs-display: 2.5rem;
+  --fs-h1: 2rem;
+  --fs-h2: 1.5rem;
+  --fs-h3: 1.25rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-tiny: 0.75rem;
+  --lh-tight: 1.25;
+  --lh-body: 1.75;          /* 中文正文行高要松一些 */
+
+  /* --- 间距：4 的倍数 --------------------------------------------------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* --- 圆角 ------------------------------------------------------------- */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-pill: 999px;
+
+  /* --- 动效：不要弹跳炫技，要"物理感" ----------------------------------- */
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --dur-slow: 360ms;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-in-out: cubic-bezier(.4, 0, .2, 1);
+
+  /* --- 布局 ------------------------------------------------------------- */
+  --measure: 68ch;          /* 正文最大行宽 */
+  --shell-max: 1440px;
+  --rail-w: 240px;          /* 左侧学习地图 */
+  --panel-w: 320px;         /* 右侧实验台参数面板 */
+}
+
+/* 所有数值（频率、音分、拍号）用等宽对齐 */
+.tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur: 0ms; --dur-slow: 0ms; }
+}

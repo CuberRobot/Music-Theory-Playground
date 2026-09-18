@@ -18,6 +18,7 @@ import { METERS, fitsMeasure } from '../src/js/music/rhythm.js';
 import { TERMS, TEMPO_TERMS, DYNAMICS } from '../src/js/music/glossary.js';
 import { LESSONS, findLesson } from '../src/js/music/curriculum.js';
 import { TEMPO } from '../src/js/audio/tempo.js';
+import { existsSync, readFileSync } from 'node:fs';
 
 let fails = 0;
 let checks = 0;
@@ -264,12 +265,47 @@ section('节奏、词典引用、课程编号、泛音配方');
     checks++;
     if (!findLesson(t.lesson)) fail(`词条 ${t.en} 引用不存在的 ${t.lesson}`);
   }
-  eq(LESSONS.map((l) => Number(l.no)).every((n, i) => n === i), true, '课程编号连续');
+  // 编号连续性要分两套看：第一、二部分是数字（0 起连号），
+  // 第三部分作品分析用字母，两套混在一起 Number('A') 会变成 NaN。
+  const numbered = LESSONS.filter((l) => /^\d+$/.test(l.no));
+  const lettered = LESSONS.filter((l) => /^[A-Z]$/.test(l.no));
+  eq(numbered.map((l) => Number(l.no)).every((n, i) => n === i), true, '数字课程编号连续');
+  eq(
+    lettered.map((l) => l.no).join(''),
+    lettered.map((_, i) => String.fromCharCode(65 + i)).join(''),
+    '作品分析字母编号连续（A、B、C…）',
+  );
   eq(new Set(LESSONS.map((l) => l.id)).size, LESSONS.length, '课程 id 无重复');
   for (const [key, spec] of Object.entries(SPECTRA)) {
     const amps = spectrumToAmps(key, 16);
     checks++;
     if (amps.some((a) => a < 0 || a > 1.0001)) fail(`${spec.label} 振幅越界`);
+  }
+}
+
+section('ready 的课必须真的有页面，页面上的实验台必须真的有文件');
+{
+  // 两个都能整页翻车的失误：status 提前改成 ready 但页面还没写（线上点进去 404），
+  // 以及 data-widget 名字写错（main.js 对没注册的名字是静默跳过的，页面上就空一块）。
+  const main = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+  for (const l of LESSONS) {
+    if (l.status !== 'ready') continue;
+    const page = new URL(`../lessons/${l.id}/index.html`, import.meta.url);
+    checks++;
+    if (!existsSync(page)) {
+      fail(`${l.no} ${l.title} 标成 ready，但 lessons/${l.id}/index.html 不存在`);
+      continue;
+    }
+    const html = readFileSync(page, 'utf8');
+    for (const m of html.matchAll(/data-widget="([^"]+)"/g)) {
+      checks++;
+      const name = m[1];
+      if (!existsSync(new URL(`../src/js/widgets/${name}.js`, import.meta.url))) {
+        fail(`${l.no} 用了不存在的实验台 ${name}`);
+      } else if (!new RegExp(`(['"]${name}['"]|\\b${name})\\s*:`).test(main)) {
+        fail(`${l.no} 的实验台 ${name} 没有在 main.js 的 WIDGETS 里注册`);
+      }
+    }
   }
 }
 

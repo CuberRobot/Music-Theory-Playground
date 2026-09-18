@@ -82,13 +82,15 @@
 
 .lesson h1 { font-size: var(--fs-h1); margin-bottom: var(--sp-2); }
 .lesson h2 { font-size: var(--fs-h2); margin-top: var(--sp-2); }
-.lesson p { color: var(--ink-2); }
+.lesson p, .shell--full p { color: var(--ink-2); }
 .lesson strong { color: var(--ink-1); font-weight: 500; }
-.lesson .kicker {
+.kicker {
   font-size: var(--fs-tiny); letter-spacing: .1em;
   color: var(--ink-3); margin-bottom: var(--sp-2);
 }
-.lesson .lead-p { font-size: var(--fs-h3); line-height: 1.7; color: var(--ink-1); }
+.lesson .lead-p, .shell--full .lead-p {
+  font-size: var(--fs-h3); line-height: 1.7; color: var(--ink-1);
+}
 
 /* --- 卡片 ----------------------------------------------------------------- */
 
@@ -314,6 +316,83 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 /* --- 窄屏 ----------------------------------------------------------------- */
 
+/* --- 落地首页与课程地图页 -------------------------------------------------- */
+
+/* 首页和地图页不需要左栏，用整幅宽度 */
+.shell--full {
+  display: block;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--sp-7) var(--sp-5) var(--sp-8);
+}
+
+.hero { max-width: 46rem; }
+.hero h1 {
+  font-size: clamp(1.9rem, 1.1rem + 2.6vw, 3rem);
+  line-height: 1.25;
+  margin-bottom: var(--sp-4);
+}
+.hero .actions {
+  display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-6);
+}
+.hero .actions .btn { min-height: 42px; padding-inline: var(--sp-5); }
+
+.home-section { margin-top: var(--sp-8); }
+.home-section > h2 { font-size: var(--fs-h2); margin-bottom: var(--sp-2); }
+.home-section > .sub { color: var(--ink-3); margin: 0 0 var(--sp-5); }
+
+/* 顶层导航（课程地图入口） */
+.topnav { display: flex; gap: var(--sp-1); }
+.topnav a {
+  font-size: var(--fs-small); color: var(--ink-2); text-decoration: none;
+  padding: 5px var(--sp-3); border-radius: var(--r-pill); white-space: nowrap;
+}
+.topnav a:hover { background: var(--surface-2); color: var(--ink-1); }
+.topnav a[aria-current="page"] { background: var(--amber-soft); color: var(--ink-1); }
+
+/* 首页的课程预览：一行一层，点得动的只有已上线的 */
+.preview-row {
+  display: grid; grid-template-columns: 10rem minmax(0, 1fr);
+  gap: var(--sp-4); align-items: baseline;
+  padding: var(--sp-4) 0; border-top: 1px solid var(--line);
+}
+
+.rule-grid {
+  display: grid; gap: var(--sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.rule-grid .card h3 { font-size: var(--fs-body); margin-bottom: var(--sp-2); }
+.rule-grid .card p { font-size: var(--fs-small); color: var(--ink-3); margin: 0; }
+.preview-tier { font-family: var(--font-serif); color: var(--ink-1); }
+.preview-lessons { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.chip {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  font-size: var(--fs-small); padding: 4px var(--sp-3);
+  border-radius: var(--r-pill);
+  background: var(--surface-2); color: var(--ink-4);
+  text-decoration: none; border: 1px solid transparent;
+}
+.chip em { font-style: normal; font-variant-numeric: tabular-nums; font-size: var(--fs-tiny); }
+.chip-ready {
+  background: var(--surface); color: var(--ink-1); border-color: var(--line-strong);
+}
+.chip-ready:hover { background: var(--amber-soft); border-color: var(--amber-deep); }
+.chip-ready em { color: var(--amber-deep); }
+
+.page-foot {
+  margin-top: var(--sp-8); padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-small); color: var(--ink-3);
+  display: flex; flex-wrap: wrap; gap: var(--sp-3) var(--sp-5);
+  justify-content: space-between;
+}
+.page-foot a { color: var(--ink-2); }
+
+@media (max-width: 640px) {
+  .preview-row { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .topnav { display: none; }
+}
+
 @media (max-width: 960px) {
   .shell { grid-template-columns: 1fr; gap: var(--sp-5); padding-top: var(--sp-5); }
   /* 窄屏不要纵向堆出半屏目录，改成一条可横滑的层级条 */
@@ -337,4 +416,9 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
   .topbar .crumb { display: none; }
   .shell { padding: var(--sp-4) var(--sp-4) var(--sp-7); }
   .lesson { gap: var(--sp-5); }
+}
+
+/* 顶栏放不下时先砍面包屑，别去挤进度格和声音开关 */
+@media (max-width: 900px) {
+  .topbar .crumb { display: none; }
 }

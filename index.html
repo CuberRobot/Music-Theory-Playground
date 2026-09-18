@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Music Theory Playground · 看得见的乐理</title>
-<meta name="description" content="从泛音列和十二平均律开始，用能拖、能听、能看见的交互实验台讲乐理。">
+<meta name="description" content="从泛音列和十二平均律开始，用能拖、能听、能看见的交互实验台讲乐理。打开就能玩，不用先记住名字。">
 <link rel="stylesheet" href="./styles/tokens.css">
 <link rel="stylesheet" href="./styles/base.css">
 <link rel="stylesheet" href="./styles/components.css">
@@ -13,46 +13,72 @@
 
 <header class="topbar">
   <a class="brand" href="./">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="./lessons/" aria-current="false">课程地图</a>
+  </nav>
   <span class="spacer"></span>
   <span class="meter" data-meter role="img" aria-label="课程进度"></span>
   <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
 </header>
 
-<div class="shell">
-  <nav class="rail" data-nav aria-label="课程目录"></nav>
+<div class="shell--full">
 
-  <main class="lesson">
-    <section>
-      <p class="kicker">看得见的乐理 · See it, play it, hear it.</p>
-      <h1>先把声音拆开，再谈音乐</h1>
-      <p class="lead-p">乐理难，通常不是因为概念多，而是因为它们被讲成了符号。</p>
-      <p>这里的每个概念都配一个能拖、能听、能立刻看到结果的实验台。不用先记住名字——
-      先玩，听见效果，再回头看它叫什么，以及为什么必须叫这个。</p>
-      <p>顺序是<b>从最底层往上搭</b>：先弄清楚一个音其实是一串音（泛音列），
-      再弄清楚音高之间的标尺是怎么被人为定出来的（十二平均律），然后才谈音程、和弦、调。
-      这样后面每一个规则都有出处，而不是凭空出现的约定。</p>
-    </section>
+  <section class="hero">
+    <p class="kicker">看得见的乐理 · See it, play it, hear it.</p>
+    <h1>先把声音拆开，再谈音乐</h1>
+    <p class="lead-p">乐理难，通常不是因为概念多，而是因为它们被讲成了符号。</p>
+    <p>这里的每个概念都配一个能拖、能听、能立刻看到结果的实验台。不用先记住名字——
+    先玩，听见效果，再回头看它叫什么，以及为什么必须叫这个名字。</p>
+    <p>顺序是从最底层往上搭的：先弄清楚一个音其实是一串音（泛音列），
+    再弄清楚音高之间的标尺是怎么被人为定出来的（十二平均律），然后才谈音程、和弦、调。
+    这样后面每一个规则都有出处，而不是凭空出现的约定。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="./lessons/00-harmonics/">从第 0 节开始</a>
+      <a class="btn" href="./lessons/">看完整课程地图</a>
+    </div>
+  </section>
 
-    <div class="wide" data-map></div>
+  <section class="home-section">
+    <h2>先玩一个</h2>
+    <p class="sub">下面这个能出声。点「播放」让它一直响着，然后拖竖条改变泛音强弱——
+    波形和音色会跟着立刻变。</p>
+    <div class="card" data-widget="harmonic-lab" data-compact="1"></div>
+    <p class="hint">这是简化版。完整的实验台有 16 条泛音、8 种音色预设，
+    还有一张把每个泛音和十二平均律逐一对照的表，在<a href="./lessons/00-harmonics/">第 0 节</a>。</p>
+  </section>
 
-    <section>
-      <h2>三条不动摇的规矩</h2>
-      <p><strong>先听见，后命名。</strong>每个术语出现之前，先让你玩过这个现象。
-      先听出"这两个音合不上"，再告诉你那叫狼五度。</p>
-      <p><strong>静音也读得懂。</strong>很多人在办公室或图书馆打开网页，声音是关着的。
-      所以每个声音事件都有视觉等价物：音高有高度，协和度有波形，偏差有数字。
-      声音是增强，不是载体。</p>
-      <p><strong>视觉与声音同帧。</strong>发声和动画共用同一个音频时钟，
-      你看到的抖动和你听到的抖动是同一个抖动。</p>
-    </section>
+  <section class="home-section">
+    <h2>三条不动摇的规矩</h2>
+    <p class="sub">它们决定了这个站长什么样，也决定了你在这里的体验。</p>
+    <div class="rule-grid">
+      <div class="card">
+        <h3>先听见，后命名</h3>
+        <p>每个术语出现之前，先让你玩过这个现象。先听出"这两个音合不上"，再告诉你那叫狼五度。</p>
+      </div>
+      <div class="card">
+        <h3>静音也读得懂</h3>
+        <p>很多人在办公室或图书馆打开网页，声音是关着的。所以每个声音事件都有视觉等价物：
+        音高有高度，偏差有数字，波形有形状。声音是增强，不是载体。</p>
+      </div>
+      <div class="card">
+        <h3>视觉与声音同帧</h3>
+        <p>发声和动画共用同一个音频时钟。你看到的抖动和你听到的抖动，是同一个抖动。</p>
+      </div>
+    </div>
+  </section>
 
-    <section>
-      <h2>怎么用</h2>
-      <p>从左边目录的第一节开始，或者直接点上面任意一张"已上线"的卡片。
-      每一节的结构都一样：先一个能玩的东西，再解释它，然后一个小挑战，最后小结。</p>
-      <p class="hint">页面里的声音全部由浏览器实时合成，不加载任何音频文件，断网也能用。</p>
-    </section>
-  </main>
+  <section class="home-section">
+    <h2>课程</h2>
+    <p class="sub">六层，共 14 节，从物理性质往上建。灰色的还没写。</p>
+    <div data-map-preview></div>
+    <p class="hint"><a href="./lessons/">看完整课程地图，带每节的说明 →</a></p>
+  </section>
+
+  <footer class="page-foot">
+    <span>代码 MIT · 教学内容 CC BY-SA 4.0</span>
+    <span><a href="https://github.com/CuberRobot/Music-Theory-Playground">GitHub</a></span>
+  </footer>
+
 </div>
 
 <script type="module" src="./src/js/main.js"></script>

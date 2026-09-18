@@ -13,15 +13,23 @@ import { midiToHz, nameOfMidi, fmtCents, fmtHz } from '../music/pitch.js';
 import { harmonicDeviation, HARMONIC_LABELS, SPECTRA, spectrumToAmps } from '../music/tuning.js';
 import { createVoice, playNote, usableHarmonics } from '../audio/engine.js';
 
-const BARS = 16;
 const VOICE_H = 24;
 const MIN_MIDI = 36;
 const MAX_MIDI = 72;
-const TABLE_ROWS = 12;
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
-export function mountHarmonicLab(root) {
+/**
+ * @param {HTMLElement} root
+ * @param {{compact?: boolean}} [opts]
+ *   compact 模式给首页用：8 条泛音、不要基音滑块、不要泛音表，
+ *   一屏之内就能看懂"一个音是一串音"，然后再进第 0 节看完整的。
+ */
+export function mountHarmonicLab(root, opts = {}) {
+  const compact = !!opts.compact;
+  const BARS = compact ? 8 : 16;
+  const TABLE_ROWS = compact ? 0 : 12;
+
   const state = {
     midi: 60,
     amps: spectrumToAmps('saw', BARS),
@@ -32,16 +40,18 @@ export function mountHarmonicLab(root) {
 
   root.innerHTML = `
     <div class="card-head">
-      <h2>泛音实验台</h2>
-      <p class="hint">拖动竖条改变每个泛音的强度，音色会立刻变</p>
+      <h2>${compact ? '按一个键，听到的其实是一串频率' : '泛音实验台'}</h2>
+      <p class="hint">${compact
+        ? '拖一下竖条，或者点下面的音色'
+        : '拖动竖条改变每个泛音的强度，音色会立刻变'}</p>
     </div>
 
     <div class="lab-controls">
-      <div class="field">
+      ${compact ? '' : `<div class="field">
         <label for="hl-base">基音</label>
         <input id="hl-base" type="range" min="${MIN_MIDI}" max="${MAX_MIDI}" step="1" value="${state.midi}">
         <span class="val" data-base-name>—</span>
-      </div>
+      </div>`}
       <button class="btn btn-primary" type="button" data-play>播放</button>
       <button class="btn" type="button" data-no-fund aria-pressed="false">移去基频</button>
     </div>
@@ -55,7 +65,7 @@ export function mountHarmonicLab(root) {
 
     <div class="seg" data-presets role="group" aria-label="音色预设"></div>
 
-    <div class="scroll-x scroll-x--wide">
+    ${compact ? '' : `<div class="scroll-x scroll-x--wide">
       <table class="table" data-table>
         <caption class="sr-only">泛音列表与它们和十二平均律的偏差</caption>
         <thead>
@@ -69,7 +79,7 @@ export function mountHarmonicLab(root) {
         </thead>
         <tbody></tbody>
       </table>
-    </div>
+    </div>`}
   `;
 
   const el = {
@@ -204,12 +214,15 @@ export function mountHarmonicLab(root) {
 
   // ---- 基音与播放 ---------------------------------------------------------
 
-  el.base.addEventListener('input', () => {
-    state.midi = Number(el.base.value);
-    pushToVoice();
-    drawScope();
-    paintTable();
-  });
+  if (el.base) {
+    el.base.addEventListener('input', () => {
+      state.midi = Number(el.base.value);
+      pushToVoice();
+      drawScope();
+      paintTable();
+      paintBase();
+    });
+  }
 
   el.play.addEventListener('click', () => {
     if (state.playing) {
@@ -328,6 +341,7 @@ export function mountHarmonicLab(root) {
   // ---- 泛音表 -------------------------------------------------------------
 
   function paintTable() {
+    if (!el.tbody) return;
     const hz0 = baseHz();
     const rows = [];
     for (let h = 1; h <= TABLE_ROWS; h++) {
@@ -349,6 +363,7 @@ export function mountHarmonicLab(root) {
   }
 
   function paintBase() {
+    if (!el.baseName) return;
     el.baseName.textContent = `${nameOfMidi(state.midi)} · ${fmtHz(baseHz())} Hz`;
   }
 
@@ -359,7 +374,6 @@ export function mountHarmonicLab(root) {
   paintBase();
   paintTable();
   drawScope();
-  el.base.addEventListener('input', paintBase);
 
   if (typeof ResizeObserver !== 'undefined') {
     new ResizeObserver(() => drawScope()).observe(el.scope);

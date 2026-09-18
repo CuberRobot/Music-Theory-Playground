@@ -97,8 +97,7 @@ function mountWidgets() {
     const mount = WIDGETS[host.dataset.widget];
     if (!mount) continue;
     try {
-      // data-compact="1" 让同一个实验台以精简形态出现在首页
-      mount(host, { compact: host.dataset.compact === '1' });
+      mount(host);
     } catch (err) {
       // 一个实验台坏掉不应该带走整页
       console.error(`[Music Theory Playground] 挂载 ${host.dataset.widget} 失败`, err);
@@ -151,29 +150,11 @@ function renderMap() {
     </section>`).join('');
 }
 
-/** 首页的课程预览：只列层级和节名，详细的去课程地图页看。 */
-function renderMapPreview() {
-  const host = document.querySelector('[data-map-preview]');
-  if (!host) return;
-  const root = rootPrefix();
-
-  host.innerHTML = TIERS.map((tier) => `
-    <div class="preview-row">
-      <div class="preview-tier">${tier.title}</div>
-      <div class="preview-lessons">
-        ${tier.lessons.map((l) => (l.status === 'ready'
-          ? `<a class="chip chip-ready" href="${root}${hrefOf(l)}"><em>${l.no}</em>${l.title}</a>`
-          : `<span class="chip"><em>${l.no}</em>${l.title}</span>`)).join('')}
-      </div>
-    </div>`).join('');
-}
-
 installUnlockOnGesture();
 renderRail();
 renderMeter();
 renderFoot();
 renderMap();
-renderMapPreview();
 mountWidgets();
 wireSoundToggle();
 

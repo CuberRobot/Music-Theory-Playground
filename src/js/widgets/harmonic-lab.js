@@ -16,20 +16,12 @@ import { createVoice, playNote, usableHarmonics } from '../audio/engine.js';
 const VOICE_H = 24;
 const MIN_MIDI = 36;
 const MAX_MIDI = 72;
+const BARS = 16;
+const TABLE_ROWS = 12;
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
 
-/**
- * @param {HTMLElement} root
- * @param {{compact?: boolean}} [opts]
- *   compact 模式给首页用：8 条泛音、不要基音滑块、不要泛音表，
- *   一屏之内就能看懂"一个音是一串音"，然后再进第 0 节看完整的。
- */
-export function mountHarmonicLab(root, opts = {}) {
-  const compact = !!opts.compact;
-  const BARS = compact ? 8 : 16;
-  const TABLE_ROWS = compact ? 0 : 12;
-
+export function mountHarmonicLab(root) {
   const state = {
     midi: 60,
     amps: spectrumToAmps('saw', BARS),
@@ -40,18 +32,16 @@ export function mountHarmonicLab(root, opts = {}) {
 
   root.innerHTML = `
     <div class="card-head">
-      <h2>${compact ? '按一个键，听到的其实是一串频率' : '泛音实验台'}</h2>
-      <p class="hint">${compact
-        ? '拖一下竖条，或者点下面的音色'
-        : '拖动竖条改变每个泛音的强度，音色会立刻变'}</p>
+      <h2>泛音实验台</h2>
+      <p class="hint">拖动竖条改变每个泛音的强度，音色会立刻变</p>
     </div>
 
     <div class="lab-controls">
-      ${compact ? '' : `<div class="field">
+      <div class="field">
         <label for="hl-base">基音</label>
         <input id="hl-base" type="range" min="${MIN_MIDI}" max="${MAX_MIDI}" step="1" value="${state.midi}">
         <span class="val" data-base-name>—</span>
-      </div>`}
+      </div>
       <button class="btn btn-primary" type="button" data-play>播放</button>
       <button class="btn" type="button" data-no-fund aria-pressed="false">移去基频</button>
     </div>
@@ -65,7 +55,7 @@ export function mountHarmonicLab(root, opts = {}) {
 
     <div class="seg" data-presets role="group" aria-label="音色预设"></div>
 
-    ${compact ? '' : `<div class="scroll-x scroll-x--wide">
+    <div class="scroll-x scroll-x--wide">
       <table class="table" data-table>
         <caption class="sr-only">泛音列表与它们和十二平均律的偏差</caption>
         <thead>
@@ -79,7 +69,7 @@ export function mountHarmonicLab(root, opts = {}) {
         </thead>
         <tbody></tbody>
       </table>
-    </div>`}
+    </div>
   `;
 
   const el = {
@@ -214,15 +204,13 @@ export function mountHarmonicLab(root, opts = {}) {
 
   // ---- 基音与播放 ---------------------------------------------------------
 
-  if (el.base) {
-    el.base.addEventListener('input', () => {
-      state.midi = Number(el.base.value);
-      pushToVoice();
-      drawScope();
-      paintTable();
-      paintBase();
-    });
-  }
+  el.base.addEventListener('input', () => {
+    state.midi = Number(el.base.value);
+    pushToVoice();
+    drawScope();
+    paintTable();
+    paintBase();
+  });
 
   el.play.addEventListener('click', () => {
     if (state.playing) {
@@ -341,7 +329,6 @@ export function mountHarmonicLab(root, opts = {}) {
   // ---- 泛音表 -------------------------------------------------------------
 
   function paintTable() {
-    if (!el.tbody) return;
     const hz0 = baseHz();
     const rows = [];
     for (let h = 1; h <= TABLE_ROWS; h++) {
@@ -363,7 +350,6 @@ export function mountHarmonicLab(root, opts = {}) {
   }
 
   function paintBase() {
-    if (!el.baseName) return;
     el.baseName.textContent = `${nameOfMidi(state.midi)} · ${fmtHz(baseHz())} Hz`;
   }
 

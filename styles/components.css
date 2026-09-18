@@ -316,7 +316,95 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 /* --- 窄屏 ----------------------------------------------------------------- */
 
-/* --- 落地首页与课程地图页 -------------------------------------------------- */
+/* --- 落地首页：毛玻璃门面 -------------------------------------------------- */
+
+.landing {
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+}
+
+/* 背景色团。毛玻璃要背后有东西才看得出来，这三个色团就是"背后"。 */
+.orbs { position: absolute; inset: 0; overflow: hidden; z-index: 0; }
+.orb { position: absolute; border-radius: 50%; }
+.orb-a {
+  width: 58vmax; height: 58vmax; left: -20vmax; top: -24vmax;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--amber) 60%, transparent), transparent 68%);
+}
+.orb-b {
+  width: 48vmax; height: 48vmax; right: -18vmax; top: -6vmax;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--green) 45%, transparent), transparent 68%);
+}
+.orb-c {
+  width: 54vmax; height: 54vmax; left: 16vmax; bottom: -28vmax;
+  background: radial-gradient(circle,
+    color-mix(in srgb, var(--clay) 34%, transparent), transparent 70%);
+}
+
+.landing > .topbar, .landing-stage { position: relative; z-index: 1; }
+
+/* 门面页的顶栏不要那条底色，让它透出背景色团 */
+.topbar--plain {
+  position: static;
+  background: transparent; border-bottom: 0; backdrop-filter: none;
+}
+
+.landing-stage {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: var(--sp-5);
+  padding: var(--sp-6) var(--sp-5) var(--sp-8);
+}
+
+.glass {
+  width: min(36rem, 100%);
+  padding: clamp(32px, 6vw, 60px) clamp(24px, 5vw, 56px);
+  border-radius: 28px;
+  text-align: center;
+  background: color-mix(in srgb, var(--surface) 58%, transparent);
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+  border: 1px solid color-mix(in srgb, #FFFFFF 62%, transparent);
+  box-shadow:
+    0 24px 64px rgba(90, 78, 52, .14),
+    inset 0 1px 0 rgba(255, 255, 255, .8);
+}
+.glass h1 {
+  font-size: clamp(1.7rem, 1rem + 2.6vw, 2.6rem);
+  margin-bottom: var(--sp-4);
+}
+.glass p { color: var(--ink-2); margin-inline: auto; max-width: 26rem; }
+.glass .actions {
+  display: flex; flex-wrap: wrap; gap: var(--sp-3);
+  justify-content: center; margin-top: var(--sp-6);
+}
+.glass .actions .btn {
+  min-height: 44px; padding-inline: var(--sp-5);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  border-color: color-mix(in srgb, var(--line-strong) 70%, transparent);
+}
+.glass .actions .btn.btn-primary {
+  background: var(--amber); border-color: var(--amber-deep);
+}
+.glass .actions .btn:hover { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+.glass .actions .btn.btn-primary:hover {
+  background: color-mix(in srgb, var(--amber) 85%, var(--surface));
+}
+
+.landing-note {
+  margin: 0; font-size: var(--fs-tiny); color: var(--ink-3);
+  text-align: center;
+}
+
+/* 浏览器不支持 backdrop-filter 时给一块实底，别让字浮在色团上 */
+@supports not (backdrop-filter: blur(4px)) {
+  .glass { background: color-mix(in srgb, var(--surface) 94%, transparent); }
+}
+
+/* --- 课程地图页 ------------------------------------------------------------ */
 
 /* 首页和地图页不需要左栏，用整幅宽度 */
 .shell--full {
@@ -342,42 +430,13 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 .home-section > .sub { color: var(--ink-3); margin: 0 0 var(--sp-5); }
 
 /* 顶层导航（课程地图入口） */
-.topnav { display: flex; gap: var(--sp-1); }
+.topnav { display: flex; flex-wrap: wrap; gap: var(--sp-1); }
 .topnav a {
   font-size: var(--fs-small); color: var(--ink-2); text-decoration: none;
   padding: 5px var(--sp-3); border-radius: var(--r-pill); white-space: nowrap;
 }
 .topnav a:hover { background: var(--surface-2); color: var(--ink-1); }
 .topnav a[aria-current="page"] { background: var(--amber-soft); color: var(--ink-1); }
-
-/* 首页的课程预览：一行一层，点得动的只有已上线的 */
-.preview-row {
-  display: grid; grid-template-columns: 10rem minmax(0, 1fr);
-  gap: var(--sp-4); align-items: baseline;
-  padding: var(--sp-4) 0; border-top: 1px solid var(--line);
-}
-
-.rule-grid {
-  display: grid; gap: var(--sp-4);
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-.rule-grid .card h3 { font-size: var(--fs-body); margin-bottom: var(--sp-2); }
-.rule-grid .card p { font-size: var(--fs-small); color: var(--ink-3); margin: 0; }
-.preview-tier { font-family: var(--font-serif); color: var(--ink-1); }
-.preview-lessons { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
-.chip {
-  display: inline-flex; align-items: baseline; gap: 6px;
-  font-size: var(--fs-small); padding: 4px var(--sp-3);
-  border-radius: var(--r-pill);
-  background: var(--surface-2); color: var(--ink-4);
-  text-decoration: none; border: 1px solid transparent;
-}
-.chip em { font-style: normal; font-variant-numeric: tabular-nums; font-size: var(--fs-tiny); }
-.chip-ready {
-  background: var(--surface); color: var(--ink-1); border-color: var(--line-strong);
-}
-.chip-ready:hover { background: var(--amber-soft); border-color: var(--amber-deep); }
-.chip-ready em { color: var(--amber-deep); }
 
 .page-foot {
   margin-top: var(--sp-8); padding-top: var(--sp-5);
@@ -389,8 +448,10 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 .page-foot a { color: var(--ink-2); }
 
 @media (max-width: 640px) {
-  .preview-row { grid-template-columns: 1fr; gap: var(--sp-2); }
-  .topnav { display: none; }
+  /* 门面页的顶栏就是导航本身，不能藏；内容页有左栏，藏掉省地方 */
+  .topbar:not(.topbar--plain) .topnav { display: none; }
+  .topbar--plain { flex-wrap: wrap; row-gap: var(--sp-1); }
+  .topbar--plain .brand { width: 100%; }
 }
 
 @media (max-width: 960px) {

@@ -35,7 +35,7 @@ MTP_PORT=8080 ./scripts/dev.sh
 
 ```text
 Music-Theory-Playground/
-├── index.html            # 落地首页（讲差异 + 一个能立刻玩的演示）
+├── index.html            # 门面页：毛玻璃卡片 + 进入项目 / GitHub
 ├── lessons/
 │   ├── index.html        # 课程地图
 │   └── 00-harmonics/     # 章节页，一章一个目录

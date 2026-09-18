@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 3 节 · 音程 · Music Theory Playground</title>
+<meta name="description" content="度数、音数、性质、转位。用可拖的音程实验台分清度数和音数，理解同音异名为什么是两回事。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="03-interval">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="../../lessons/">课程地图</a>
+  </nav>
+  <span class="crumb">二 · 两个音之间 / <b>第 3 节 音程</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 3 节 · 音程</p>
+      <h1>两个音之间有多远</h1>
+      <p class="lead-p">有了可以测量的音高坐标，距离才有意义。</p>
+      <p>音程就是两个音之间的距离。但麻烦在于，这个距离有<b>两个</b>量法：
+      跨了几个字母（度数），和差了几个半音（音数）。两个量都对，但回答的是不同的问题。</p>
+      <p>下面这个实验台可以让你同时看到这两个数字，然后在键盘上拖出一个反例——
+      同一个黑键，换个名字就能从"小三度"变成"增二度"。</p>
+    </section>
+
+    <div class="card wide" data-widget="interval-lab"></div>
+
+    <section>
+      <h2>刚才发生了什么</h2>
+      <p><strong>度数</strong>：数的是字母。C 到 G 跨过 C D E F G 五个字母，所以是五度。
+      注意是"数到"，两头都算，所以 C 到 C 是一度而不是零度。</p>
+      <p><strong>音数</strong>：数的是半音。C 到 G 是 7 个半音。C 到 C 是 0。</p>
+      <p><strong>性质</strong>：同一度数下，音数还可以不一样，用大、小、纯、增、减来区分。
+      二度、三度、六度、七度有大小之分；一度、四度、五度、八度只有纯和增减，
+      没有"大五度"这种东西。</p>
+      <p>度数加性质，才是音程的完整名字。<b>大三度</b>、<b>纯五度</b>、<b>增二度</b>——
+      这三个字里，一个字说度数，另外两个字说性质。</p>
+    </section>
+
+    <section>
+      <h2>C→D♯ 和 C→E♭ 不是同一个音程</h2>
+      <p>在钢琴上，D♯ 和 E♭ 是同一个黑键，同一个频率。但音程不是。</p>
+      <p>C 到 E♭ 是<b>小三度</b>：跨 C D E 三个字母，3 个半音。
+      C 到 D♯ 是<b>增二度</b>：跨 C D 两个字母，也是 3 个半音。
+      音数一样，度数不一样，所以性质也不一样。</p>
+      <p>听起来完全一样，为什么还要区分？因为在具体的调里，它们承担的功能不同。
+      大三度降半音就是小三度，这是把音阶里原有的音降低；而增二度通常是把某个音升高造成的，
+      它出现的场合往往是和声小调里那个著名的跳跃。写法不同，说明它从哪来、要往哪去。</p>
+      <p>这就是上一节说"等音名字不同、含义也不同"的后果。在实验台里把拼写切换到降号，
+      同一个键的名字和音程名会一起变。</p>
+    </section>
+
+    <section>
+      <h2>单音程、复音程、转位</h2>
+      <p><strong>单音程</strong>是一个八度以内的音程。<strong>复音程</strong>超过一个八度，
+      九度、十度、十一度……判断性质时先减掉整八度，看剩下的单音程是什么。</p>
+      <p><strong>转位</strong>是把下方音升高八度、或者把上方音降低八度，让两个音的关系翻过来。
+      规律很好记：度数相加等于 9，性质大小互换、纯还是纯、增减互换。</p>
+      <p>纯五度转位是纯四度（3:2 变成 4:3，正好是倒过来）。大三度转位是小六度。
+      这两个比例在上一节的泛音列里都出现过。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两组音程，哪一组是大三度（4 个半音）？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.6,
+        "items": [
+          { "label": "A 组", "cents": 300 },
+          { "label": "B 组", "cents": 400 },
+          { "label": "C 组", "cents": 700 }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。B 组比 A 组亮一点、宽一点，但还不到五度那么空。",
+        "explain": "对，B 组是 400 音分 = 大三度。A 组是小三度（300 音分），C 组是纯五度（700 音分）。大三度比小三度亮，这是大小调性格差别的主要来源。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>音程有两个量：度数（数字母）和音数（数半音）。两者都要说，才算说清。</li>
+        <li>性质用大、小、纯、增、减表示。二三四六七度有大小，一四五八度只有纯和增减。</li>
+        <li>等音不是同一个音程：C→E♭ 是小三度，C→D♯ 是增二度。音数相同，度数和性质不同。</li>
+        <li>超过八度的是复音程，判断性质时先减掉整八度。</li>
+        <li>转位后度数相加等于 9，大小互换，纯仍是纯。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

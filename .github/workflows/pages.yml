@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+# 这个站是零构建的纯静态站，所以不需要安装依赖、不需要打包。
+# 把整个仓库当作站点上传即可。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同时只跑一个部署，push 密集时取消排队中的旧任务
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # enablement: true 让这个步骤在 Pages 还没启用时顺手把它启用，
+      # 免得因为漏了仓库设置而报一句看不懂的错。
+      # 前提：仓库是公开的，或者账号支持私有库 Pages（Pro/Team/Enterprise）。
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4

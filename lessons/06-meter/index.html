@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 6 节 · 节奏与节拍 · Music Theory Playground</title>
+<meta name="description" content="拍号、强弱规律、单拍子与复拍子、切分音。用一个可点的节拍网格听出重音在哪。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="06-meter">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="../../lessons/">课程地图</a>
+  </nav>
+  <span class="crumb">三 · 时间 / <b>第 6 节 节奏与节拍</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 6 节 · 节奏与节拍</p>
+      <h1>节拍不是均匀的嘀嗒</h1>
+      <p class="lead-p">如果节拍只是匀速的嘀嗒，那 3/4 和 4/4 就没有区别了。</p>
+      <p>节拍的真正内容是<b>强弱的循环</b>：每小节的第一拍最强，后面按拍号排下去。
+      换一个拍号，重音落在第几拍就变了，整段音乐的呼吸也跟着变。</p>
+      <p>下面这个网格可以让你换拍号、放拍点、听重音在哪。注意强弱梯度那条柱子——
+      它不是装饰，是这一节的核心。</p>
+    </section>
+
+    <div class="card wide" data-widget="meter-grid"></div>
+
+    <section>
+      <h2>四个容易混的词</h2>
+      <p><strong>拍</strong>：音乐的基本时间单位，像秒针的一格。</p>
+      <p><strong>节拍</strong>：拍的组织方式，重点是强弱规律。它是一套规则，不是一串声音。</p>
+      <p><strong>节奏</strong>：具体某个音在哪个位置响、响多久。它是实际发生的事。</p>
+      <p><strong>节奏型</strong>：反复出现的一种节奏片段。</p>
+      <p>一句话区分：节拍是<b>背景的规律</b>，节奏是<b>前景的实际</b>。
+      节拍可以不变，节奏一直在变。</p>
+    </section>
+
+    <section>
+      <h2>拍号的两个数字</h2>
+      <p>拍号写成 3/4 这样的形式。<b>分子</b>是每小节几拍，<b>分母</b>是以什么音符为一拍。</p>
+      <p>分母 4 表示四分音符，分母 8 表示八分音符。所以 3/4 是"每小节三拍、每拍一个四分音符"，
+      6/8 是"每小节六拍、每拍一个八分音符"。</p>
+      <p><strong>单拍子</strong>是每小节只有一个强拍：2/4、3/4、4/4。
+      4/4 里的第三拍叫次强拍，比弱拍重、比强拍轻。</p>
+      <p><strong>复拍子</strong>是把几个单拍子合并：6/8 实际上是两个 3/8，
+      所以除了第一拍，第四拍也有一个次重音。这就是 6/8 那种"摇荡"感觉的来源——
+      它听起来像是两拍，每拍分三下，而不是均匀的六下。</p>
+    </section>
+
+    <section>
+      <h2>切分音：把重音挪到不该重的地方</h2>
+      <p>正常的重音在强拍上。切分音做的是反过来的事：
+      让一个音从弱拍开始，并且持续到下一个强拍上，把重音"抢"过来。</p>
+      <p>在网格里试试：在 4/4 的第 2 和第 4 拍上放拍点，你就会听到重心从 1、3 挪到了 2、4。
+      这就是爵士、流行、拉丁音乐里最常见的错位感的来源。</p>
+      <p>切分音不是错误，也不是"没对上拍子"。它是一种有意的重心转移，
+      而且它必须建立在一个稳定的背景节拍之上才成立——
+      没有规矩，就谈不上打破规矩。</p>
+    </section>
+
+    <section>
+      <h2>弱起</h2>
+      <p>很多时候音乐不从强拍开始，而是从弱拍或者更早的位置进入，
+      这叫弱起（也叫不完全小节）。它让开头有了推进力，像助跑一样。
+      判定弱起的方法是看首尾：开头少的那部分，会在最后一个小节补回来。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两段是三拍子和四拍子，哪一段是三拍子？",
+        "root": 60,
+        "spectrum": "organ",
+        "duration": 1.2,
+        "items": [
+          { "clicks": [2, 1, 1, 2, 1, 1], "beat": 0.5 },
+          { "clicks": [2, 1, 1, 1, 2, 1, 1, 1], "beat": 0.5 }
+        ],
+        "answer": 0,
+        "hint": "跟着重音打拍子，数一数两个重音之间隔了几下。",
+        "explain": "对，A 组是三拍子。重音每三下出现一次是 3/4，每四下出现一次是 4/4。判断拍号靠的不是速度，是重音之间隔多少拍。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>节拍 = 强弱的循环，不只是匀速的嘀嗒。</li>
+        <li>拍号分子是每小节几拍，分母是以什么音符为一拍。</li>
+        <li>单拍子每小节一个强拍；复拍子由几个单拍子合并，会有额外的次重音。</li>
+        <li>6/8 听起来像两拍各分三下，而不是均匀的六下。</li>
+        <li>切分音是把重音从强拍挪到弱拍，它依赖稳定的节拍背景才成立。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

@@ -6,9 +6,12 @@
 
 纯前端，零依赖，零构建，可直接托管在 GitHub Pages。
 
+线上地址：https://cuberrobot.github.io/Music-Theory-Playground/
+（首次需要在仓库 Settings → Pages 里把 Source 选成 GitHub Actions。）
+
 ## 现在处于什么阶段
 
-`M0 · 目录初始化与规范`。还没有正式内容页，只有脚手架自检页。
+`M1`。设计系统、音频引擎、前两节已经上线：泛音列、十二平均律。
 
 ## 本地预览
 
@@ -32,8 +35,10 @@ MTP_PORT=8080 ./scripts/dev.sh
 
 ```text
 Music-Theory-Playground/
-├── index.html            # 首页 / 学习地图
-├── lessons/              # 章节页，一章一个目录
+├── index.html            # 门面页：毛玻璃卡片 + 进入项目 / GitHub
+├── lessons/
+│   ├── index.html        # 课程地图
+│   └── 00-harmonics/     # 章节页，一章一个目录
 ├── labs/                 # 独立实验台，可被多章复用
 ├── styles/
 │   ├── tokens.css        # 设计令牌（色彩/字体/间距/动效）

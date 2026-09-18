@@ -25,6 +25,13 @@ import { mountNotationLab } from './widgets/notation-lab.js';
 import { mountGlossary } from './widgets/glossary.js';
 import { mountModeDiff } from './widgets/mode-diff.js';
 import { mountBluesLab } from './widgets/blues-lab.js';
+import { mountGroupingLab } from './widgets/grouping-lab.js';
+import { mountNonchordLab } from './widgets/nonchord-lab.js';
+import { mountBorrowedLab } from './widgets/borrowed-lab.js';
+import { mountChromaticLab } from './widgets/chromatic-lab.js';
+import { mountChineseModesLab } from './widgets/chinese-modes-lab.js';
+import { mountClefRangeLab } from './widgets/clef-range-lab.js';
+import { mountTransposeLab } from './widgets/transpose-lab.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -43,6 +50,13 @@ const WIDGETS = {
   glossary: mountGlossary,
   'mode-diff': mountModeDiff,
   'blues-lab': mountBluesLab,
+  'grouping-lab': mountGroupingLab,
+  'nonchord-lab': mountNonchordLab,
+  'borrowed-lab': mountBorrowedLab,
+  'chromatic-lab': mountChromaticLab,
+  'chinese-modes-lab': mountChineseModesLab,
+  'clef-range-lab': mountClefRangeLab,
+  'transpose-lab': mountTransposeLab,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

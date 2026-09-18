@@ -437,6 +437,70 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 /* --- 术语表 ---------------------------------------------------------------- */
 
+/* --- 音值组合法 ------------------------------------------------------------ */
+
+.grp-bar {
+  position: relative; height: 104px;
+  background: var(--surface-2); border-radius: var(--r-md); overflow: hidden;
+}
+.grp-grid { position: absolute; inset: 0; }
+.grp-grid i {
+  position: absolute; top: 0; bottom: 0;
+  border-left: 1px dashed color-mix(in srgb, var(--ink-4) 40%, transparent);
+}
+.grp-beams { position: absolute; left: 0; right: 0; top: 10px; height: 6px; }
+.grp-beam { position: absolute; top: 0; height: 4px; background: var(--ink-1); border-radius: 2px; }
+.grp-notes { position: absolute; left: 0; right: 0; top: 28px; bottom: 0; display: flex; }
+.grp-note {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; border-right: 1px solid var(--surface);
+}
+.grp-head { font-size: 19px; color: var(--ink-1); line-height: 1; }
+.grp-beats { font-size: var(--fs-tiny); color: var(--ink-3); }
+
+/* --- 和弦外音 -------------------------------------------------------------- */
+
+.nc-slots { display: flex; gap: 4px; flex-wrap: wrap; }
+.nc-slot {
+  flex: 1 1 68px; min-width: 68px; min-height: 76px; padding: 6px 4px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; font: inherit; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--surface);
+}
+.nc-slot[aria-current="true"] { border-color: var(--amber-deep); box-shadow: var(--focus-ring); }
+.nc-idx { font-size: var(--fs-tiny); color: var(--ink-4); }
+.nc-name { font-size: var(--fs-small); color: var(--ink-1); }
+.nc-kind { font-size: var(--fs-tiny); color: var(--ink-3); }
+.nc-slot.is-chord { background: var(--green-soft); }
+.nc-slot.is-chord .nc-kind { color: var(--green-deep); }
+.nc-slot.is-passing, .nc-slot.is-neighbor { background: var(--amber-soft); }
+.nc-slot.is-passing .nc-kind, .nc-slot.is-neighbor .nc-kind { color: var(--amber-deep); }
+.nc-slot.is-appoggiatura { background: var(--clay-soft); }
+.nc-slot.is-appoggiatura .nc-kind { color: var(--clay-deep); }
+
+/* --- 音域条 ----------------------------------------------------------------- */
+
+.range-row {
+  display: grid; grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: var(--sp-3); align-items: center; margin-bottom: 5px;
+}
+.range-row > span { font-size: var(--fs-small); color: var(--ink-2); text-align: right; }
+.range-track { position: relative; height: 14px; background: var(--surface-2); border-radius: 7px; }
+.range-bar {
+  position: absolute; top: 0; height: 14px; border-radius: 7px;
+  background: var(--amber);
+}
+.range-bar.alt { background: var(--green); }
+.range-axis {
+  display: grid; grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: var(--sp-3); margin-top: var(--sp-2);
+}
+.range-axis .ticks { position: relative; height: 16px; }
+.range-axis .ticks i {
+  position: absolute; font-size: var(--fs-tiny); color: var(--ink-4);
+  transform: translateX(-50%);
+}
+
 .gloss-search { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
 .form-input {
   flex: 1; min-width: 220px; min-height: 44px;

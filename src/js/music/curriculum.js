@@ -43,7 +43,7 @@ export const PARTS = [
         lessons: [
           { id: '05-duration',     no: '5', title: '音的长短',   sub: '音符与休止符',         status: 'ready' },
           { id: '06-meter',        no: '6', title: '节奏与节拍', sub: '拍号、强弱、切分音',   status: 'ready' },
-          { id: '07-note-grouping', no: '7', title: '音值组合法', sub: '小节里的音符该怎么写', status: 'planned' },
+          { id: '07-note-grouping', no: '7', title: '音值组合法', sub: '小节里的音符该怎么写', status: 'ready' },
         ],
       },
       {
@@ -64,9 +64,9 @@ export const PARTS = [
           { id: '11-keysig',      no: '11', title: '调号与关系调',     sub: '五度圈',                     status: 'ready' },
           { id: '12-harmony',     no: '12', title: '调内和声',         sub: '功能与终止式',               status: 'ready' },
           { id: '13-modal-chords', no: '13', title: '调式中的音程与和弦', sub: '级数是形状，性质是长出来的', status: 'ready' },
-          { id: '14-nonchord',    no: '14', title: '和弦外音',         sub: '旋律与和声的接口',           status: 'planned' },
-          { id: '15-borrowed',    no: '15', title: '借用与副属和弦',   sub: '从隔壁调式和隔壁调借东西',   status: 'planned' },
-          { id: '16-chromatic',   no: '16', title: '半音阶与变化音',   sub: '调式变音与半音阶的写法',     status: 'planned' },
+          { id: '14-nonchord',    no: '14', title: '和弦外音',         sub: '旋律与和声的接口',           status: 'ready' },
+          { id: '15-borrowed',    no: '15', title: '借用与副属和弦',   sub: '从隔壁调式和隔壁调借东西',   status: 'ready' },
+          { id: '16-chromatic',   no: '16', title: '半音阶与变化音',   sub: '调式变音与半音阶的写法',     status: 'ready' },
           { id: '17-modulation',  no: '17', title: '调性关系',         sub: '离调、转调、移调',           status: 'ready' },
         ],
       },
@@ -75,7 +75,7 @@ export const PARTS = [
         title: '六 · 民族调式',
         blurb: '五声与七声，另一套组织音高的办法。',
         lessons: [
-          { id: '18-pentatonic-modes', no: '18', title: '五声与七声调式', sub: '宫商角徵羽与它的变体', status: 'planned' },
+          { id: '18-pentatonic-modes', no: '18', title: '五声与七声调式', sub: '宫商角徵羽与它的变体', status: 'ready' },
         ],
       },
       {
@@ -84,8 +84,8 @@ export const PARTS = [
         blurb: '把上面这些写成别人读得懂的符号。',
         lessons: [
           { id: '19-notation',   no: '19', title: '记谱法与记号', sub: '谱号、装饰音、术语',       status: 'ready' },
-          { id: '20-clefs-range', no: '20', title: '谱号与音域',  sub: '不同谱号、各种乐器能到哪', status: 'planned' },
-          { id: '21-transposing', no: '21', title: '移调乐器',    sub: '为什么单簧管写的和听的不一样', status: 'planned' },
+          { id: '20-clefs-range', no: '20', title: '谱号与音域',  sub: '不同谱号、各种乐器能到哪', status: 'ready' },
+          { id: '21-transposing', no: '21', title: '移调乐器',    sub: '为什么单簧管写的和听的不一样', status: 'ready' },
         ],
       },
       {

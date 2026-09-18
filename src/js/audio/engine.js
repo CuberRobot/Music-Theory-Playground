@@ -383,6 +383,29 @@ export function stopAll() {
   for (const v of [...liveVoices]) v.stop();
 }
 
+/**
+ * 踩镲 / 打点：短促的高通噪声。
+ * 以前用正弦振荡器做"嘀"声，那是蜂鸣不是镲 —— 镲的本质是宽带噪声。
+ */
+export function hat(at = 0, level = 0.08, decay = 0.045) {
+  const c = ensureContext();
+  if (!c) return null;
+  const src = c.createBufferSource();
+  src.buffer = getNoiseBuffer(c);
+  const hp = c.createBiquadFilter();
+  hp.type = 'highpass';
+  hp.frequency.value = 7000;
+  const g = c.createGain();
+  const t0 = c.currentTime + Math.max(0, at);
+  g.gain.setValueAtTime(Math.max(0.001, level), t0);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + decay);
+  src.connect(hp).connect(g).connect(master);
+  src.start(t0);
+  src.stop(t0 + decay + 0.03);
+  src.onended = () => { src.disconnect(); hp.disconnect(); g.disconnect(); };
+  return src;
+}
+
 /** 给界面用：判断音频是否真的可用。 */
 export function isAvailable() {
   return !!(window.AudioContext || window.webkitAudioContext);

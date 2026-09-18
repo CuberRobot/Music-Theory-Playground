@@ -7,11 +7,15 @@
 
 import { midiToHz, nameOfMidi } from '../music/pitch.js';
 import {
-  playNote, click, now, stopAll, playPluck, preloadPluck,
+  now, stopAll, playPluck, preloadPluck, hat,
 } from '../audio/engine.js';
 
-/** 十二小节布鲁斯的和弦级数：I / IV / V。 */
-const FORM = [0, 0, 0, 0, 3, 3, 0, 0, 4, 3, 0, 4];
+/**
+ * 十二小节布鲁斯。数组里的数字是**根音相对主音的半音数**，不是音阶级数：
+ * I = 0、IV = 5、V = 7。之前误写成"级数 × 5"，于是 IV 变成了 E♭、
+ * V 变成了 A♭，整条进行全错。
+ */
+const FORM = [0, 0, 0, 0, 5, 5, 0, 0, 7, 5, 0, 7];
 /** 小调五声音阶 + 降五度 = 布鲁斯音阶。第 4 个音（♭5）就是蓝调音。 */
 const BLUES_SCALE = [0, 3, 5, 6, 7, 10];
 const BLUE_DEGREE = 3;
@@ -48,14 +52,13 @@ export function mountBluesLab(root) {
     feel: root.querySelector('[data-feel]'),
   };
 
-  /** FORM 里存的是音阶级数，不是数组下标 —— 要用度数查名字，不能直接索引。 */
-  const DEGREE_NAME = { 0: 'I7', 3: 'IV7', 4: 'V7' };
+  const CHORD_NAME = { 0: 'I7', 5: 'IV7', 7: 'V7' };
   FORM.forEach((d, i) => {
     const s = document.createElement('span');
     s.className = 'tile';
     s.style.minWidth = '52px';
     s.dataset.idx = String(i);   // 不能叫 data-bar，会和下面的节号读数撞选择器
-    s.textContent = `${i + 1}·${DEGREE_NAME[d]}`;
+    s.textContent = `${i + 1}·${CHORD_NAME[d]}`;
     el.form.appendChild(s);
   });
 
@@ -66,7 +69,7 @@ export function mountBluesLab(root) {
     if (i === BLUE_DEGREE) b.classList.add('tone-clay');
     b.textContent = `${nameOfMidi(TONIC + semi + 12)}${i === BLUE_DEGREE ? '（蓝调音）' : ''}`;
     b.addEventListener('click', () => {
-      playNote(midiToHz(TONIC + semi + 24), { duration: 0.8, level: 0.26 });
+      playPluck(midiToHz(TONIC + semi + 24), { duration: 1.6, level: 0.28 });
     });
     el.scale.appendChild(b);
   });
@@ -104,12 +107,12 @@ export function mountBluesLab(root) {
 
     FORM.forEach((degree, i) => {
       const at = t0 + i * barLen - now();
-      const rootHz = midiToHz(TONIC + degree * 5);
+      const rootHz = midiToHz(TONIC + degree);
       // 低音在第 1、3 拍，和弦（属七）在第 2、4 拍，这是最基本的布鲁斯伴奏型
       // 全用拨弦音色 —— 这一节讲的是布鲁斯，没有吉他就不像
       playPluck(rootHz, { at, duration: BEAT * 1.6, level: 0.3, brightness: 0.4 });
       playPluck(rootHz, { at: at + BEAT * 2, duration: BEAT * 1.6, level: 0.28, brightness: 0.4 });
-      const chordHz = [0, 4, 7, 10].map((s) => midiToHz(TONIC + degree * 5 + 12 + s));
+      const chordHz = [0, 4, 7, 10].map((s) => midiToHz(TONIC + degree + 12 + s));
       // 和弦各弦错开一点点，就像真的扫弦
       chordHz.forEach((hz, k) => {
         playPluck(hz, { at: at + BEAT + k * 0.012, duration: BEAT * 1.4, level: 0.11, brightness: 0.62 });
@@ -120,7 +123,7 @@ export function mountBluesLab(root) {
         const frac = state.shuffle
           ? (Math.floor(e / 2) + (e % 2 ? 2 / 3 : 0))
           : e / 2;
-        click(at + frac * BEAT, { freq: e % 2 ? 820 : 1180, level: 0.05 });
+        hat(at + frac * BEAT, state.shuffle && e % 2 ? 0.05 : 0.07);
       }
     });
 
@@ -134,7 +137,7 @@ export function mountBluesLab(root) {
 
   function setBar(i) {
     state.bar = i;
-    el.bar.textContent = i < 0 ? '—' : `第 ${i + 1} 小节 · ${DEGREE_NAME[FORM[i]]}`;
+    el.bar.textContent = i < 0 ? '—' : `第 ${i + 1} 小节 · ${CHORD_NAME[FORM[i]]}`;
     [...el.form.children].forEach((s, k) => {
       s.classList.toggle('is-on', k === i);
     });

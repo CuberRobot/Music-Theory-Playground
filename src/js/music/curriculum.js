@@ -73,6 +73,35 @@ export const PARTS = [
           { id: '13-notation', no: '13', title: '记谱法与记号', sub: '谱号、装饰音、术语', status: 'ready' },
         ],
       },
+      {
+        id: 'modalMaterial',
+        title: '七 · 调内的材料',
+        blurb: '前面讲的是单个和弦。这里讲它们怎么被组织、怎么被装饰、怎么被替换。',
+        lessons: [
+          { id: '14-modal-chords', no: '14', title: '调式中的音程与和弦', sub: '级数是形状，性质是长出来的', status: 'ready' },
+          { id: '15-nonchord',     no: '15', title: '和弦外音',   sub: '旋律与和声的接口',       status: 'planned' },
+          { id: '16-borrowed',     no: '16', title: '借用与副属和弦', sub: '从隔壁调式和隔壁调借东西', status: 'planned' },
+          { id: '17-chromatic',    no: '17', title: '半音阶与变化音', sub: '调式变音与半音阶的写法', status: 'planned' },
+        ],
+      },
+      {
+        id: 'folk',
+        title: '八 · 民族调式',
+        blurb: '五声与七声，另一套组织音高的办法。',
+        lessons: [
+          { id: '18-pentatonic-modes', no: '18', title: '五声与七声调式', sub: '宫商角徵羽与它的变体', status: 'planned' },
+        ],
+      },
+      {
+        id: 'extras',
+        title: '九 · 补充专题',
+        blurb: '几件前面没展开、但迟早会用到的具体事情。',
+        lessons: [
+          { id: '19-note-grouping', no: '19', title: '音值组合法', sub: '小节里的音符该怎么写',   status: 'planned' },
+          { id: '20-clefs-range',   no: '20', title: '谱号与音域', sub: '不同谱号、各种乐器能到哪', status: 'planned' },
+          { id: '21-transposing',   no: '21', title: '移调乐器',   sub: '为什么单簧管写的和听的不一样', status: 'planned' },
+        ],
+      },
     ],
   },
   {
@@ -86,9 +115,9 @@ export const PARTS = [
         title: '七 · 写作的材料',
         blurb: '一段音乐是怎么从一个小念头长出来的。',
         lessons: [
-          { id: '14-motif',    no: '14', title: '动机与乐句',   sub: '重复、模进与句读',     status: 'planned' },
-          { id: '15-contour',  no: '15', title: '旋律的轮廓',   sub: '级进、跳进与拱形',     status: 'planned' },
-          { id: '16-groove',   no: '16', title: '节奏与律动',   sub: '律动型、切分、反拍',   status: 'planned' },
+          { id: '22-motif',    no: '22', title: '动机与乐句',   sub: '重复、模进、倒影与句读', status: 'planned' },
+          { id: '23-contour',  no: '23', title: '旋律的轮廓',   sub: '级进、跳进与拱形',     status: 'planned' },
+          { id: '24-groove',   no: '24', title: '节奏与律动',   sub: '律动型、奇数拍、复节奏', status: 'planned' },
         ],
       },
       {
@@ -96,9 +125,9 @@ export const PARTS = [
         title: '八 · 纵向与层次',
         blurb: '听起来"满"的段落，底下一定分好了工。',
         lessons: [
-          { id: '17-progression', no: '17', title: '和弦进行的写法', sub: '功能、代理与借用',     status: 'planned' },
-          { id: '18-bass',        no: '18', title: '低音线与织体',   sub: '谁在底下托着',         status: 'planned' },
-          { id: '19-register',    no: '19', title: '音区与配器',     sub: '谁该待在哪个高度',     status: 'planned' },
+          { id: '25-progression', no: '25', title: '和弦进行的写法', sub: '功能、代理与借用',     status: 'planned' },
+          { id: '26-texture',     no: '26', title: '低音线与织体',   sub: '谁在底下托着',         status: 'planned' },
+          { id: '27-orchestration', no: '27', title: '音区与配器',   sub: '音域覆盖与功能分层',   status: 'planned' },
         ],
       },
       {
@@ -106,7 +135,7 @@ export const PARTS = [
         title: '九 · 结构',
         blurb: '把材料拼成一首完整的曲子。',
         lessons: [
-          { id: '20-form', no: '20', title: '曲式与结构', sub: '从动机到一首曲子', status: 'planned' },
+          { id: '28-form', no: '28', title: '曲式与结构', sub: '重复建立、对比更新、回归满足', status: 'planned' },
         ],
       },
       {
@@ -114,9 +143,9 @@ export const PARTS = [
         title: '十 · 工具：MuseScore',
         blurb: '用 MuseScore 4 把心里的东西变成能打印、能播放的谱子。',
         lessons: [
-          { id: '21-musescore-basics',   no: '21', title: 'MuseScore 入门', sub: '新建乐谱、输入第一个音符', status: 'planned' },
-          { id: '22-musescore-notation', no: '22', title: '记谱进阶',       sub: '记号、连线、力度与速度',   status: 'planned' },
-          { id: '23-musescore-publish',  no: '23', title: '排版与导出',     sub: '整理成能给别人看的谱',     status: 'planned' },
+          { id: '29-musescore-basics',   no: '29', title: 'MuseScore 入门', sub: '新建乐谱、输入第一个音符', status: 'planned' },
+          { id: '30-musescore-notation', no: '30', title: '记谱进阶',       sub: '记号、连线、力度与速度',   status: 'planned' },
+          { id: '31-musescore-publish',  no: '31', title: '排版与导出',     sub: '整理成能给别人看的谱',     status: 'planned' },
         ],
       },
     ],

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 14 节 · 调式中的音程与和弦 · Music Theory Playground</title>
+<meta name="description" content="级数是形状，字母是位置。七个级数的性质由音阶自己决定，把不同调式逐格对照，差在哪一目了然。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="14-modal-chords">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">七 · 调内的材料 / <b>第 14 节 调式中的音程与和弦</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 14 节 · 调式中的音程与和弦</p>
+      <h1>级数是形状，字母是位置</h1>
+      <p class="lead-p">第 11 节说调内七个和弦是音阶自己长出来的。这一节把那句话用到底。</p>
+      <p><b>Roman numerals</b>（级数）真正的用处不是标记，是<b>搬家</b>：
+      <code>I–vi–IV–V</code> 是一条形状，搬到哪个调都不用重算。
+      数字说的是"建在音阶第几个音上"，大小写说的是性质。</p>
+      <p>而性质不是选出来的——<b>从音阶第 N 个音隔一个取一个，出来的就是那一级的和弦</b>。
+      它是大是小，由脚下的半音位置决定。所以七个级数的性质序列，就是那条音阶的指纹。</p>
+    </section>
+
+    <div class="card wide" data-widget="mode-diff"></div>
+
+    <section>
+      <h2>为什么这张表比背和弦有用</h2>
+      <p>大调的性质序列是 <b>大 小 小 大 大 小 减</b>。
+      把它和多利亚一比，有五格不一样（I、III、V、VI、VII）——因为多利亚本身就是个小调类的东西，
+      主和弦先就不一样。</p>
+      <p>但真正好用的比法是<b>拿它和自然小调比</b>：多利亚只改了一个音，
+      把第 6 级升高半音。就这一个音，动了三个和弦：</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">级数</th><th scope="col">自然小调</th><th scope="col">多利亚</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>II</td><td>减三（ii°）</td><td>小三（ii）</td></tr>
+            <tr><td>IV</td><td>小三（iv）</td><td class="flag-ok">大三（IV）</td></tr>
+            <tr><td>VI</td><td>大三（♭VI）</td><td>减三（vi°）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>其中第四级最要紧——只要弹一个 IV 大三和弦，听众立刻知道这不是自然小调，是多利亚。
+      这就是"招牌和弦"的意思：一个和弦就能定调式。</p>
+      <p>同样的逻辑，其余几个调式各有一张自己的招牌：</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead>
+            <tr><th scope="col">调式</th><th scope="col">招牌和弦</th><th scope="col">为什么是它</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Dorian 多利亚</td><td class="num">IV 大三</td><td>第 6 级升高半音造成，自然小调同位置是小三</td></tr>
+            <tr><td>Phrygian 弗里吉亚</td><td class="num">♭II 大三</td><td>第 2 级降低半音造成，"阿拉伯"味道的来源</td></tr>
+            <tr><td>Lydian 利底亚</td><td class="num">II 大三</td><td>第 4 级升高半音造成，整条音阶悬起来</td></tr>
+            <tr><td>Mixolydian 混合利底亚</td><td class="num">♭VII 大三</td><td>第 7 级降低半音造成，摇滚里那个"降七级"</td></tr>
+            <tr><td>Locrian 洛克里亚</td><td class="num">I 减三</td><td>主和弦本身就是减三和弦，所以它最难当"家"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>注意这些记号（♭II、♭VII）里的升降号是<b>相对于大调音阶</b>说的。
+      C 大调里 <code>VI</code> 是 A 大三，<code>♭VI</code> 是 A♭ 大三，两回事。
+      这个约定要记牢，不然读别人的分析会一直错位。</p>
+    </section>
+
+    <section>
+      <h2>音程也一样，只是没那么常用</h2>
+      <p>和弦是"隔一个取一个"，音程就是"隔一个取相邻"。
+      同一个度数在不同调式里的性质也不同——比如大调里的四度是纯四度，
+      但在利底亚里，主音到第四级是<b>增四度</b>（因为第 4 级升高了）。</p>
+      <p>判断和前面一样：先看度数（跨几个字母），再看音数（几个半音），
+      拿这个调的音阶去对，性质自然就出来了。不用背，要算。</p>
+    </section>
+
+    <div class="card wide challenge" data-widget="listen-challenge">
+      <script type="application/json">
+      {
+        "title": "听辨挑战",
+        "question": "下面两个都是从主音出发的和弦，哪一个是多利亚的招牌和弦（IV 大三）？",
+        "root": 62,
+        "spectrum": "organ",
+        "duration": 1.6,
+        "items": [
+          { "label": "A 组", "chord": [0, 3, 7] },
+          { "label": "B 组", "chord": [5, 9, 12] }
+        ],
+        "answer": 1,
+        "hint": "再听一遍。B 组比 A 组亮，因为它的下面那个三度是大三度。",
+        "explain": "对，B 组是 D 上的大三和弦 —— 在 D 多利亚里它就是 IV 级，正是那个招牌和弦。只改一个音，整条音阶的性格就变了。"
+      }
+      </script>
+    </div>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>级数是形状，字母是位置。<code>I–vi–IV–V</code> 搬到任何调都不用重算。</li>
+        <li>性质不是挑的：从音阶第 N 个音隔一个取一个，出来什么是什么。</li>
+        <li>七个级数的性质序列就是那条音阶的指纹。大调是 大 小 小 大 大 小 减。</li>
+        <li>各调式都有招牌和弦：Dorian 的 IV、Phrygian 的 ♭II、Lydian 的 II、Mixolydian 的 ♭VII 都是大三。</li>
+        <li>级数记号里的升降号是相对大调音阶说的。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

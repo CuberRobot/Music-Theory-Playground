@@ -23,6 +23,7 @@ import { mountCircleFifths } from './widgets/circle-fifths.js';
 import { mountChordMap } from './widgets/chord-map.js';
 import { mountNotationLab } from './widgets/notation-lab.js';
 import { mountGlossary } from './widgets/glossary.js';
+import { mountModeDiff } from './widgets/mode-diff.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -39,6 +40,7 @@ const WIDGETS = {
   'chord-map': mountChordMap,
   'notation-lab': mountNotationLab,
   glossary: mountGlossary,
+  'mode-diff': mountModeDiff,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

@@ -183,9 +183,9 @@ export const PARTS = [
         title: '俄罗斯与东欧',
         blurb: '民族调式、管弦乐色彩，以及乡愁。',
         lessons: [
-          { id: 'h-borodin-dances', no: 'H', title: '鲍罗丁 · 波罗维茨舞曲', sub: '合唱与乐队的色彩块', status: 'planned' },
-          { id: 'i-borodin-quartet', no: 'I', title: '鲍罗丁 · 第二弦乐四重奏', sub: '四件乐器怎么分工', status: 'planned' },
-          { id: 'j-dvorak-9', no: 'J', title: '德沃夏克 · 第九交响曲', sub: '把家乡写进交响曲', status: 'planned' },
+          { id: 'h-borodin-dances', no: 'H', title: '鲍罗丁 · 波罗维茨舞曲', sub: '一个化学家写的歌剧', status: 'ready' },
+          { id: 'i-borodin-quartet', no: 'I', title: '鲍罗丁 · 第二弦乐四重奏', sub: '四个人，没有指挥', status: 'ready' },
+          { id: 'j-dvorak-9', no: 'J', title: '德沃夏克 · 第九交响曲', sub: '在纽约写的波希米亚', status: 'ready' },
         ],
       },
       {

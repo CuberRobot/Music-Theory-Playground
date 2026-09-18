@@ -205,6 +205,27 @@ class AdditiveVoice {
     return this;
   }
 
+  /**
+   * 每个泛音按自己的速度衰减。
+   *
+   * 这是"像真乐器"和"像电子琴"之间最要紧的一条：真实乐器的泛音不是一起断的，
+   * 高次泛音衰减得快得多，所以起音亮、余音暖。以前所有泛音走同一个包络，
+   * 听起来就是一块静止的板。
+   *
+   * @param {number} baseTau 基音的时间常数（秒），高次泛音按 1/(1+0.9i) 递减
+   * @param {number} [at] 绝对起始时间，默认现在
+   */
+  setDecay(baseTau = 1.1, at = null) {
+    if (this.disposed) return this;
+    const t = (at ?? this.ctx.currentTime) + 0.008;
+    for (let i = 0; i < this.count; i++) {
+      if ((this.amps[i] ?? 0) <= 0.0005) continue;   // 本来就没响的泛音不用管
+      const tau = Math.max(0.04, baseTau / (1 + i * 0.9));
+      this.gains[i].gain.setTargetAtTime(0, t, tau);
+    }
+    return this;
+  }
+
   /** 立刻淡出。 */
   stop(release = 0.08) {
     if (this.disposed) return this;
@@ -234,15 +255,23 @@ export function createVoice(count = VOICE_HARMONICS) {
   return new AdditiveVoice(count);
 }
 
-/** 放一个音，duration 秒后自动收尾。 */
+/**
+ * 放一个音，duration 秒后自动收尾。
+ * decay 传一个秒数就会开启"高次泛音先衰减"的包络（推荐 0.8–1.6），
+ * 不传则所有泛音一起断（实验台里需要听静态配比时用这种）。
+ */
 export function playNote(hz, opts = {}) {
-  const { duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25, at = 0 } = opts;
+  const {
+    duration = 0.9, amps = null, level = 0.3, attack = 0.02, release = 0.25,
+    at = 0, decay = 1.2,
+  } = opts;
   const v = createVoice(harmonicsNeeded(amps));
   if (!v) return null;
   const t0 = v.ctx.currentTime + Math.max(0, at);
   v.setFrequency(hz, 0);
   if (amps) v.setAmps(amps, 0);
   v.start(level, attack, t0);
+  if (decay) v.setDecay(decay, t0);
   v.releaseAt(t0 + duration, release);
   return v;
 }
@@ -254,8 +283,10 @@ export function playChord(freqs, opts = {}) {
 
 /** 依次放一串音。at 是从现在算起的秒数偏移。 */
 export function playSequence(hzs, opts = {}) {
-  const { gap = 0.34, duration = 0.55, amps = null, level = 0.3, at = 0 } = opts;
-  return hzs.map((hz, i) => playNote(hz, { duration, amps, level, at: at + i * gap }));
+  const { gap = 0.34, duration = 0.55, amps = null, level = 0.3, at = 0, decay = 0.9 } = opts;
+  return hzs.map((hz, i) => playNote(hz, {
+    duration, amps, level, at: at + i * gap, decay,
+  }));
 }
 
 /** 依次放一组和弦，每个和弦是一个频率数组。 */

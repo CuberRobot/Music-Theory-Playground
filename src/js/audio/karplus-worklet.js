@@ -29,8 +29,12 @@ class KarplusStrong extends AudioWorkletProcessor {
     this.n = 128;
     this.i = 0;
     this.prev = 0;
+    this.pending = [];
     this.port.onmessage = (e) => {
-      if (e.data?.type === 'pluck') this.pluck(e.data.frequency, e.data.brightness ?? 0.5);
+      if (e.data?.type !== 'pluck') return;
+      const at = e.data.at ?? currentTime;
+      if (at <= currentTime) this.pluck(e.data.frequency, e.data.brightness ?? 0.5);
+      else this.pending.push({ at, frequency: e.data.frequency, brightness: e.data.brightness ?? 0.5 });
     };
   }
 
@@ -54,6 +58,14 @@ class KarplusStrong extends AudioWorkletProcessor {
   }
 
   process(inputs, outputs, params) {
+    // 到点的拨弦先补上（每 128 个采样检查一次，误差不到 3 毫秒）
+    for (let k = this.pending.length - 1; k >= 0; k--) {
+      if (currentTime >= this.pending[k].at) {
+        const p = this.pending[k];
+        this.pluck(p.frequency, p.brightness);
+        this.pending.splice(k, 1);
+      }
+    }
     const ch = outputs[0]?.[0];
     if (!ch) return true;
     const damp = params.damping[0];

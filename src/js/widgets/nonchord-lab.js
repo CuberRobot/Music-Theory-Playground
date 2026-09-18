@@ -8,6 +8,7 @@
 
 import { midiToHz, nameOfMidi, pitchClassOfMidi } from '../music/pitch.js';
 import { playSequence } from '../audio/engine.js';
+import { TEMPO } from '../audio/tempo.js';
 
 const CHORD = [60, 64, 67];          // C 大三
 const CHORD_PCS = new Set(CHORD.map(pitchClassOfMidi));
@@ -119,7 +120,7 @@ export function mountNonchordLab(root) {
     const notes = state.seq.filter((m) => m != null);
     if (!notes.length) return;
     playSequence([...CHORD].map(midiToHz), { gap: 0.26, duration: 1.6, level: 0.17 });
-    playSequence(notes.map(midiToHz), { gap: 0.34, duration: 0.32, level: 0.26, at: 0.9 });
+    playSequence(notes.map(midiToHz), { gap: TEMPO.scale, duration: 0.45, level: 0.26, at: 0.9 });
   });
 
   function paint() {

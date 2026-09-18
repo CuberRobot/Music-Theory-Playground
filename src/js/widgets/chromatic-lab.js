@@ -9,6 +9,7 @@
 
 import { midiToHz, spellMidi, nameOfMidi } from '../music/pitch.js';
 import { playSequence, playChord } from '../audio/engine.js';
+import { TEMPO } from '../audio/tempo.js';
 import { createKeyboard } from './keyboard.js';
 import { spectrumToAmps } from '../music/tuning.js';
 
@@ -21,7 +22,7 @@ const NAME = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const ALTERED = [
   { label: '♯4', steps: [6], from: 4, to: 4, why: '第四级升高半音 → 请解决到第五级。利底亚的特征音，也是最常见的"往属走"的牵引。' },
   { label: '♭6', steps: [8], from: 9, to: 7, why: '第六级降低半音 → 请解决到第五级。小调色彩的主要来源之一。' },
-  { label: '♭7', steps: [10], from: 11, to: 7, why: '第七级降低半音 → 请解决到第五级或主音。布鲁斯和摇滚的招牌。' },
+  { label: '♭7', steps: [10], from: 11, to: 9, why: '第七级降低半音 → 请解决到第六级（往下一步）。它常出现在 V7 里，那个七音就是它。布鲁斯和摇滚的招牌。' },
   { label: '♭3', steps: [3], from: 4, to: 2, why: '第三级降低半音 → 大调瞬间变小调色彩。蓝调音之一。' },
   { label: '♭2', steps: [1], from: 2, to: 0, why: '第二级降低半音 → 请解决到主音，而且只有半音。弗里吉亚的招牌。' },
   { label: '♯5', steps: [8], from: 7, to: 9, why: '第五级升高半音 → 请解决到第六级。和声小调里那个增三和弦的来处。' },
@@ -68,25 +69,25 @@ export function mountChromaticLab(root) {
     const up = document.createElement('button');
     up.type = 'button'; up.className = 'tile';
     up.textContent = spellMidi(TONIC + i, false).name.replace(/\d/, '');
-    up.addEventListener('click', () => playSequence([midiToHz(TONIC + i)], { gap: 0.4, duration: 0.6, amps: PAD, level: 0.26 }));
+    up.addEventListener('click', () => playSequence([midiToHz(TONIC + i)], { gap: TEMPO.single, duration: 0.7, amps: PAD, level: 0.26 }));
     el.up.appendChild(up);
 
     const dn = document.createElement('button');
     dn.type = 'button'; dn.className = 'tile';
     dn.textContent = spellMidi(TONIC + 12 - i, true).name.replace(/\d/, '');
-    dn.addEventListener('click', () => playSequence([midiToHz(TONIC + 12 - i)], { gap: 0.4, duration: 0.6, amps: PAD, level: 0.26 }));
+    dn.addEventListener('click', () => playSequence([midiToHz(TONIC + 12 - i)], { gap: TEMPO.single, duration: 0.7, amps: PAD, level: 0.26 }));
     el.down.appendChild(dn);
   }
 
   const upSeq = Array.from({ length: 13 }, (_, i) => TONIC + i);
   const downSeq = Array.from({ length: 13 }, (_, i) => TONIC + 12 - i);
   root.querySelector('[data-play-up]').addEventListener('click', () => {
-    playSequence(upSeq.map(midiToHz), { gap: 0.24, duration: 0.42, amps: PAD, level: 0.24 });
+    playSequence(upSeq.map(midiToHz), { gap: TEMPO.run, duration: 0.4, amps: PAD, level: 0.24 });
     el.note.innerHTML = '<b>上行：</b>读作 C C♯ D D♯ E F F♯ G G♯ A A♯ B C。'
       + '中间的五个音都写成"升"，因为它们是在往上走 —— 记谱跟着走向走。';
   });
   root.querySelector('[data-play-down]').addEventListener('click', () => {
-    playSequence(downSeq.map(midiToHz), { gap: 0.24, duration: 0.42, amps: PAD, level: 0.24 });
+    playSequence(downSeq.map(midiToHz), { gap: TEMPO.run, duration: 0.4, amps: PAD, level: 0.24 });
     el.note.innerHTML = '<b>下行：</b>读作 C B B♭ A A♭ G G♭ F E E♭ D D♭ C。'
       + '同一批键，名字全换了 —— 因为现在是往下走。'
       + '<b>半音阶的写法由方向决定</b>，这是它和音阶最不一样的地方。';

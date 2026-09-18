@@ -109,7 +109,7 @@ export const PARTS = [
         title: '八 · 写作的材料',
         blurb: '一段音乐是怎么从一个小念头长出来的。',
         lessons: [
-          { id: '23-motif',   no: '23', title: '动机与乐句', sub: '重复、模进、倒影与句读',   status: 'planned' },
+          { id: '23-motif',   no: '23', title: '动机与乐句', sub: '重复、模进、倒影与句读',   status: 'ready' },
           { id: '24-contour', no: '24', title: '旋律的轮廓', sub: '级进、跳进与拱形',         status: 'planned' },
           { id: '25-groove',  no: '25', title: '节奏与律动', sub: '律动型、奇数拍、复节奏',   status: 'planned' },
         ],

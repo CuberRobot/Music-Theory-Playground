@@ -9,6 +9,7 @@
 
 import { midiToHz, nameOfMidi, spellMidi } from '../music/pitch.js';
 import { playSequence, playChord } from '../audio/engine.js';
+import { SCALE_ARGS } from '../audio/tempo.js';
 import { createKeyboard } from './keyboard.js';
 import { spectrumToAmps } from '../music/tuning.js';
 
@@ -18,10 +19,11 @@ const DEGREE_CN = ['宫', '商', '角', '徵', '羽'];
 const PAD = spectrumToAmps('organ', 10);
 
 /** 七声的三种：在五声之上加两个"偏音"。 */
+/** flats 同理：雅乐里的变徵是升四度，必须写 F♯，写成 G♭ 会和徵音撞名。 */
 const SEVEN = [
-  { label: '清乐', add: [5, 11], names: ['清角', '变宫'], why: '加清角与变宫 = 就是自然大调音阶。最常用的一种。' },
-  { label: '雅乐', add: [6, 11], names: ['变徵', '变宫'], why: '把清角再升高半音成变徵，多了大七度的亮度，古乐里常见。' },
-  { label: '燕乐', add: [5, 10], names: ['清角', '闰'],   why: '把变宫降低半音成闰，得到降七度 —— 和 Mixolydian 是同一个东西。' },
+  { label: '清乐', add: [5, 11], flats: true,  names: ['清角', '变宫'], why: '加清角与变宫 = 就是自然大调音阶。最常用的一种。' },
+  { label: '雅乐', add: [6, 11], flats: false, names: ['变徵', '变宫'], why: '把清角再升高半音成变徵，多了大七度的亮度，古乐里常见。' },
+  { label: '燕乐', add: [5, 10], flats: true,  names: ['清角', '闰'],   why: '把变宫降低半音成闰，得到降七度 —— 和 Mixolydian 是同一个东西。' },
 ];
 
 export function mountChineseModesLab(root) {
@@ -102,10 +104,10 @@ export function mountChineseModesLab(root) {
       const seven = PENTA.map((p) => (p - base + 12) % 12).sort((a, b) => a - b).concat(s.add);
       const uniq = [...new Set(seven)].sort((a, b) => a - b);
       const seq = uniq.map((v) => GONG + base + v).concat([GONG + base + 12]);
-      playSequence(seq.map(midiToHz), { gap: 0.28, duration: 0.5, amps: PAD, level: 0.24 });
+      playSequence(seq.map(midiToHz), { ...SCALE_ARGS, amps: PAD });
       return;
     }
-    playSequence(modeMidis().map(midiToHz), { gap: 0.3, duration: 0.5, amps: PAD, level: 0.24 });
+    playSequence(modeMidis().map(midiToHz), { ...SCALE_ARGS, amps: PAD });
   }
 
   function paint() {
@@ -124,7 +126,7 @@ export function mountChineseModesLab(root) {
       <div><dt>调式</dt><dd>${cn}调式</dd></div>
       <div><dt>主音</dt><dd>${nameOfMidi(root)}</dd></div>
       <div><dt>音级</dt><dd>${DEGREE_CN.map((x, i) => `${x}${i === state.index ? '（主）' : ''}`).join(' ')}</dd></div>
-      <div><dt>用到的音</dt><dd>${notes.map((pc) => spellMidi(pc, true).name.replace(/-?\d+$/, '')).join(' ')}</dd></div>
+      <div><dt>用到的音</dt><dd>${notes.map((pc) => spellMidi(pc, !state.seven || SEVEN.find((x) => x.label === state.seven).flats).name.replace(/-?\d+$/, '')).join(' ')}</dd></div>
       <div><dt>关键点</dt><dd style="text-align:right;max-width:62%">
         五种调式用的是<b>完全相同的五个音</b>，只有主音不同。
         这和第 10 节讲的教会调式是同一件事的两种语言。</dd></div>

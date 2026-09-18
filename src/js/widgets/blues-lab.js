@@ -6,7 +6,9 @@
  */
 
 import { midiToHz, nameOfMidi } from '../music/pitch.js';
-import { playNote, playChord, click, now, stopAll } from '../audio/engine.js';
+import {
+  playNote, click, now, stopAll, playPluck, preloadPluck,
+} from '../audio/engine.js';
 
 /** 十二小节布鲁斯的和弦级数：I / IV / V。 */
 const FORM = [0, 0, 0, 0, 3, 3, 0, 0, 4, 3, 0, 4];
@@ -94,6 +96,7 @@ export function mountBluesLab(root) {
   }
 
   function play() {
+    preloadPluck();
     state.playing = true;
     root.querySelector('[data-play]').textContent = '停止';
     const t0 = now() + 0.1;
@@ -103,12 +106,15 @@ export function mountBluesLab(root) {
       const at = t0 + i * barLen - now();
       const rootHz = midiToHz(TONIC + degree * 5);
       // 低音在第 1、3 拍，和弦（属七）在第 2、4 拍，这是最基本的布鲁斯伴奏型
-      playNote(rootHz, { at, duration: BEAT * 0.85, level: 0.24, release: 0.08 });
-      playNote(rootHz, { at: at + BEAT * 2, duration: BEAT * 0.85, level: 0.22, release: 0.08 });
-      playChord([0, 4, 7, 10].map((s) => midiToHz(TONIC + degree * 5 + 12 + s)),
-        { at: at + BEAT, duration: BEAT * 0.8, level: 0.13, release: 0.08 });
-      playChord([0, 4, 7, 10].map((s) => midiToHz(TONIC + degree * 5 + 12 + s)),
-        { at: at + BEAT * 3, duration: BEAT * 0.8, level: 0.13, release: 0.08 });
+      // 全用拨弦音色 —— 这一节讲的是布鲁斯，没有吉他就不像
+      playPluck(rootHz, { at, duration: BEAT * 1.6, level: 0.3, brightness: 0.4 });
+      playPluck(rootHz, { at: at + BEAT * 2, duration: BEAT * 1.6, level: 0.28, brightness: 0.4 });
+      const chordHz = [0, 4, 7, 10].map((s) => midiToHz(TONIC + degree * 5 + 12 + s));
+      // 和弦各弦错开一点点，就像真的扫弦
+      chordHz.forEach((hz, k) => {
+        playPluck(hz, { at: at + BEAT + k * 0.012, duration: BEAT * 1.4, level: 0.11, brightness: 0.62 });
+        playPluck(hz, { at: at + BEAT * 3 + k * 0.012, duration: BEAT * 1.4, level: 0.11, brightness: 0.62 });
+      });
       // 踩镲：shuffle 时奏成 2:1，平均八分时两下等长
       for (let e = 0; e < 8; e++) {
         const frac = state.shuffle

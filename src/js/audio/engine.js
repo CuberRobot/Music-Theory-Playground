@@ -77,7 +77,7 @@ function ensureContext() {
  * 之后所有播放都不用再等。
  */
 export function installUnlockOnGesture() {
-  const handler = () => { unlock(); };
+  const handler = () => { unlock(); preloadPluck(); };
   document.addEventListener('pointerdown', handler, { passive: true });
   document.addEventListener('keydown', handler);
 }
@@ -386,4 +386,69 @@ export function stopAll() {
 /** 给界面用：判断音频是否真的可用。 */
 export function isAvailable() {
   return !!(window.AudioContext || window.webkitAudioContext);
+}
+
+/* --------------------------------------------------------------------------
+   拨弦音色：Karplus-Strong。见 karplus-worklet.js 里的原理说明。
+   worklet 是异步加载的，所以在它准备好之前先退回加法合成，不让按钮失灵。
+   -------------------------------------------------------------------------- */
+
+let pluckState = 'idle';   // idle | loading | ready | failed
+
+/** 提前把 worklet 拉下来。第一次用户手势时调用，省得按播放键才等。 */
+export function preloadPluck() {
+  if (pluckState !== 'idle') return;
+  const c = ensureContext();
+  if (!c || !c.audioWorklet) { pluckState = 'failed'; return; }
+  pluckState = 'loading';
+  c.audioWorklet
+    .addModule(new URL('./karplus-worklet.js', import.meta.url))
+    .then(() => { pluckState = 'ready'; })
+    .catch((err) => {
+      // 失败不致命：playPluck 会退回加法合成，只是不像吉他。留个记录便于排查。
+      pluckState = 'failed';
+      console.warn('[Music Theory Playground] 拨弦合成器加载失败，已退回加法合成', err);
+    });
+}
+
+export function pluckReady() { return pluckState === 'ready'; }
+
+/**
+ * 拨一个音。frequency 是音高，duration 大致决定余音长短。
+ * worklet 还没就绪时自动退回加法合成，听感差一些但不静音。
+ */
+export function playPluck(hz, opts = {}) {
+  const {
+    duration = 2.0, level = 0.3, at = 0,
+    brightness = 0.55, damping = 0.5,
+  } = opts;
+
+  if (pluckState !== 'ready') {
+    preloadPluck();
+    // 回退：高次泛音快速衰减，能听出"拨"的意思
+    return playNote(hz, { duration, level, at, decay: 0.5 });
+  }
+
+  const c = ctx;
+  const node = new AudioWorkletNode(c, 'karplus-strong', {
+    numberOfInputs: 0,
+    numberOfOutputs: 1,
+    outputChannelCount: [1],
+  });
+  node.parameters.get('damping').value = damping;
+  node.parameters.get('decayTime').value = Math.max(0.5, duration * 1.4);
+
+  const g = c.createGain();
+  const t0 = c.currentTime + Math.max(0, at);
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(level, t0 + 0.003);
+  g.gain.setValueAtTime(level, t0 + duration);
+  g.gain.linearRampToValueAtTime(0, t0 + duration + 0.2);
+  node.connect(g).connect(master);
+  node.port.postMessage({ type: 'pluck', frequency: hz, brightness });
+
+  setTimeout(() => {
+    try { node.disconnect(); g.disconnect(); } catch { /* 已断开 */ }
+  }, (Math.max(0, at) + duration + 0.45) * 1000);
+  return node;
 }

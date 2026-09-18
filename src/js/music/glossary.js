@@ -118,7 +118,7 @@ export const TERMS = [
   { en: 'Half-diminished seventh', zh: '半减七和弦', cat: 'chord', lesson: '09-seventh', def: '0 3 6 10，大调第七级、小调第二级。' },
   { en: 'Diminished seventh', zh: '减七和弦', cat: 'chord', lesson: '09-seventh', def: '0 3 6 9，四个音等距，强烈的转调工具。' },
   { en: 'Chord inversion', zh: '和弦转位', cat: 'chord', lesson: '08-triad', def: '换低音，构成音不变，稳定感改变。' },
-  { en: 'Slash chord', zh: '斜线和弦', cat: 'chord', lesson: '26-texture', def: '写作 C/G，指低音用 G。' },
+  { en: 'Slash chord', zh: '斜线和弦', cat: 'chord', lesson: '27-texture', def: '写作 C/G，指低音用 G。' },
 
   // --- 节奏与时间 -----------------------------------------------------------
   { en: 'Beat', zh: '拍', cat: 'rhythm', lesson: '06-meter', def: '音乐的基本时间单位。' },
@@ -143,7 +143,7 @@ export const TERMS = [
   { en: 'Tempo', zh: '速度', cat: 'rhythm', lesson: '19-notation', def: '整体快慢。改变它不影响音符之间的比例。' },
   { en: 'BPM', zh: '每分钟拍数', cat: 'rhythm', lesson: '19-notation', def: '速度的精确写法，如 ♩= 120。' },
   { en: 'Dynamics', zh: '力度', cat: 'rhythm', lesson: '19-notation', def: '音量的大小，从 pp 到 ff。' },
-  { en: 'Groove', zh: '律动', cat: 'rhythm', lesson: '24-groove', def: '一段反复出现、带推动力的节奏型。' },
+  { en: 'Groove', zh: '律动', cat: 'rhythm', lesson: '25-groove', def: '一段反复出现、带推动力的节奏型。' },
 
   // --- 记谱与记号 -----------------------------------------------------------
   { en: 'Staff', zh: '五线谱', cat: 'notation', lesson: '19-notation', def: '五条线加四个间，位置决定音高。' },
@@ -175,18 +175,18 @@ export const TERMS = [
   { en: 'Roman numeral', zh: '罗马数字标记', cat: 'harmony', lesson: '12-harmony', def: '用 I–VII 标调内和弦，大写是大三、小写是小三。' },
   { en: 'Diatonic chord', zh: '调内和弦', cat: 'harmony', lesson: '12-harmony', def: '音阶自己长出来的和弦，性质不由人挑。' },
   { en: 'Chord progression', zh: '和弦进行', cat: 'harmony', lesson: '12-harmony', def: '和弦按时间排成的序列。' },
-  { en: 'Secondary dominant', zh: '副属和弦', cat: 'harmony', lesson: '25-progression', def: '临时把某个和弦当成主音，给它配一个属和弦。' },
-  { en: 'Borrowed chord', zh: '借用和弦', cat: 'harmony', lesson: '25-progression', def: '从同主音的另一调借来的和弦，比如大调里借小调的 iv。' },
-  { en: 'Motif', zh: '动机', cat: 'harmony', lesson: '22-motif', def: '最短的、能被认出来的音乐念头。' },
-  { en: 'Phrase', zh: '乐句', cat: 'harmony', lesson: '22-motif', def: '一句完整的话，通常 2 到 4 小节。' },
-  { en: 'Sequence', zh: '模进', cat: 'harmony', lesson: '22-motif', def: '把同一个动机换个高度再说一遍。' },
-  { en: 'Melody', zh: '旋律', cat: 'harmony', lesson: '23-contour', def: '横向进行、被听成一条线的那串音。' },
-  { en: 'Contour', zh: '旋律轮廓', cat: 'harmony', lesson: '23-contour', def: '旋律上下的形状，先看整体再抠细节。' },
-  { en: 'Step', zh: '级进', cat: 'harmony', lesson: '23-contour', def: '相邻音级之间移动，平滑。' },
-  { en: 'Skip', zh: '跳进', cat: 'harmony', lesson: '23-contour', def: '跳过音级移动，有冲劲。' },
-  { en: 'Texture', zh: '织体', cat: 'harmony', lesson: '26-texture', def: '各个层次怎么分布，谁在旋律、谁在伴奏。' },
-  { en: 'Voicing', zh: '声部排列', cat: 'harmony', lesson: '27-orchestration', def: '同一个和弦，具体把音摆在哪些高度。' },
-  { en: 'Form', zh: '曲式', cat: 'harmony', lesson: '28-form', def: '整首曲子的结构，比如 AABA、主歌副歌。' },
+  { en: 'Secondary dominant', zh: '副属和弦', cat: 'harmony', lesson: '26-progression', def: '临时把某个和弦当成主音，给它配一个属和弦。' },
+  { en: 'Borrowed chord', zh: '借用和弦', cat: 'harmony', lesson: '26-progression', def: '从同主音的另一调借来的和弦，比如大调里借小调的 iv。' },
+  { en: 'Motif', zh: '动机', cat: 'harmony', lesson: '23-motif', def: '最短的、能被认出来的音乐念头。' },
+  { en: 'Phrase', zh: '乐句', cat: 'harmony', lesson: '23-motif', def: '一句完整的话，通常 2 到 4 小节。' },
+  { en: 'Sequence', zh: '模进', cat: 'harmony', lesson: '23-motif', def: '把同一个动机换个高度再说一遍。' },
+  { en: 'Melody', zh: '旋律', cat: 'harmony', lesson: '24-contour', def: '横向进行、被听成一条线的那串音。' },
+  { en: 'Contour', zh: '旋律轮廓', cat: 'harmony', lesson: '24-contour', def: '旋律上下的形状，先看整体再抠细节。' },
+  { en: 'Step', zh: '级进', cat: 'harmony', lesson: '24-contour', def: '相邻音级之间移动，平滑。' },
+  { en: 'Skip', zh: '跳进', cat: 'harmony', lesson: '24-contour', def: '跳过音级移动，有冲劲。' },
+  { en: 'Texture', zh: '织体', cat: 'harmony', lesson: '27-texture', def: '各个层次怎么分布，谁在旋律、谁在伴奏。' },
+  { en: 'Voicing', zh: '声部排列', cat: 'harmony', lesson: '28-orchestration', def: '同一个和弦，具体把音摆在哪些高度。' },
+  { en: 'Form', zh: '曲式', cat: 'harmony', lesson: '29-form', def: '整首曲子的结构，比如 AABA、主歌副歌。' },
 ];
 
 /** 速度术语。BPM 是常见区间，不是硬性规定。 */

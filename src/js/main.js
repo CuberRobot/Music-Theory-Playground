@@ -34,6 +34,8 @@ import { mountClefRangeLab } from './widgets/clef-range-lab.js';
 import { mountTransposeLab } from './widgets/transpose-lab.js';
 import { mountMotifLab } from './widgets/motif-lab.js';
 import { mountContourLab } from './widgets/contour-lab.js';
+import { mountGrooveLab } from './widgets/groove-lab.js';
+import { mountProgressionLab } from './widgets/progression-lab.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -61,6 +63,8 @@ const WIDGETS = {
   'transpose-lab': mountTransposeLab,
   'motif-lab': mountMotifLab,
   'contour-lab': mountContourLab,
+  'groove-lab': mountGrooveLab,
+  'progression-lab': mountProgressionLab,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

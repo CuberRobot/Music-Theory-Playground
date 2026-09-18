@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 26 节 · 和弦进行的写法 · Music Theory Playground</title>
+<meta name="description" content="功能的方向、根音的运动、和声节奏。用一个可点的进行编辑器听出进行为什么顺或不顺。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="26-progression">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">九 · 纵向与层次 / <b>第 26 节 和弦进行的写法</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 26 节 · 和弦进行的写法</p>
+      <h1>排一条进行</h1>
+      <p class="lead-p">第 12 节讲了功能，第 15 节讲了怎么从外面借和弦。但"知道有哪些和弦"和"排出一条好听的进行"是两件事。</p>
+      <p>这一节把进行变成可以摆的：点格子换和弦，听它接得顺不顺。
+      起作用的东西其实只有三样，下面逐个说。</p>
+    </section>
+
+    <div class="card wide" data-widget="progression-lab"></div>
+
+    <section>
+      <h2>一 · 功能的方向</h2>
+      <p>第 12 节说过基本逻辑是 <b>T → S → D → T</b>：从家出发、走远、再回来。
+      排进行时先看这一条，绝大多数"听起来顺"的进行都符合它。</p>
+      <p>实验台里每个格子底下标了功能（主／下属／属），底色的深浅也对应功能。
+      你换和弦时可以先问：<b>这个格子是不是把方向弄反了？</b>
+      D 回到 T 是回家，T 跳到 D 是出门，都正常；刚从 D 回家又立刻去 S，就会显得绕。</p>
+    </section>
+
+    <section>
+      <h2>二 · 根音的运动</h2>
+      <p>功能是抽象的，落到耳朵上最直接的其实是<b>低音怎么走</b>。</p>
+      <p>最常见、也最有方向感的是<b>四度下行</b>（也就是五度上行）：
+      <code>D → G → C</code> 就是 ii–V–I。它的来处是第 11 节的五度圈 ——
+      沿着圈往回走，每一步都离主音更近。</p>
+      <p>实验台会算出根音运动的半音数，并统计有几处是四度／五度下行。
+      数一数你会发现：那些"特别好听"的进行，这个数字往往很高。</p>
+      <p>反过来，如果根音全是三度或二度在那儿来回蹭，就没有方向感 ——
+      这不是坏，是另一种效果（更静态、更像调式音乐）。第 17 节讲的"换一种引力"就是从这儿分岔的。</p>
+    </section>
+
+    <section>
+      <h2>三 · 和声节奏</h2>
+      <p><b>和声节奏</b>是"和弦多久换一次"。它是进行里最容易被忽略、却最容易改变效果的一件东西。</p>
+      <p>同样四个和弦，一小节换一个听起来是"四个平行的块"；
+      两拍换一个就变成推进；一小节里塞两个再停一拍，就变成停顿感。</p>
+      <p>实验台的「慢一倍」按钮可以让你直接对照同一套进行在两种和声节奏下的差别。
+      注意：<b>从头到尾用同一种和声节奏会显得呆</b> —— 真实作品几乎都在换，
+      尤其是句子结尾放慢、段落开头加密。</p>
+    </section>
+
+    <section>
+      <h2>怎么动手</h2>
+      <p>一个可用的顺序：<b>先定功能方向 → 再挑根音运动 → 最后调和声节奏。</b></p>
+      <p>先用 T–S–D–T 摆一个骨架，把不顺的格子换掉；
+      然后看根音，尽量让它多做四度下行；最后改和声节奏，让句子有呼吸。
+      这三步做完，一条能用的进行就出来了 —— 也正好是第二部分从动机走到成品的中间站。</p>
+    </section>
+
+    <section>
+      <h2>小结</h2>
+      <ol>
+        <li>三件事决定进行的听感：功能的方向、根音的运动、和声节奏。</li>
+        <li>功能基本逻辑 T → S → D → T；先检查有没有把方向弄反。</li>
+        <li>四度下行的根音最有方向感，它是五度圈的直接产物。</li>
+        <li>根音全在二三度之间蹭，会失去方向感 —— 那是调式音乐的做法，不是错误。</li>
+        <li>和声节奏一变，同一套和弦的性格就变；通篇不变会呆。</li>
+      </ol>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

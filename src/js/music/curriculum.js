@@ -111,7 +111,7 @@ export const PARTS = [
         lessons: [
           { id: '23-motif',   no: '23', title: '动机与乐句', sub: '重复、模进、倒影与句读',   status: 'ready' },
           { id: '24-contour', no: '24', title: '旋律的轮廓', sub: '级进、跳进与拱形',         status: 'ready' },
-          { id: '25-groove',  no: '25', title: '节奏与律动', sub: '律动型、奇数拍、复节奏',   status: 'planned' },
+          { id: '25-groove',  no: '25', title: '节奏与律动', sub: '律动型、奇数拍、复节奏',   status: 'ready' },
         ],
       },
       {
@@ -119,7 +119,7 @@ export const PARTS = [
         title: '九 · 纵向与层次',
         blurb: '听起来"满"的段落，底下一定分好了工。',
         lessons: [
-          { id: '26-progression',   no: '26', title: '和弦进行的写法', sub: '功能、代理与借用',       status: 'planned' },
+          { id: '26-progression',   no: '26', title: '和弦进行的写法', sub: '功能、代理与借用',       status: 'ready' },
           { id: '27-texture',       no: '27', title: '低音线与织体',   sub: '谁在底下托着',           status: 'planned' },
           { id: '28-orchestration', no: '28', title: '音区与配器',     sub: '音域覆盖与功能分层',     status: 'planned' },
         ],

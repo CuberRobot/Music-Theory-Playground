@@ -486,6 +486,26 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 
 /* --- 音域条 ----------------------------------------------------------------- */
 
+/* --- 和弦进行编辑器 ---------------------------------------------------------- */
+
+.prog-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.prog-slot {
+  flex: 1 1 76px; min-width: 76px; min-height: 84px; padding: 8px 6px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; font: inherit; cursor: pointer;
+  border: 1px solid var(--line-strong); border-radius: var(--r-md);
+  background: var(--surface);
+}
+.prog-slot:hover { background: var(--surface-2); }
+.prog-roman { font-size: var(--fs-h3); font-family: var(--font-serif); color: var(--ink-1); }
+.prog-name { font-size: var(--fs-tiny); color: var(--ink-2); }
+.prog-fn { font-size: var(--fs-tiny); color: var(--ink-4); }
+/* 三种功能各一个底色，一眼看出方向 */
+.prog-slot.fn-T { background: var(--green-soft); }
+.prog-slot.fn-S { background: var(--amber-soft); }
+.prog-slot.fn-D { background: var(--clay-soft); }
+.prog-slot.fn-T:hover, .prog-slot.fn-S:hover, .prog-slot.fn-D:hover { filter: brightness(.97); }
+
 .range-row {
   display: grid; grid-template-columns: 6.5rem minmax(0, 1fr);
   gap: var(--sp-3); align-items: center; margin-bottom: 5px;

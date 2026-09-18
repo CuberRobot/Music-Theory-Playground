@@ -229,6 +229,19 @@ section('★ 乐器音域');
 
 section('★ 速度与力度');
 {
+  // 五度圈方向的根音运动：把差值折到 (-6, 6] 之后，"上行四度"是 +5。
+  // 这里最容易被弄反 —— 写成 -5 的话 ii–V–I 会被算成 0 处。
+  const norm = (a, b) => { let d = ((b - a) % 12 + 12) % 12; return d > 6 ? d - 12 : d; };
+  const C = 0, D = 2, F = 5, G = 7, A = 9;
+  eq(norm(D, G), 5, 'ii→V 的根音运动是 +5（上行四度）');
+  eq(norm(G, C), 5, 'V→I 的根音运动也是 +5');
+  eq([norm(D, G), norm(G, C)].filter((d) => d === 5).length, 2, 'ii–V–I 两处都应是五度圈方向');
+  eq([norm(C, F), norm(F, G), norm(G, C)].filter((d) => d === 5).length, 2, 'I–IV–V–I 有两处（IV→V 是大二度）');
+  eq([norm(C, G), norm(G, A), norm(A, F)].filter((d) => d === 5).length, 0, 'I–V–vi–IV 没有五度圈方向');
+  eq(norm(C, G), -5, 'C→G 是上行五度，折合后为 -5（方向与 +5 相反）');
+}
+
+{
   eq(TEMPO_TERMS[0].it, 'Largo', '最慢 Largo');
   eq(TEMPO_TERMS[TEMPO_TERMS.length - 1].it, 'Presto', '最快 Presto');
   const b = TEMPO_TERMS.map((t) => Number(t.bpm.split('–')[0]));

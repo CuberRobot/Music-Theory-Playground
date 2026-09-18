@@ -27,13 +27,45 @@ const MOTIF = [
 const REST = { rest: true, beats: 1.5 };
 const mapSounding = (m, f) => m.map((n) => (n.rest ? n : f(n)));
 
+/**
+ * 「模进」必须按**音级**走，不能按半音走。
+ *
+ * 贝五开头两句话是 G G G E♭ → F F F D：
+ * 第一句往下跳的是大三度，第二句的同样位置只有小三度——
+ * "第二遍更紧"正是靠这个差别做出来的。
+ *
+ * 如果机械地把整组音平移两个半音，第二句会变成 F F F D♭，
+ * 那已经不是这首曲子里的事了（D♭ 不在 c 小调里）。
+ * 所以这里先把音换成 c 小调的级数，再整体挪一级。
+ */
+const TONIC_MIDI = 60;                     // C4
+const C_MINOR = [0, 2, 3, 5, 7, 8, 10];    // 自然小调
+
+const degreeOf = (midi) => {
+  const rel = midi - TONIC_MIDI;
+  const oct = Math.floor(rel / 12);
+  const pc = ((rel % 12) + 12) % 12;
+  const i = C_MINOR.indexOf(pc);
+  return oct * 7 + (i < 0 ? 0 : i);        // 调外音按主音算（这个动机里不会出现）
+};
+
+const midiOfDegree = (deg) =>
+  TONIC_MIDI + Math.floor(deg / 7) * 12 + C_MINOR[((deg % 7) + 7) % 7];
+
+/** 把"相对起音的半音数"整体挪 n 个音级，再换回半音数。 */
+const byStep = (semi, steps) => midiOfDegree(degreeOf(BASE + semi) + steps) - BASE;
+
+/** 模进的结果（给审计用）。 */
+export const sequenceOf = (motif, steps) =>
+  mapSounding(motif, (n) => ({ ...n, semi: byStep(n.semi, steps) }));
+
 const OPS = [
   { id: 'orig', label: '原形', fn: (m) => m,
     tip: '动机是细胞：3–5 个音，有清楚的轮廓，但它本身不是一个完整的乐思。' },
   { id: 'repeat', label: '重复', fn: (m) => [...m, REST, ...m],
     tip: '最省事的做法，本身几乎不算发展。但它是其他一切变形的前提 —— 没有重复，听者根本认不出你改了哪里。' },
-  { id: 'seq', label: '模进', fn: (m) => mapSounding(m, (n) => ({ ...n, semi: n.semi - 2 })),
-    tip: '整体往下移一个音级再说一遍。不换材料，只换高度 —— 最常见的推进手段。' },
+  { id: 'seq', label: '模进', fn: (m) => sequenceOf(m, -1),
+    tip: '整体往下移一个音级再说一遍。注意第二句的下跳只剩小三度（G→E♭ 变成 F→D）—— 比第一句更紧，这就是模进听起来"往下压"的原因。按半音平移会把这个差别弄丢。' },
   { id: 'inv', label: '倒影', fn: (m) => mapSounding(m, (n) => ({ ...n, semi: -n.semi })),
     tip: '把每个音程的方向翻过来。旋律照了镜子：音程大小没变，上下方向全反过来。' },
   { id: 'aug', label: '扩大', fn: (m) => mapSounding(m, (n) => ({ ...n, beats: n.beats * 2 })),
@@ -43,7 +75,7 @@ const OPS = [
   { id: 'retro', label: '逆行', fn: (m) => [...m].reverse(),
     tip: '把音的顺序倒过来。这是几种变形里最容易被听出来的一个。' },
   { id: 'combo', label: '模进 + 扩大',
-    fn: (m) => mapSounding(m, (n) => ({ ...n, semi: n.semi + 2, beats: n.beats * 2 })),
+    fn: (m) => mapSounding(sequenceOf(m, 1), (n) => ({ ...n, beats: n.beats * 2 })),
     tip: '变形可以叠加。真实作品里几乎都是叠加着用的 —— 单独一种变形撑不起一段音乐。' },
 ];
 

@@ -21,6 +21,7 @@ import { TEMPO } from '../src/js/audio/tempo.js';
 import { SCORE_TEMPO } from '../src/js/audio/tempo.js';
 import { ODE_THEME } from '../src/js/widgets/ode-lab.js';
 import { TEXTURE_DEMO } from '../src/js/widgets/texture-lab.js';
+import { sequenceOf } from '../src/js/widgets/motif-lab.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 let fails = 0;
@@ -135,6 +136,18 @@ section('★ 贝多芬第五开头动机');
   const deg = (s) => EB_MAJOR.indexOf(s) + 1;
   // 相对 E♭ 的半音数：G 是 4，E♭ 是 0
   eq(`${deg(4)} ${deg(4)} ${deg(4)} ${deg(0)}`, '3 3 3 1', '在 E♭ 大调里的级数（G=3, E♭=1）');
+
+  // 模进必须按音级走：第二句是 F F F D，不是 F F F D♭
+  const motifNotes = MOTIF.map((semi) => ({ semi, beats: 1 }));
+  eq(names(BASE, sequenceOf(motifNotes, -1).map((n) => n.semi), false), 'F4 F4 F4 D4',
+    '往下模进一个音级：G G G E♭ → F F F D');
+  eq(names(BASE, sequenceOf(motifNotes, 1).map((n) => n.semi), true), 'A♭4 A♭4 A♭4 F4',
+    '往上模进一个音级：G G G E♭ → A♭ A♭ A♭ F');
+  // 第一句的下跳是大三度，第二句收成小三度 —— 这个差别不能被"平移半音"抹掉
+  eq(analyseInterval(BASE - 4, BASE, true).name, '大三度', '第一句的下跳：G→E♭ 是大三度');
+  const seqSemis = sequenceOf(motifNotes, -1).map((n) => n.semi);
+  eq(analyseInterval(BASE + seqSemis[3], BASE + seqSemis[0], true).name, '小三度',
+    '模进后的下跳：F→D 是小三度（比第一句紧）');
 }
 
 section('★ 贝多芬第九 · 欢乐颂主题（第四乐章第 92 小节起）');

@@ -33,6 +33,7 @@ import { mountChineseModesLab } from './widgets/chinese-modes-lab.js';
 import { mountClefRangeLab } from './widgets/clef-range-lab.js';
 import { mountTransposeLab } from './widgets/transpose-lab.js';
 import { mountMotifLab } from './widgets/motif-lab.js';
+import { mountContourLab } from './widgets/contour-lab.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -59,6 +60,7 @@ const WIDGETS = {
   'clef-range-lab': mountClefRangeLab,
   'transpose-lab': mountTransposeLab,
   'motif-lab': mountMotifLab,
+  'contour-lab': mountContourLab,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

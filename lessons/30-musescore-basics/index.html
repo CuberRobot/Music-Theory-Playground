@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>30 · MuseScore 入门 · Music Theory Playground</title>
+<meta name="description" content="用免费的记谱软件 MuseScore Studio 4 新建一份乐谱、输入第一批音符、让它出声，并把工作文件存下来。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="30-musescore-basics">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">十一 · 工具：MuseScore / <b>第 30 节 入门</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 30 节 · MuseScore 入门</p>
+      <h1>从一张白纸到一份能响的谱子</h1>
+      <p class="lead-p">前面 29 节都在讲音乐本身怎么运作。从现在起换一件事：
+      把你听见的东西写成别人也能读的谱子。</p>
+      <p>这一节只做四件事：新建、输入、播放、保存。做完你手上会有一份自己的谱。</p>
+    </section>
+
+    <div class="card">
+      <dl class="readout">
+        <div><dt>软件</dt><dd>MuseScore Studio 4（免费、开源，官网直接下载）</dd></div>
+        <div><dt>本文对应版本</dt><dd>4.7.x（界面是中文本地化的，下面的菜单名按中文界面写）</dd></div>
+        <div><dt>它是什么</dt><dd>记谱软件：把音符写成乐谱，并且能播放出来</dd></div>
+        <div><dt>它不是什么</dt><dd>不是 DAW。它管的是"谱子对不对"，不是"混音好不好听"</dd></div>
+        <div><dt>学它的理由</dt><dd>本站前面所有练习都可以在这里落成一份真正的谱：动机、模进、和声、配器</dd></div>
+      </dl>
+    </div>
+
+    <section>
+      <h2>一 · 打开它：启动中心</h2>
+      <p>MuseScore 打开后先给你一个启动中心。左边三栏分别是<b>主页、乐谱、发布</b>，
+      中间是最近打开的谱子，右下角两个按钮：<b>新建</b>和<b>打开其他文件</b>。</p>
+      <p><img src="../../assets/musescore/01-start-center.jpg" alt="MuseScore 4 的启动中心：左侧是主页／乐谱／发布，中间是「新建乐谱」磁贴" style="max-width:100%;border:1px solid var(--line);border-radius:var(--r-md)"></p>
+      <p class="hint">这块界面本身没什么可讲的，但它说明了这个软件的工作方式：
+      <b>一个 .mscz 文件 = 一份谱子</b>，和其他工程文件一样，随时能打开继续改。</p>
+    </section>
+
+    <section>
+      <h2>二 · 新建一份谱子（向导走五步）</h2>
+      <p>点<b>新建</b>（或启动中心里的"新建乐谱"），会出来一个向导。
+      它的顺序和你在纸上写谱的顺序是一样的：</p>
+      <p><strong>一 · 选乐器。</strong>左侧按分类（键盘、弦乐、管乐、打击……）列出乐器，
+      双击或按"添加"把它放进右边的声部表。一页钢琴谱选 Piano 就够。</p>
+      <p><strong>二 · 调号。</strong>你的曲子是 C 大调就选 0 个升降号，G 大调选一个升号。
+      不确定就选 C 大调——后面随时能改（格式 → 调号）。</p>
+      <p><strong>三 · 拍号。</strong>4/4、3/4、6/8 在这里选。同样，后面能改。</p>
+      <p><strong>四 · 速度。</strong>这个数就是播放速度，也是谱面上那个 <span class="note" role="img" aria-label="四分音符"></span>=120
+      的来历。它是<b>真的</b>速度，不是装饰。</p>
+      <p><strong>五 · 谱表。</strong>要不要括号、几行谱表、要不要小谱表——钢琴谱默认就好。</p>
+      <p>点完成，你就得到了一张空白的五线谱，标题、作者、谱号、调号、拍号都在该在的位置上。</p>
+    </section>
+
+    <section>
+      <h2>三 · 输入第一个音符</h2>
+      <p>这是整个软件唯一需要肌肉记忆的地方。记住一个开关和三个键位：</p>
+      <p><strong>开关：N。</strong>按 N 进入<b>音符输入模式</b>，再按 N（或 Esc）退出。
+      没进这个模式的时候，你敲键盘只会触发菜单快捷键——很多新手卡在这里。</p>
+      <p><strong>音名：A 到 G。</strong>键盘上 a b c d e f g 直接输入 C D E F G A B。
+      想换音高：用方向键↑↓在你的音阶上走一个音级，要跳八度就用右键菜单里的移调命令，
+      比记组合键稳。</p>
+      <p><strong>时值：数字 1 到 9。</strong>这是最容易记错的一栏——
+      <b>数字越小，音符越短、尾巴越多</b>：5 是四分音符，4 是八分，3 是十六分，
+      6 是二分，7 是全音符。按下去只影响"下一个要写的音符"。
+      想写休止符，按 <b>0</b>。</p>
+      <p><strong>推进：空格。</strong>在输入模式下，空格把光标推进到下一个小节位置。</p>
+      <p>下面是照这套流程敲出来的一份 8 小节谱子（C 大调、4/4）：
+      第一行四个音一级级往上爬，后面每一句都收在主音附近，最后一句落在 C 上。</p>
+      <p><img src="../../assets/musescore/30-first-score.png" alt="用 MuseScore 输入完成的 8 小节示例谱：C 大调、4/4、高音谱号" style="max-width:100%;border:1px solid var(--line);border-radius:var(--r-md)"></p>
+      <p class="hint">注意第二行左边那个小小的「7」——那是小节号。
+      打谱软件会替你算好小节、行距和符尾，你只需要决定音高和时值。
+      <b>这正是用软件打谱和手写的最大区别：结构是软件管的，音乐是你管的。</b></p>
+    </section>
+
+    <section>
+      <h2>四 · 让它出声</h2>
+      <p>按<b>空格</b>开始/停止播放（也可以在工具栏上点播放键）。
+      播放的时候会有一个游标跟着走——这就是本站每一节里那个"音符条"的原型：
+      <b>看见现在响的是哪一个音，才知道自己写错了哪一拍。</b></p>
+      <p>要单独听某一段：先用鼠标框选几个小节，再按空格，MuseScore 只播放选中的部分。
+      这个动作在本站后面的练习里会一直用到——写一句、听一句、改一句。</p>
+      <p>觉得音色难听是正常的：默认音源是合成器。想好听一点可以在"视图 → 混音器"里换音色，
+      但<b>打谱阶段不要在这里花时间</b>，写对音符比调音色重要一百倍。</p>
+    </section>
+
+    <section>
+      <h2>五 · 存下来，并且知道存的是什么</h2>
+      <p><b>Ctrl/Cmd + S</b> 保存，得到的是一个 <b>.mscz</b> 文件。
+      这是"工作文件"——里面不只有音符，还有你的排版、音色、页面设置。
+      继续编辑就打开它。</p>
+      <p>给别人或者在别的软件里用，就要<b>导出</b>（文件 → 导出）：
+      最常用的两种是 <b>PDF</b>（打印和给别人看）和 <b>MusicXML</b>（给别的打谱软件读）。
+      导出的细节放在第 32 节讲。</p>
+    </section>
+
+    <section>
+      <h2>六 · 练习</h2>
+      <p><strong>一 · 音阶。</strong>新建一份 C 大调 4/4 谱子，把 C 大调音阶一个八度写进去，
+      全部用四分音符（按 5）。写完播放一遍，听有没有哪个音明显不对。</p>
+      <p><strong>二 · 改时值。</strong>把音阶改成"四个一组：长-短-短-长"，
+      用 6（二分）和 4（八分）搭出来。听同一个旋律换节奏是什么效果。</p>
+      <p><strong>三 · 用上前面学过的东西。</strong>写两个小节的动机（第 23 节），
+      然后把它原样重复一遍。你就在谱面上完成了"重复"这个最基本的发展手法。</p>
+      <p><strong>四 · 一个自检。</strong>写完以后不要马上播放，先自己看一遍：
+      每一小节是不是刚好装满？最后一小节的时值对不对？——这是打谱最常出错的地方。</p>
+    </section>
+
+    <section>
+      <h2>七 · 参考</h2>
+      <div class="card">
+        <div class="card-head"><h2>资料</h2></div>
+        <p style="margin:0">
+          <a href="https://musescore.org/zh-hans/download">MuseScore 官方下载</a>（免费、开源，Windows / macOS / Linux）<br>
+          <a href="https://musescore.org/zh-hans/handbook">MuseScore 官方手册（中文）</a>——遇到不确定的菜单名先查这里<br>
+          <a href="https://musescore.org/en/handbook/4/keyboard-shortcuts">默认快捷键表（英文）</a>——本文只写了最常用的几个，
+          想查全的看这一页
+        </p>
+        <p class="hint" style="margin-bottom:0">本站的做法：每一节都用一份真实的谱子当例子。
+        这一节用到的示例谱放在
+        <code>assets/musescore/30-first-score.musicxml</code>，
+        可以直接用 MuseScore 打开对照——MusicXML 是通用交换格式，
+        哪个打谱软件都能读。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>一句话带走</h2>
+      <p><strong>打谱软件负责结构，你负责音乐。</strong>
+      小节、行距、符尾它会替你算好；音高、时值、句法一个字都不会替你决定。</p>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

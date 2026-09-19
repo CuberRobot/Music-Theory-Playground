@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>32 · 排版与导出 · Music Theory Playground</title>
+<meta name="description" content="把 MuseScore 的谱子整理成别人看得舒服的样子：页面设置、样式、系统与行距、标题与页码，以及 PDF / PNG / MusicXML / 音频各种导出格式该用哪一个。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="32-musescore-publish">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">十一 · 工具：MuseScore / <b>第 32 节 排版与导出</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">第 32 节 · 排版与导出</p>
+      <h1>让别人看得舒服</h1>
+      <p class="lead-p">一份谱子写对了，只完成了一半。另一半是：
+      别人拿到它的时候，能不能一眼看懂你要什么。</p>
+      <p>这就是排版——它不改音乐，只改"读谱的人有多费劲"。</p>
+    </section>
+
+    <section>
+      <h2>一 · 一张谱子分三层，别混着改</h2>
+      <p><strong>第一层：音符。</strong>音高、时值、小节。这是音乐本身，改一次就是改一次音乐。</p>
+      <p><strong>第二层：记号。</strong>连线、力度、速度、反复。这是"怎么说"。</p>
+      <p><strong>第三层：页面。</strong>纸张、边距、行距、字号、系统（一行有几小节）。
+      这是"看起来如何"。</p>
+      <p>排版只在第三层动手，而且<b>要整层一起改</b>——最忌讳的是一个个手动去拖音符的位置：
+      下次改一个音，全乱。</p>
+    </section>
+
+    <section>
+      <h2>二 · 页面设置：先定纸，再谈别的</h2>
+      <p>菜单<b>格式 → 页面设置</b>。这里面只有三样东西值得管：</p>
+      <p><strong>纸张大小。</strong>要打印就用 A4；只想在屏幕上给人看，宽一点（比如 A4 横向）会更好读。</p>
+      <p><strong>边距。</strong>上边距要给标题留位置，左右边距别小于 12 毫米——装订和打印都可能吃掉一点。</p>
+      <p><strong>缩放比例。</strong>这是最容易见效的一个数字：曲子短了显得空、长了挤成一团，
+      调它比调任何别的都快。<b>把它调到"整首刚好排满一页"</b>，就是业余和专业的分界线。</p>
+    </section>
+
+    <section>
+      <h2>三 · 用样式，不要一个元素一个元素地改</h2>
+      <p>菜单<b>格式 → 样式</b>。这里改的是<b>全局</b>：正文文字多大、力度记号多大、
+      谱表之间隔多远、系统（一行）之间隔多远、行首缩进多少。</p>
+      <p>为什么必须用样式？因为一份谱子里有几百个小元素，
+      你不可能一个个对齐。<b>样式是"一并改"，属性面板是"单独改"</b>——
+      先想清楚这次要改的是全体还是特例，再决定去哪个面板。</p>
+    </section>
+
+    <section>
+      <h2>四 · 行与小节的分配：排版的真功夫</h2>
+      <p>一份谱子好不好看，八成取决于一件事：<b>每行多少小节、最后一行是不是只剩一小节。</b></p>
+      <p>下面是同一份曲子排好以后的样子。注意它是一行一行均匀铺开的，
+      两行之间留出了足够的呼吸，标题和作者各就各位：</p>
+      <p><img src="../../assets/musescore/32-layout.png" alt="排版后的钢琴谱示例：标题居中、作者右对齐、两行谱表均匀铺满页面" style="max-width:100%;border:1px solid var(--line);border-radius:var(--r-md)"></p>
+      <p>几个具体动作：</p>
+      <p><strong>最后一小节不许落单。</strong>如果最后一行只剩一小节，就回到小节的属性里
+      把倒数第二行"减少小节数"，或者干脆把整首的缩放调小一点。</p>
+      <p><strong>行的间距。</strong>在样式里调"系统间距"。行太挤，读谱的人会漏行；太松，翻页变多。</p>
+      <p><strong>换行不要换在半句中间。</strong>如果一句话被行尾劈开，宁可让这一行少排一小节。
+      <b>音乐的分句优先于纸面的整齐。</b></p>
+      <p><strong>想强制换行</strong>就在那一小节上按回车（或右键 → 换行），
+      想取消就再按一次。</p>
+    </section>
+
+    <section>
+      <h2>五 · 标题、作者、页码</h2>
+      <p>菜单<b>文件 → 乐谱属性</b>里填：标题、副标题、作曲者、作词者、版权。
+      填完它们会自动出现在谱面该在的位置，不用手动加文本框。</p>
+      <p>页眉页脚和页码在样式里设置。给别人的谱子至少要有一个<b>标题</b>和<b>页码</b>——
+      散页混在一起的时候，页码是唯一能救命的记号。</p>
+    </section>
+
+    <section>
+      <h2>六 · 导出：不同用途给不同的文件</h2>
+      <p>菜单<b>文件 → 导出</b>。选错格式是初学者最常见的时间浪费：</p>
+      <div class="scroll-x">
+        <table class="table">
+          <thead><tr><th scope="col">格式</th><th scope="col">用来干什么</th><th scope="col">注意</th></tr></thead>
+          <tbody>
+            <tr><td>.mscz</td><td>自己的<b>工作文件</b>，以后还要继续改</td><td>不是给别人看的东西，别人打开会看到你的全部草稿痕迹</td></tr>
+            <tr><td>PDF</td><td>打印、发给别人、投稿</td><td>格式固定，谁都打不开改，所以最后一步才导它</td></tr>
+            <tr><td>PNG / JPG</td><td>贴到聊天窗、文档、网页里</td><td>位图，放大会虚。要清晰就调高导出分辨率（150–300 dpi）</td></tr>
+            <tr><td>SVG</td><td>放进网页或排版软件</td><td>矢量，放大不糊；本站的谱例图就是这一类思路</td></tr>
+            <tr><td>MusicXML</td><td>给别的打谱软件读（Sibelius、Finale、Dorico…）</td><td>通用交换格式，音乐信息都在，<b>排版信息会丢</b></td></tr>
+            <tr><td>MIDI</td><td>丢给 DAW 继续做编曲</td><td>只有音高、时值、力度这类可计算信息，记号基本丢失</td></tr>
+            <tr><td>MP3 / WAV</td><td>给人听demo</td><td>默认音源是合成器，别指望用它做正式成品</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">一句话记住：<b>改的时候用 .mscz，看的时候用 PDF，
+      换软件的时候用 MusicXML，做音乐的时候用 MIDI。</b></p>
+    </section>
+
+    <section>
+      <h2>七 · 交付前的检查清单</h2>
+      <p><strong>一 ·</strong>每一小节都装满了吗？最后一小节对不对？</p>
+      <p><strong>二 ·</strong>调号、拍号、速度记号都在，而且只在开头写一次（中途变了才再写）。</p>
+      <p><strong>三 ·</strong>力度记号有没有覆盖到全曲？还是只在开头写了一个就没了？</p>
+      <p><strong>四 ·</strong>连音线和延音线有没有用混？跨小节的音有没有用延音线接好？</p>
+      <p><strong>五 ·</strong>最后一页是不是只剩一两行？能不能挤进上一页，或者调小缩放？</p>
+      <p><strong>六 ·</strong>导出的 PDF 打印出来会不会太小？用一个真实字体大小在纸上试一次。</p>
+      <p><strong>七 ·</strong>找一个人（最好是会看谱的）翻一遍，问他"哪里看不懂"。他指的地方就是你要改的地方。</p>
+    </section>
+
+    <section>
+      <h2>八 · 练习</h2>
+      <p><strong>一 ·</strong>把第 31 节那份谱子排成"正好一页"：调缩放、调边距，
+      目标是最后一页没有单独一行。</p>
+      <p><strong>二 ·</strong>把标题、副标题、作曲者、版权都填上，导出 PDF，打印一张。</p>
+      <p><strong>三 ·</strong>导出 MusicXML，用别的软件（或者再开一个 MuseScore 窗口）打开，
+      看哪些信息还在、哪些没了。<b>做过一次这个实验，你对"格式"的理解会永久改变。</b></p>
+      <p><strong>四 ·</strong>把同一份谱子导出成 150 dpi 和 300 dpi 的 PNG，比较文件大小和清晰度。
+      本站的原则是"静态站要快"，所以图片一定是在"够看"的前提下尽量小——你以后也会有同样的取舍。</p>
+    </section>
+
+    <section>
+      <h2>九 · 参考</h2>
+      <div class="card">
+        <div class="card-head"><h2>资料</h2></div>
+        <p style="margin:0">
+          <a href="https://musescore.org/zh-hans/handbook">MuseScore 官方手册（中文）</a>
+          ——"格式"一章里有版面、样式、页面设置的完整说明<br>
+          <a href="https://musescore.org/en/handbook/4/file-formats">File formats（文件格式）</a> ·
+          <a href="https://musescore.org/en/handbook/4/export">Export（导出）</a><br>
+          本站的谱例图全部是用 MuseScore 的命令行渲染出来的：
+          写好 MusicXML 以后，让 MuseScore 直接输出图片，比在界面里截图干净得多，
+          也不用担心别人电脑上缺字体。
+        </p>
+        <p class="hint" style="margin-bottom:0">示例谱在
+        <code>assets/musescore/32-layout.musicxml</code>。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>一句话带走</h2>
+      <p><strong>排版不是为了好看，是为了少让人误会。</strong>
+      读谱的人看不懂你要什么，你的音乐在他脑子里就变成了另一首曲子。</p>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

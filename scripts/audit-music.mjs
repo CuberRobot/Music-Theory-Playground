@@ -26,7 +26,7 @@ import { MIKAZUKI, MIKAZUKI_BARS, DEMOS } from '../src/js/widgets/mikazuki-form.
 import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
 import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 
 let fails = 0;
 let checks = 0;
@@ -564,6 +564,42 @@ section('节奏、词典引用、课程编号、泛音配方');
     const amps = spectrumToAmps(key, 16);
     checks++;
     if (amps.some((a) => a < 0 || a > 1.0001)) fail(`${spec.label} 振幅越界`);
+  }
+}
+
+section('MuseScore 三节：图与示例谱都在，而且不胖');
+{
+  // 这一层是给"教程"加的：教程最容易坏的地方不是代码，是图。
+  // 图片被删掉、路径写错、或者哪天塞进来一张 3MB 的截图，页面都会悄悄变差。
+  const LESSONS_MS = ['30-musescore-basics', '31-musescore-notation', '32-musescore-publish'];
+  const seen = new Set();
+  for (const id of LESSONS_MS) {
+    const page = new URL(`../lessons/${id}/index.html`, import.meta.url);
+    checks++;
+    if (!existsSync(page)) { fail(`${id} 的页面不存在`); continue; }
+    const html = readFileSync(page, 'utf8');
+    for (const m of html.matchAll(/<img\s+src="([^"]+)"/g)) {
+      const rel = m[1].replace(/^\.\.\/\.\.\//, '');
+      const file = new URL(`../${rel}`, import.meta.url);
+      seen.add(rel);
+      checks++;
+      if (!existsSync(file)) { fail(`${id} 引用了不存在的图片 ${rel}`); continue; }
+      const kb = statSync(file).size / 1024;
+      checks++;
+      if (kb > 400) fail(`${rel} 有 ${Math.round(kb)}KB —— 静态站不该挂这么大的图`);
+    }
+  }
+  eq(seen.size >= 3, true, '三节教程至少各有一张图');
+  // 三份示例谱：图和谱都要在
+  for (const name of ['30-first-score', '31-markings', '32-layout']) {
+    checks++;
+    if (!existsSync(new URL(`../assets/musescore/${name}.musicxml`, import.meta.url))) {
+      fail(`示例谱 ${name}.musicxml 不见了`);
+    }
+    checks++;
+    if (!existsSync(new URL(`../assets/musescore/${name}.png`, import.meta.url))) {
+      fail(`示例谱的渲染图 ${name}.png 不见了`);
+    }
   }
 }
 

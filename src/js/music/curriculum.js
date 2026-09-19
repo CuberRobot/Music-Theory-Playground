@@ -137,9 +137,9 @@ export const PARTS = [
         title: '十一 · 工具：MuseScore',
         blurb: '用 MuseScore 4 把心里的东西变成能打印、能播放的谱子。',
         lessons: [
-          { id: '30-musescore-basics',   no: '30', title: 'MuseScore 入门', sub: '新建乐谱、输入第一个音符', status: 'planned' },
-          { id: '31-musescore-notation', no: '31', title: '记谱进阶',       sub: '记号、连线、力度与速度',   status: 'planned' },
-          { id: '32-musescore-publish',  no: '32', title: '排版与导出',     sub: '整理成能给别人看的谱',     status: 'planned' },
+          { id: '30-musescore-basics',   no: '30', title: 'MuseScore 入门', sub: '新建乐谱、输入第一个音符', status: 'ready' },
+          { id: '31-musescore-notation', no: '31', title: '记谱进阶',       sub: '记号、连线、力度与速度',   status: 'ready' },
+          { id: '32-musescore-publish',  no: '32', title: '排版与导出',     sub: '整理成能给别人看的谱',     status: 'ready' },
         ],
       },
     ],

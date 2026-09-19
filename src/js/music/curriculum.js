@@ -199,15 +199,35 @@ export const PARTS = [
           { id: 'n-ravel-bolero', no: 'N', title: '拉威尔 · 波莱罗', sub: '十五分钟的渐强', status: 'ready' },
         ],
       },
+      {
+        id: 'anime-windband',
+        title: '动画与管乐',
+        blurb: '《吹响！上低音号》里的竞演曲。这一层的三首都是现代作品——没有公版谱可用，所以分析的落点在结构、制度、编制和听法上。',
+        lessons: [
+          { id: 'q-mikazuki', no: 'O', title: '三日月之舞', sub: '一场独奏掀起的风波', status: 'ready' },
+          { id: 'r-provence', no: 'P', title: '普罗旺斯的风', sub: '一道所有人都要做的题', status: 'ready' },
+          { id: 's-liz-to-aoi-tori', no: 'Q', title: '利兹与青鸟', sub: '第 3 楽章里的挂け合い', status: 'ready' },
+        ],
+      },
     ],
   },
   {
     id: 'styles',
     no: '第四部分',
     title: '音乐风格解析',
-    blurb: '布鲁斯、爵士、摇滚、前卫摇滚、世界音乐……每种风格都由一组有限的手法和习惯组成。这一部分把它们拆开看。',
+    blurb: '爵士、摇滚、世界音乐……每种风格都由一组有限的手法和习惯组成。这一部分把它们拆开看：先说清这套音乐是用什么做的，再说它是从哪儿来的、谁把它带出去的。',
     reserved: '这一部分慢慢补。放在最后是有意的 —— 新内容往后加，前面章节的编号就不用反复改。',
-    tiers: [],
+    tiers: [
+      {
+        id: 'styles-core',
+        title: '一 · 一套音乐是怎么做出来的',
+        blurb: '一种风格能被认出来，靠的往往不是音色，而是几条固定的手法。',
+        lessons: [
+          { id: 'o-afrobeat', no: 'R', title: 'Afrobeat', sub: '鼓是主旋律', status: 'ready' },
+          { id: 'p-raga', no: 'S', title: '拉格（Raga）', sub: '一个框架，九成靠即兴', status: 'ready' },
+        ],
+      },
+    ],
   },
 ];
 

@@ -299,6 +299,41 @@ input[type="range"] {
 .canon-cells i.on { background: var(--green); border-color: var(--green-deep); opacity: .8; }
 .canon-bar { flex: 0 0 6.5em; text-align: right; color: var(--ink-4); }
 
+/* --- Afrobeat 节奏台：十六格 × 六行的节奏图 ----------------------------- */
+
+.afro-grid { display: flex; flex-direction: column; gap: 4px; margin-top: var(--sp-4); }
+.afro-row { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-tiny); }
+.afro-name { flex: 0 0 3.2em; color: var(--ink-2); }
+.afro-cells { display: flex; gap: 3px; flex: 1; }
+.afro-cells i {
+  flex: 1; height: 13px; border-radius: 3px;
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.afro-cells i.beat { border-left-color: var(--line-strong); }
+.afro-cells i.on { background: var(--green); border-color: var(--green-deep); }
+
+/* --- 拉格台：七个音 + 塔拉格子 ----------------------------------------- */
+
+.raga-scale { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--sp-4); }
+.raga-note {
+  flex: 1; min-width: 3.4em; text-align: center;
+  padding: var(--sp-2) 0; border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: var(--surface-2);
+}
+.raga-note b { display: block; font-family: var(--font-serif); font-size: var(--fs-body); color: var(--ink-1); }
+.raga-note i { font-style: normal; font-size: var(--fs-tiny); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.raga-note.hi { background: var(--amber-soft); border-color: var(--amber-deep); }
+.raga-note.hi i { color: var(--amber-deep); }
+
+.tala-grid { display: flex; gap: 4px; }
+.tala-cell {
+  flex: 1; height: 22px; border-radius: 3px;
+  background: var(--surface-3); border: 1px solid var(--line);
+}
+.tala-cell.first { background: var(--amber); border-color: var(--amber-deep); }
+.tala-cell.khali { background: var(--slate-soft); border-color: var(--slate); }
+.tala-cell.now { outline: 2px solid var(--ink-1); }
+
 /* --- 表格 ----------------------------------------------------------------- */
 
 .table { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
@@ -560,6 +595,23 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 }
 .form-letter { font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 1; }
 .form-bar { font-size: var(--fs-tiny); color: color-mix(in srgb, var(--ink-1) 70%, transparent); }
+
+/* --- 三日月之舞：三段结构台 / 独奏对照台 -------------------------------- */
+
+/* 三段的速度画成条：长度就是速度本身，"缓"那一段短一大截 */
+.mzk-bars { display: flex; flex-direction: column; gap: 4px; margin-top: var(--sp-4); }
+.mzk-bar { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-tiny); color: var(--ink-2); }
+.mzk-bar span { flex: 0 0 6.5em; }
+.mzk-bar i { display: block; height: 10px; border-radius: var(--r-pill); background: var(--amber); }
+.mzk-bar i.slow { background: var(--green); }
+
+/* 两种吹法各占一张卡：两条时间轴并排看，差别才是看得见的 */
+.solo-takes { display: flex; flex-direction: column; gap: var(--sp-3); margin-top: var(--sp-4); }
+.solo-take {
+  border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: var(--sp-3); background: var(--surface);
+}
+.solo-take h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-small); }
 
 .prog-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .prog-slot {

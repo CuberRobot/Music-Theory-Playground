@@ -22,6 +22,10 @@ import { SCORE_TEMPO } from '../src/js/audio/tempo.js';
 import { ODE_THEME } from '../src/js/widgets/ode-lab.js';
 import { TEXTURE_DEMO } from '../src/js/widgets/texture-lab.js';
 import { sequenceOf } from '../src/js/widgets/motif-lab.js';
+import { MIKAZUKI, MIKAZUKI_BARS, DEMOS } from '../src/js/widgets/mikazuki-form.js';
+import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
+import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
+import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 let fails = 0;
@@ -332,6 +336,202 @@ section('★ 速度与力度');
   const b = TEMPO_TERMS.map((t) => Number(t.bpm.split('–')[0]));
   eq(b.every((v, i) => i === 0 || v > b[i - 1]), true, '速度术语 BPM 递增');
   eq(DYNAMICS.map((d) => d.mark).join(' '), 'pp p mp mf f ff', '力度记号顺序');
+}
+
+section('★ 三日月之舞 · 三段的速度与拍号');
+{
+  // 出处：萌娘百科《三日月之舞》条目的"赏析"小节（2026-09 取）。
+  // 这一节引用的是它的文字描述，不是谱面核对 —— 页面里也这么写了。
+  const M = MIKAZUKI;
+  eq(M.movements.length, 3, '三段：急 — 缓 — 急');
+  eq(M.movements.map((m) => m.bpm).join(','), '152,66,156', '三个乐部的速度标记');
+  eq(M.movements[2].codaBpm, 168, 'Ⅲ 的收尾是 Presto ♩=168');
+  eq(M.movements[0].meters.join(' '), '4/4 3/4', 'Ⅰ 在 4/4 和 3/4 之间来回');
+  eq(M.movements[1].meters.join(' '), '4/4', 'Ⅱ 是 4/4');
+  eq(Math.round((M.movements[1].bpm / M.movements[0].bpm) * 100), 43, '中段只有头段的 43%');
+  eq(Math.round((M.movements[2].codaBpm / M.movements[0].bpm) * 100), 111, '收尾比头段快 11%');
+
+  // 节拍器必须真的按声明的速度走：前两下的间隔就是一拍。
+  // 之前"设了速度却没按它响"这类问题，只有耳朵能发现，所以这里钉住。
+  for (const m of M.movements) {
+    const d = DEMOS[m.id];
+    near(d.taps[1].at - d.taps[0].at, 60 / m.bpm, 0.002, `${m.id} 拍点间隔必须等于 60/${m.bpm}`);
+  }
+  // Ⅲ 的收尾要真的加速：末尾的拍要比开头的拍短
+  const t3 = DEMOS.III.taps;
+  const headBeat = t3[1].at - t3[0].at;
+  const lastBeat = t3[t3.length - 1].at - t3[t3.length - 2].at;
+  eq(lastBeat < headBeat, true, 'Ⅲ 收尾的拍比开头的拍短（真的加速了）');
+  eq(Math.abs(t3[t3.length - 1].at - t3[t3.length - 2].at - 60 / M.movements[2].codaBpm) < 0.002, true,
+    '最后一拍的间隔是 ♩=168');
+
+  // 示意素材的小节必须写满：slots 的总拍数要等于这一小节声明的拍数
+  for (const [id, bars] of Object.entries(MIKAZUKI_BARS)) {
+    bars.forEach((bar, i) => {
+      const sum = bar.slots.reduce((a, s) => a + s.beats, 0);
+      eq(sum, bar.beats, `${id} 第 ${i + 1} 小节的拍数`);
+    });
+  }
+}
+
+section('★ 三日月之舞 · 原声带各版本（时长与链接都要能对上）');
+{
+  const M = MIKAZUKI;
+  const byId = (id) => M.versions.find((v) => v.id === id);
+  eq(byId('reina').seconds - byId('kaori').seconds, 5, '丽奈版比香织版长 5 秒');
+  eq(byId('short').seconds < 300, true, '引退式短版不到 5 分钟');
+  eq(byId('kansai').seconds > byId('short').seconds, true, '关西大会版比短版长');
+
+  const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  const page = readFileSync(new URL('../lessons/q-mikazuki/index.html', import.meta.url), 'utf8');
+  for (const v of M.versions) {
+    checks++;
+    if (!page.includes(mmss(v.seconds))) fail(`O 节页面没写出 ${v.id} 的时长 ${mmss(v.seconds)}`);
+    checks++;
+    if (!page.includes(`song?id=${v.song}`)) fail(`O 节页面没链到 ${v.id} 的曲目（网易云 ${v.song}）`);
+  }
+  // 三段的速度标记必须出现在页面上（页面上用 CSS 画的音符，所以只查数字）
+  for (const n of ['=152', '=66', '=156', '=168']) {
+    checks++;
+    if (!page.includes(n)) fail(`O 节页面没写出速度 ${n}`);
+  }
+  // 以前那句"没有谱、不给谱例"是错的：官方在卖总谱＋全分谱
+  checks++;
+  if (!/print-gakufu\.com\/score\/detail\/\d+/.test(page)) {
+    fail('O 节页面没有给出官方乐谱的购买链接（"没有公版谱"不等于"没有谱"）');
+  }
+}
+
+section('★ 独奏对照台：两串音高一个音都不差');
+{
+  const A = SOLO_TAKES.a.notes;
+  const B = SOLO_TAKES.b.notes;
+  // B 的句尾拆成两笔（后一笔轻下去），所以先合并相邻的同音再比音高序列
+  const fold = (list) => list.reduce((acc, n) => (acc.at(-1) === n.midi ? acc : [...acc, n.midi]), []);
+  eq(fold(A).join(','), SOLO_TAKES.pitches.join(','), 'A 的音高序列');
+  eq(fold(B).join(','), SOLO_TAKES.pitches.join(','), 'B 的音高序列和 A 完全相同');
+
+  // A 必须整整齐齐落在拍上（这就是"照着拍子吹"）
+  eq(A.map((n) => n.start).join(','), '0,1,2,3,4,5,6', 'A 的每个音都从整拍起');
+  eq(new Set(A.slice(0, -1).map((n) => n.dur)).size, 1, 'A 的前六个音一样长（句尾收住）');
+  eq(new Set(A.map((n) => n.level ?? SOLO_TAKES.a.level)).size, 1, 'A 的每个音一样响');
+
+  // B 必须真的"把句子唱出来"：高点更长、句尾更长、整句更长
+  const peak = (list) => Math.max(...list.filter((n) => n.midi === 77).map((n) => n.dur));
+  eq(peak(B) > peak(A) * 2, true, 'B 的最高音停的时间是 A 的两倍以上');
+  eq(SOLO_LENGTHS.b > SOLO_LENGTHS.a, true, 'B 整句比 A 长');
+  eq(B.at(-1).midi === B.at(-2).midi && B.at(-1).level < B.at(-2).level, true,
+    'B 的句尾拆成两笔，后一笔更轻（用来收细）');
+  // 句尾长度必须从高点之后的那一组算起 —— 句子的第一个音也是主音，
+  // 拿"所有主音"去量会量成整句（这一条在实验台上曾经算错过）
+  const tailOf = (list) => {
+    const end = Math.max(...list.map((n) => n.start + n.dur));
+    const peakStart = Math.min(...list.filter((n) => n.midi === 77).map((n) => n.start));
+    const group = list.filter((n) => n.midi === SOLO_TAKES.pitches.at(-1) && n.start > peakStart);
+    return end - Math.min(...group.map((n) => n.start));
+  };
+  eq(tailOf(A), 2, 'A 的句尾是 2 拍');
+  eq(tailOf(B) > tailOf(A), true, 'B 的句尾比 A 长');
+  eq(Math.max(...B.map((n) => n.level ?? 0)) > SOLO_TAKES.b.notes[0].level, true,
+    'B 的力度是往高点推上去的，不是平的');
+}
+
+section('★ 普罗旺斯的风 · 2015 年课题曲 IV 的调性与骨架');
+{
+  // 出处：日文维基百科《マーチ「プロヴァンスの風」》（引全日本吹奏乐连盟会报 2014-12 号）
+  // 与《全日本吹奏楽コンクール課題曲一覧》：第 63 回（2015）课题曲 IV = マーチ「プロヴァンスの風」。
+  eq(PROVENCE.tempo, 132, '速度 ♩=132');
+  eq(PROVENCE.meter, '4/4', '拍号 4/4');
+  eq(PROVENCE.keyMain.includes('ニ短調'), true, '主调是 d 小调');
+  eq(PROVENCE.keyTrio.includes('変イ長調'), true, '三声中段是 A♭ 大调');
+  eq(PROVENCE.keyDistance, 6, '两个主音相距 6 个半音（三全音）');
+  eq(analyseInterval(62, 68, true).name, '减五度', 'D → A♭ 的音程名（三全音的一种拼法）');
+  eq(PROVENCE.sections.map((s) => s.id).join(','), 'intro,march1,trio,march3',
+    '进行曲的四段：序奏—第一段—三声中段—第三段');
+
+  // 每一段都要按 4/4 写满：march 四小节 = 16 拍；序奏一小节 = 4 拍
+  const beat = 60 / PROVENCE.tempo;
+  near(PROVENCE_DEMOS.intro.total, 4 * beat, 0.001, '序奏一小节（4 拍）');
+  for (const id of ['march1', 'trio', 'march3']) {
+    near(PROVENCE_DEMOS[id].total, 16 * beat, 0.001, `${id} 四小节（16 拍）`);
+  }
+  // 伴奏必须真的按进行曲的打法：低音鼓在 1、3 拍，小鼓在 2、4 拍
+  const m1 = PROVENCE_DEMOS.march1;
+  near(m1.taps[1].at - m1.taps[0].at, beat, 0.001, '拍点间隔 = 一拍');
+  eq(m1.hats.map((h) => Math.round(h.at / beat) % 4).join(','), '1,3,1,3,1,3,1,3',
+    '小鼓落在 2、4 拍（从 0 数起的 1、3）');
+  eq(m1.drums.map((d) => Math.round(d.at / beat) % 4).join(','), '0,2,0,2,0,2,0,2',
+    '低音鼓落在 1、3 拍');
+  eq(m1.drums.every((d) => d.freq < 120), true, '低音鼓用的是低频');
+
+  // 三声中段必须就是第一段整体挪六个半音 —— "同一句旋律换了调"这句话得是真的
+  const strip = (list) => list.map((n) => ({ midi: n.midi, start: +n.start.toFixed(4), dur: +n.dur.toFixed(4) }));
+  const shifted = strip(PROVENCE_DEMOS.march1.notes).map((n) => ({ ...n, midi: n.midi + PROVENCE.keyDistance }));
+  eq(JSON.stringify(strip(PROVENCE_DEMOS.trio.notes)) === JSON.stringify(shifted), true,
+    '三声中段 = 第一段整体 +6 个半音（同一句旋律，只换调）');
+
+  // 页面必须写出速度、两个调，并给出四个听音链接
+  const page = readFileSync(new URL('../lessons/r-provence/index.html', import.meta.url), 'utf8');
+  for (const n of ['=132', 'd 小调', 'A♭ 大调']) {
+    checks++;
+    if (!page.includes(n)) fail(`P 节页面没写出 ${n}`);
+  }
+  for (const id of [33051088, 452804856, 452814790]) {
+    checks++;
+    if (!page.includes(`song?id=${id}`)) fail(`P 节页面没链到曲目 ${id}`);
+  }
+}
+
+section('★ 利兹与青鸟 · 四个乐章与竞赛改编版');
+{
+  // 出处：官方原声带《girls,dance,staircase》Disc 2 的曲目数据（网易云与日文维基百科一致）
+  const MOV = { 'ありふれた日々': 296, '新しい家族': 302, '愛ゆえの決断': 387, '遠き空へ': 354 };
+  const total = Object.values(MOV).reduce((a, b) => a + b, 0);
+  eq(total, 1339, '四个乐章加起来 1339 秒');
+  eq(Math.floor(total / 60), 22, '也就是 22 分钟出头');
+  const concours = 525;
+  eq(concours < total / 2, true, '竞赛改编版不到原曲的一半长');
+  near(concours / total, 0.39, 0.01, '改编版保留了约 39% 的长度');
+  eq(MOV['愛ゆえの決断'] > MOV['ありふれた日々'], true, '第 3 楽章比第 1 楽章长（重量压在它身上）');
+
+  const page = readFileSync(new URL('../lessons/s-liz-to-aoi-tori/index.html', import.meta.url), 'utf8');
+  for (const n of ['4:56', '5:02', '6:27', '5:54', '8:45', '2:03']) {
+    checks++;
+    if (!page.includes(n)) fail(`Q 节页面没写出时长 ${n}`);
+  }
+  for (const id of [554244319, 554244320, 554245324, 554241297, 554242318]) {
+    checks++;
+    if (!page.includes(`song?id=${id}`)) fail(`Q 节页面没链到曲目 ${id}`);
+  }
+  // 第 3 楽章的双簧管与长笛分谱（自己动手对照那一段挂け合い的唯一正当路子）
+  for (const id of [291131, 290435, 290405, 290403]) {
+    checks++;
+    if (!page.includes(`score/detail/${id}/`)) fail(`Q 节页面没给出乐谱 ${id}`);
+  }
+}
+
+section('★ 挂け合い台：错位多少毫秒算"不齐"');
+{
+  eq(DUET.bpm, 100, '示范速度 ♩=100');
+  eq(DUET.maxOffsetMs, 240, '滑块最大 240 毫秒');
+  eq(DUET.bands.map((b) => b.upTo).join(','), '25,75,150,240', '四档错位的分界');
+  eq(DUET.bands.every((b, i) => i === 0 || b.upTo > DUET.bands[i - 1].upTo), true, '分界递增');
+  eq(DUET.bands.every((b) => b.label && b.tip), true, '每一档都要有一句解释');
+
+  // 0 毫秒时两条线必须真的对齐：第 3 小节那个一起停住的长音是重拍的同一时刻
+  const at0 = DUET_LINES.at0;
+  const oboeHold = at0.oboe.find((n) => n.midi === 79);
+  const fluteHold = at0.flute.find((n) => n.midi === 76);
+  near(oboeHold.start, fluteHold.start, 0.0005, '错位 0 时两条线同时进入那个长音');
+  near(oboeHold.dur, fluteHold.dur, 0.0005, '而且一样长');
+  eq(analyseInterval(fluteHold.midi, oboeHold.midi, false).name, '小三度', '两个长音构成小三度（协和）');
+
+  // 推到最大时，长笛整体推迟的秒数必须精确等于滑块的值
+  const atMax = DUET_LINES.atMax;
+  const fluteAt0 = at0.flute[0];
+  const fluteAtMax = atMax.flute[0];
+  near(fluteAtMax.start - fluteAt0.start, DUET.maxOffsetMs / 1000, 0.0005, '长笛整体推迟 240 毫秒');
+  near(atMax.oboe[0].start, at0.oboe[0].start, 0.0005, '双簧管不动');
 }
 
 section('节奏、词典引用、课程编号、泛音配方');

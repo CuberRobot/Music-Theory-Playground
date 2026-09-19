@@ -202,9 +202,9 @@ export const PARTS = [
       {
         id: 'anime-windband',
         title: '动画与管乐',
-        blurb: '《吹响！上低音号》里的竞演曲。这一层的三首都是现代作品——没有公版谱可用，所以分析的落点在制度、编制和听法上。',
+        blurb: '《吹响！上低音号》里的竞演曲。这一层的三首都是现代作品——没有公版谱可用，所以分析的落点在结构、制度、编制和听法上。',
         lessons: [
-          { id: 'q-mikazuki', no: 'O', title: '三日月之舞', sub: '把练琴拍成主线', status: 'ready' },
+          { id: 'q-mikazuki', no: 'O', title: '三日月之舞', sub: '一场独奏掀起的风波', status: 'ready' },
           { id: 'r-provence', no: 'P', title: '普罗旺斯的风', sub: '一支没有弦乐的乐队', status: 'ready' },
           { id: 's-liz-to-aoi-tori', no: 'Q', title: '利兹与青鸟', sub: '两个声音的契合与不契合', status: 'ready' },
         ],

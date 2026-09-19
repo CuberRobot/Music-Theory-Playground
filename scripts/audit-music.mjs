@@ -22,6 +22,8 @@ import { SCORE_TEMPO } from '../src/js/audio/tempo.js';
 import { ODE_THEME } from '../src/js/widgets/ode-lab.js';
 import { TEXTURE_DEMO } from '../src/js/widgets/texture-lab.js';
 import { sequenceOf } from '../src/js/widgets/motif-lab.js';
+import { MIKAZUKI, MIKAZUKI_BARS, DEMOS } from '../src/js/widgets/mikazuki-form.js';
+import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 let fails = 0;
@@ -332,6 +334,104 @@ section('★ 速度与力度');
   const b = TEMPO_TERMS.map((t) => Number(t.bpm.split('–')[0]));
   eq(b.every((v, i) => i === 0 || v > b[i - 1]), true, '速度术语 BPM 递增');
   eq(DYNAMICS.map((d) => d.mark).join(' '), 'pp p mp mf f ff', '力度记号顺序');
+}
+
+section('★ 三日月之舞 · 三段的速度与拍号');
+{
+  // 出处：萌娘百科《三日月之舞》条目的"赏析"小节（2026-09 取）。
+  // 这一节引用的是它的文字描述，不是谱面核对 —— 页面里也这么写了。
+  const M = MIKAZUKI;
+  eq(M.movements.length, 3, '三段：急 — 缓 — 急');
+  eq(M.movements.map((m) => m.bpm).join(','), '152,66,156', '三个乐部的速度标记');
+  eq(M.movements[2].codaBpm, 168, 'Ⅲ 的收尾是 Presto ♩=168');
+  eq(M.movements[0].meters.join(' '), '4/4 3/4', 'Ⅰ 在 4/4 和 3/4 之间来回');
+  eq(M.movements[1].meters.join(' '), '4/4', 'Ⅱ 是 4/4');
+  eq(Math.round((M.movements[1].bpm / M.movements[0].bpm) * 100), 43, '中段只有头段的 43%');
+  eq(Math.round((M.movements[2].codaBpm / M.movements[0].bpm) * 100), 111, '收尾比头段快 11%');
+
+  // 节拍器必须真的按声明的速度走：前两下的间隔就是一拍。
+  // 之前"设了速度却没按它响"这类问题，只有耳朵能发现，所以这里钉住。
+  for (const m of M.movements) {
+    const d = DEMOS[m.id];
+    near(d.taps[1].at - d.taps[0].at, 60 / m.bpm, 0.002, `${m.id} 拍点间隔必须等于 60/${m.bpm}`);
+  }
+  // Ⅲ 的收尾要真的加速：末尾的拍要比开头的拍短
+  const t3 = DEMOS.III.taps;
+  const headBeat = t3[1].at - t3[0].at;
+  const lastBeat = t3[t3.length - 1].at - t3[t3.length - 2].at;
+  eq(lastBeat < headBeat, true, 'Ⅲ 收尾的拍比开头的拍短（真的加速了）');
+  eq(Math.abs(t3[t3.length - 1].at - t3[t3.length - 2].at - 60 / M.movements[2].codaBpm) < 0.002, true,
+    '最后一拍的间隔是 ♩=168');
+
+  // 示意素材的小节必须写满：slots 的总拍数要等于这一小节声明的拍数
+  for (const [id, bars] of Object.entries(MIKAZUKI_BARS)) {
+    bars.forEach((bar, i) => {
+      const sum = bar.slots.reduce((a, s) => a + s.beats, 0);
+      eq(sum, bar.beats, `${id} 第 ${i + 1} 小节的拍数`);
+    });
+  }
+}
+
+section('★ 三日月之舞 · 原声带各版本（时长与链接都要能对上）');
+{
+  const M = MIKAZUKI;
+  const byId = (id) => M.versions.find((v) => v.id === id);
+  eq(byId('reina').seconds - byId('kaori').seconds, 5, '丽奈版比香织版长 5 秒');
+  eq(byId('short').seconds < 300, true, '引退式短版不到 5 分钟');
+  eq(byId('kansai').seconds > byId('short').seconds, true, '关西大会版比短版长');
+
+  const mmss = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  const page = readFileSync(new URL('../lessons/q-mikazuki/index.html', import.meta.url), 'utf8');
+  for (const v of M.versions) {
+    checks++;
+    if (!page.includes(mmss(v.seconds))) fail(`O 节页面没写出 ${v.id} 的时长 ${mmss(v.seconds)}`);
+    checks++;
+    if (!page.includes(`song?id=${v.song}`)) fail(`O 节页面没链到 ${v.id} 的曲目（网易云 ${v.song}）`);
+  }
+  // 三段的速度标记必须出现在页面上（页面上用 CSS 画的音符，所以只查数字）
+  for (const n of ['=152', '=66', '=156', '=168']) {
+    checks++;
+    if (!page.includes(n)) fail(`O 节页面没写出速度 ${n}`);
+  }
+  // 以前那句"没有谱、不给谱例"是错的：官方在卖总谱＋全分谱
+  checks++;
+  if (!/print-gakufu\.com\/score\/detail\/\d+/.test(page)) {
+    fail('O 节页面没有给出官方乐谱的购买链接（"没有公版谱"不等于"没有谱"）');
+  }
+}
+
+section('★ 独奏对照台：两串音高一个音都不差');
+{
+  const A = SOLO_TAKES.a.notes;
+  const B = SOLO_TAKES.b.notes;
+  // B 的句尾拆成两笔（后一笔轻下去），所以先合并相邻的同音再比音高序列
+  const fold = (list) => list.reduce((acc, n) => (acc.at(-1) === n.midi ? acc : [...acc, n.midi]), []);
+  eq(fold(A).join(','), SOLO_TAKES.pitches.join(','), 'A 的音高序列');
+  eq(fold(B).join(','), SOLO_TAKES.pitches.join(','), 'B 的音高序列和 A 完全相同');
+
+  // A 必须整整齐齐落在拍上（这就是"照着拍子吹"）
+  eq(A.map((n) => n.start).join(','), '0,1,2,3,4,5,6', 'A 的每个音都从整拍起');
+  eq(new Set(A.slice(0, -1).map((n) => n.dur)).size, 1, 'A 的前六个音一样长（句尾收住）');
+  eq(new Set(A.map((n) => n.level ?? SOLO_TAKES.a.level)).size, 1, 'A 的每个音一样响');
+
+  // B 必须真的"把句子唱出来"：高点更长、句尾更长、整句更长
+  const peak = (list) => Math.max(...list.filter((n) => n.midi === 77).map((n) => n.dur));
+  eq(peak(B) > peak(A) * 2, true, 'B 的最高音停的时间是 A 的两倍以上');
+  eq(SOLO_LENGTHS.b > SOLO_LENGTHS.a, true, 'B 整句比 A 长');
+  eq(B.at(-1).midi === B.at(-2).midi && B.at(-1).level < B.at(-2).level, true,
+    'B 的句尾拆成两笔，后一笔更轻（用来收细）');
+  // 句尾长度必须从高点之后的那一组算起 —— 句子的第一个音也是主音，
+  // 拿"所有主音"去量会量成整句（这一条在实验台上曾经算错过）
+  const tailOf = (list) => {
+    const end = Math.max(...list.map((n) => n.start + n.dur));
+    const peakStart = Math.min(...list.filter((n) => n.midi === 77).map((n) => n.start));
+    const group = list.filter((n) => n.midi === SOLO_TAKES.pitches.at(-1) && n.start > peakStart);
+    return end - Math.min(...group.map((n) => n.start));
+  };
+  eq(tailOf(A), 2, 'A 的句尾是 2 拍');
+  eq(tailOf(B) > tailOf(A), true, 'B 的句尾比 A 长');
+  eq(Math.max(...B.map((n) => n.level ?? 0)) > SOLO_TAKES.b.notes[0].level, true,
+    'B 的力度是往高点推上去的，不是平的');
 }
 
 section('节奏、词典引用、课程编号、泛音配方');

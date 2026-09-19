@@ -596,6 +596,23 @@ a.map-card:hover { box-shadow: var(--shadow-2); transform: translateY(-1px); }
 .form-letter { font-family: var(--font-serif); font-size: var(--fs-h2); line-height: 1; }
 .form-bar { font-size: var(--fs-tiny); color: color-mix(in srgb, var(--ink-1) 70%, transparent); }
 
+/* --- 三日月之舞：三段结构台 / 独奏对照台 -------------------------------- */
+
+/* 三段的速度画成条：长度就是速度本身，"缓"那一段短一大截 */
+.mzk-bars { display: flex; flex-direction: column; gap: 4px; margin-top: var(--sp-4); }
+.mzk-bar { display: flex; align-items: center; gap: var(--sp-2); font-size: var(--fs-tiny); color: var(--ink-2); }
+.mzk-bar span { flex: 0 0 6.5em; }
+.mzk-bar i { display: block; height: 10px; border-radius: var(--r-pill); background: var(--amber); }
+.mzk-bar i.slow { background: var(--green); }
+
+/* 两种吹法各占一张卡：两条时间轴并排看，差别才是看得见的 */
+.solo-takes { display: flex; flex-direction: column; gap: var(--sp-3); margin-top: var(--sp-4); }
+.solo-take {
+  border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: var(--sp-3); background: var(--surface);
+}
+.solo-take h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-small); }
+
 .prog-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .prog-slot {
   flex: 1 1 76px; min-width: 76px; min-height: 84px; padding: 8px 6px;

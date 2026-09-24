@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S · Tool《Lateralus》· Music Theory Playground</title>
+<meta name="description" content="Tool 2001 年的《Lateralus》：副歌的小节在 9/8、8/8、7/8 之间轮换，同一句旋律被装进越来越短的盒子；以及「987 是斐波那契第 16 个数」这件事怎么被鼓手讲出来的。">
+<link rel="stylesheet" href="../../styles/tokens.css">
+<link rel="stylesheet" href="../../styles/base.css">
+<link rel="stylesheet" href="../../styles/components.css">
+</head>
+<body data-root="../../" data-lesson="tool-lateralus">
+
+<header class="topbar">
+  <a class="brand" href="../../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../../lessons/">课程地图</a></nav>
+  <span class="crumb">三 · 作品分析 / <b>S · Tool《Lateralus》</b></span>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell">
+  <nav class="rail" data-nav aria-label="课程目录"></nav>
+  <main class="lesson">
+
+    <section>
+      <p class="kicker">S · Tool《Lateralus》· 2001</p>
+      <h1>同一句话，越装越短的盒子</h1>
+      <p class="lead-p">讲奇数拍，最没用的说法是"这首曲子是 9/8 拍"——
+      因为它既没告诉你怎么听，也没告诉你为什么好听。</p>
+      <p>《Lateralus》给了一个能直接用耳朵验算的答案：
+      <b>同一句旋律，装进 9、8、7 三种长度的盒子。</b>
+      吉他没变，盒子一次比一次短，句子于是被越挤越紧。</p>
+    </section>
+
+    <div class="card">
+      <dl class="readout">
+        <div><dt>乐队</dt><dd>Tool（美国 · 前卫金属）</dd></div>
+        <div><dt>专辑</dt><dd>《Lateralus》2001 年 5 月 15 日发行 · 全长 76:32 · 录制于 2000 年 10 月–2001 年 1 月</dd></div>
+        <div><dt>这一首</dt><dd>专辑同名曲，也是第三首单曲 · <b>专辑版 9:24</b>；另有 5:47 的单曲剪辑版</dd></div>
+        <div><dt>署名</dt><dd>四人共同作曲：Danny Carey · Justin Chancellor · Adam Jones · Maynard James Keenan；制作：Tool 与 David Bottrill</dd></div>
+        <div><dt>它的名声</dt><dd>Loudwire 把它排在"21 世纪最佳金属歌曲"第 1 位</dd></div>
+        <div><dt>乐谱</dt><dd>没有公版谱；本节的谱例全部是本站自己写的示意，不是原曲旋律</dd></div>
+      </dl>
+    </div>
+
+    <section>
+      <h2>一 · 9-8-7 这个数字</h2>
+      <p>副歌的小节长度在 <b>9/8 → 8/8 → 7/8</b> 之间轮换。
+      鼓手 Danny Carey 在访谈里讲过这首曲子最初的名字：</p>
+      <div class="card">
+        <p style="margin:0">"它原来就叫 <b>9-8-7</b>，按拍号起的。
+        后来发现 987 正好是斐波那契数列的第 16 个数。那挺酷的。"</p>
+        <p class="hint" style="margin:8px 0 0">—— Danny Carey，转引自英文维基百科 Lateralus (song) 条目</p>
+      </div>
+      <p>（顺带把那个数说清楚：斐波那契数列写成 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987……
+      从 0 开始数第 16 个数，正好是 987。）</p>
+      <p>但这里要提醒一句：<b>数字上的巧合不等于音乐上的原因。</b>
+      987 是斐波那契数这件事很好玩，可它不解释这段音乐为什么好听。
+      真正能解释的是另一件事：<b>一个句子被装进不同长度的盒子以后，重音会挪位置。</b>
+      这一节就讲这个。</p>
+    </section>
+
+    <section>
+      <h2>二 · 换盒子，而不是数拍子</h2>
+      <p>先做个对比。如果一段旋律永远是 9/8，你会听到"每九下一个重音"——
+      听一会儿就习惯了，甚至可以跟着点头。</p>
+      <p>而这首曲子做的是：<b>旋律本身不动，改小节的长度。</b>
+      9 的盒子里，句子刚好装得下；换到 8，句尾的最后一格被切掉；
+      再换到 7，切掉两格。于是同一个句子每说一遍，都在不同的位置"落地"——
+      而且落得越来越早。</p>
+      <p>这正是它听起来一直在往前推的原因：<b>不是速度变快了，
+      是句子相对于拍子的位置一直在变。</b></p>
+
+      <div class="card wide" data-widget="cycle-lab"></div>
+      <p class="hint">先听模式 A：三种盒子各一遍，注意句尾怎么被切掉。
+      再切到模式 B：9、8、7 三条循环<b>同时</b>跑——你会听见完全不同的东西，
+      三条线各走各的，要走到 <b>504</b> 个八分音符（9、8、7 的最小公倍数）才一起回到起点。
+      这一节的读数里写着这个数，因为它是"循环"和"节拍"的分界线。</p>
+    </section>
+
+    <section>
+      <h2>三 · 歌词那条线，以及怎么对待它</h2>
+      <p>关于这首歌有一个流传很广的说法：主歌的歌词音节数按
+      <b>1、1、2、3、5、8、5、3</b> 排列，也就是斐波那契数列走上去再走下来。
+      这个说法很多地方在讲，但<b>乐队从来没有正式确认过</b>。
+      所以这一节的做法是：把它当成一道听力题交给你——
+      <b>你自己对着歌词数一遍音节，再决定信不信。</b></p>
+      <p>唯一有明确出处的是一句歌词的解释。主唱 Maynard James Keenan 在 2001 年的访谈里说，
+      歌里出现的<b>黑、白、红、黄</b>来自北美原住民的口传故事，
+      这四种颜色在那些创世故事里反复出现。</p>
+      <p>把这两件事放在一起，就能看出这首歌的态度：
+      <b>它把结构上的想法（数字、循环、螺旋）和意象上的想法混在一起，</b>
+      但哪一个都不解释另一个。你可以只把它当成一段好听的 9-8-7，
+      也可以顺着数字往下想——两条路都通。</p>
+    </section>
+
+    <section>
+      <h2>四 · 鼓在这里做什么</h2>
+      <p>Carey 是这套音乐能成立的关键。他在 Tool 里做的事情，
+      和摇滚鼓手常见的"打拍子 + 加花"完全不是一回事：</p>
+      <p><strong>一 · 他的四肢各管一条线。</strong>电子打击板、左侧的附加鼓、
+      脚踏的多种组合，让他可以同时维持两条甚至三条节奏型。
+      小节长度变化时，他不跟着"重数一遍"，而是让每条线继续走自己的。</p>
+      <p><strong>二 · 他不把重音强行对齐小节线。</strong>
+      9/8 换成 8/8 的时候，如果鼓手急着去踩"新的第一拍"，
+      音乐立刻会变得笨重。这首曲子听起来是滑过去的，就是因为鼓把那个接缝盖住了。</p>
+      <p><strong>三 · 他打的是"循环"，不是"拍子"。</strong>
+      上一节（R · Discipline）讲的是<b>四条循环同时交错</b>，
+      这一节讲的是<b>一条循环换三种长度的盒子</b>——
+      两种做法都要求鼓手心里同时装着好几个"一"，而不是只有一个。</p>
+    </section>
+
+    <section>
+      <h2>五 · 听点</h2>
+      <p><strong>一 · 先找那一句。</strong>副歌的吉他句很短，
+      先把它记住（大概就是"三个音上去、再下来"那种形状）。</p>
+      <p><strong>二 · 数它的落地位置。</strong>每说一遍，句尾落在小节的第几格？
+      如果它一次比一次早，你听到的就是 9→8→7。<b>不用数拍子，数句子。</b></p>
+      <p><strong>三 · 听鼓的接缝。</strong>换小节长度的地方，鼓有没有"重新起步"的感觉？
+      如果没有，那就是 Carey 在把缝盖住。</p>
+      <p><strong>四 · 注意它怎么"回来"。</strong>这首歌将近 9 分半，
+      中间有很长一段是安静的、只有低音在走的。那是它在为后面的爆发留空间——
+      长曲子不是把短曲子拉长，是<b>让同一个想法在不同密度上再出现一次</b>。</p>
+      <p><strong>五 · 数一数音节（可选）。</strong>上面说的 1、1、2、3、5、8、5、3，
+      自己数一遍。数出来是就信，数不出来也不用勉强——
+      音乐分析里最不该做的就是"因为有人说有，所以你有义务听出来"。</p>
+    </section>
+
+    <section>
+      <h2>六 · 参考</h2>
+      <div class="card">
+        <div class="card-head"><h2>资料</h2></div>
+        <p style="margin:0">
+          <a href="https://en.wikipedia.org/wiki/Lateralus_(song)">Lateralus (song) · 英文维基百科</a>（需代理）
+          —— 拍号轮换、Carey 关于"9-8-7 / 斐波那契第 16 个数"的原话、Keenan 关于黑红白黄的访谈、Loudwire 的排名<br>
+          <a href="https://en.wikipedia.org/wiki/Lateralus">Lateralus (album) · 英文维基百科</a>（需代理）
+          —— 发行日期、录音时间、专辑总长
+        </p>
+        <p class="hint" style="margin-bottom:0">
+          <a href="https://music.163.com/#/song?id=20464495">专辑版 9:25</a> ·
+          <a href="https://music.163.com/#/song?id=3355868693">2002 年丹佛现场版 11:23</a>
+          —— <b>现场版值得单独听一次</b>：同样的结构，现场比专辑更慢一点、更重一点，
+          你更容易听清鼓是怎么把三种小节长度缝在一起的。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>一句话带走</h2>
+      <p><strong>奇数拍不是"数不出来的拍子"，是"同一句话说在不同长度的盒子里"。</strong>
+      你不需要数到 9，只需要听见句子一次比一次落地更早。</p>
+    </section>
+
+    <div class="lesson-foot" data-foot></div>
+  </main>
+</div>
+<script type="module" src="../../src/js/main.js"></script>
+</body>
+</html>

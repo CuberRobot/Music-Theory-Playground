@@ -9,7 +9,7 @@
  */
 
 import { midiToHz, spellMidi } from '../music/pitch.js';
-import { playPluck, preloadPluck } from '../audio/engine.js';
+import { playPluck, preloadPluck, stopAll } from '../audio/engine.js';
 import { createNoteStrip } from '../audio/transport.js';
 import { SCORE_TEMPO, beatSeconds } from '../audio/tempo.js';
 
@@ -133,6 +133,7 @@ export function mountMotifLab(root) {
   }
 
   function play(notes) {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     preloadPluck();
     // 交给音符条统一排期：它负责发声，也负责把游标走过去
     strip.load(timeline(notes));

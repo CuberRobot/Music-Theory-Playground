@@ -101,6 +101,7 @@ export function mountTextureLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     const barLen = BEAT * 4;
     const s = style();
     PROG.forEach((deg, bar) => {

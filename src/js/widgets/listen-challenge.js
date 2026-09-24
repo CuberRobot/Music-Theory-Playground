@@ -25,17 +25,36 @@
 
 import { midiToHz } from '../music/pitch.js';
 import { spectrumToAmps } from '../music/tuning.js';
-import { playNote, playChord, click } from '../audio/engine.js';
+import { playNote, playChord, click, stopAll } from '../audio/engine.js';
 
 export function mountListenChallenge(root) {
   const script = root.querySelector('script[type="application/json"]');
   if (!script) return;
   const cfg = JSON.parse(script.textContent);
 
-  const rootMidi = cfg.root ?? 60;
-  const rootHz = midiToHz(rootMidi);
-  const level = cfg.level ?? 0.26;
-  const duration = cfg.duration ?? 1.5;
+  /**
+   * 一道题还是多道题。
+   *
+   * 以前的写法只允许整个实验台出一道题 —— 结果第 1 节的题干问了
+   * "哪一个是纯五度、哪一个是狼五度"（两件事），界面上却只有一个作答区。
+   * 现在两种写法都支持：老页面（question + items + answer）照旧，
+   * 想要两道题就写 questions: [{ question, items, answer, ... }, …]，
+   * 每一道题有自己的试听行、作答行和反馈行。
+   */
+  const questions = (cfg.questions ?? [{
+    question: cfg.question,
+    items: cfg.items ?? [],
+    answer: cfg.answer,
+    hint: cfg.hint,
+    explain: cfg.explain,
+  }]).map((q) => ({
+    ...q,
+    items: q.items ?? [],
+    rootHz: midiToHz(q.root ?? cfg.root ?? 60),
+    spectrum: q.spectrum ?? cfg.spectrum ?? 'organ',
+    level: q.level ?? cfg.level ?? 0.26,
+    duration: q.duration ?? cfg.duration ?? 1.5,
+  }));
 
   const ampsFor = (item) => {
     let amps = item.harmonics ? item.harmonics : spectrumToAmps(item.spectrum ?? 'organ', 16);
@@ -43,11 +62,21 @@ export function mountListenChallenge(root) {
     return amps;
   };
 
-  /** at 是从现在算起的秒数偏移，供"全部播放一遍"错开时间。 */
-  const playAt = (item, at = 0) => {
+  /** 一个选项要响多久（秒）。用来排"全部播放一遍"，也用来决定指示器什么时候灭。 */
+  const lengthOf = (item, q) => {
+    if (Array.isArray(item.clicks)) return item.clicks.length * (item.beat ?? 0.5);
+    if (Array.isArray(item.notes)) {
+      return item.notes.reduce((a, n) => a + n.beats, 0) * (item.secPerBeat ?? 0.5);
+    }
+    return q.duration;
+  };
+
+  /** at 是从现在算起的秒数偏移。 */
+  const playAt = (item, at, q) => {
+    const level = q.level;
     if (Array.isArray(item.chord)) {
-      playChord(item.chord.map((s) => rootHz * Math.pow(2, s / 12)),
-        { duration, level, amps: ampsFor(item), at });
+      playChord(item.chord.map((s) => q.rootHz * Math.pow(2, s / 12)),
+        { duration: q.duration, level, amps: ampsFor(item), at });
     } else if (Array.isArray(item.clicks)) {
       const beat = item.beat ?? 0.5;
       item.clicks.forEach((v, i) => {
@@ -57,7 +86,7 @@ export function mountListenChallenge(root) {
       const sec = item.secPerBeat ?? 0.5;
       let t = at;
       item.notes.forEach((n) => {
-        playNote(rootHz * Math.pow(2, (n.transpose ?? 0) / 12), {
+        playNote(q.rootHz * Math.pow(2, (n.transpose ?? 0) / 12), {
           at: t,
           duration: Math.max(0.12, n.beats * sec * 0.9),
           level,
@@ -66,85 +95,142 @@ export function mountListenChallenge(root) {
         t += n.beats * sec;
       });
     } else if (typeof item.cents === 'number') {
-      playChord([rootHz, rootHz * Math.pow(2, item.cents / 1200)], {
-        duration, level: level * 0.8, amps: spectrumToAmps(cfg.spectrum ?? 'organ', 8), at,
+      playChord([q.rootHz, q.rootHz * Math.pow(2, item.cents / 1200)], {
+        duration: q.duration, level: level * 0.8, amps: spectrumToAmps(q.spectrum, 8), at,
       });
     } else {
-      playNote(rootHz * Math.pow(2, (item.transpose ?? 0) / 12), {
-        duration, level, amps: ampsFor(item), at,
+      playNote(q.rootHz * Math.pow(2, (item.transpose ?? 0) / 12), {
+        duration: q.duration, level, amps: ampsFor(item), at,
       });
     }
   };
 
-  const items = cfg.items ?? [];
   root.innerHTML = `
     <div class="card-head">
       <h2>${cfg.title ?? '听辨挑战'}</h2>
       <p class="hint">先听，想好了再选。听多少次都不算作答</p>
     </div>
-    <p class="lead-p" style="font-size: var(--fs-body)">${cfg.question ?? ''}</p>
-    <p class="hint" style="margin-top:0">试听 · 点 ▶ 只播放，不判对错</p>
-    <div class="choices"></div>
-    <div class="lab-controls" style="margin-top:var(--sp-3)">
-      <button class="btn" type="button" data-play-all>全部播放一遍</button>
-      <span class="tag" data-count></span>
-    </div>
-    <p class="hint" style="margin-bottom:6px">作答 · 想好了再点</p>
-    <div class="picks"></div>
-    <p class="verdict" aria-live="polite"></p>
+    <div data-questions></div>
   `;
 
-  const choices = root.querySelector('.choices');
-  const picks = root.querySelector('.picks');
-  const verdict = root.querySelector('.verdict');
+  const host = root.querySelector('[data-questions]');
+  const timers = new Set();
 
-  items.forEach((item, i) => {
-    const label = item.label ?? `选项 ${i + 1}`;
+  const clearTimers = () => { for (const t of timers) clearTimeout(t); timers.clear(); };
 
-    const listen = document.createElement('button');
-    listen.type = 'button';
-    listen.className = 'btn choice-play';
-    listen.setAttribute('aria-label', `播放${label}`);
-    listen.innerHTML = '<span aria-hidden="true">▶</span>';
-    listen.addEventListener('click', () => playAt(item, 0));
-    choices.appendChild(listen);
+  let blocks = [];
 
-    const pick = document.createElement('button');
-    pick.type = 'button';
-    pick.className = 'btn choice-pick';
-    pick.textContent = label;
-    pick.addEventListener('click', () => answer(i, pick));
-    picks.appendChild(pick);
+  questions.forEach((q, qi) => {
+    const multi = questions.length > 1;
+    const box = document.createElement('div');
+    box.className = 'challenge-q';
+    box.innerHTML = `
+      <p class="lead-p" style="font-size: var(--fs-body);margin:0 0 var(--sp-2)">
+        ${multi ? `<span class="tag">第 ${qi + 1} 题</span> ` : ''}${q.question ?? ''}
+      </p>
+      <p class="hint" style="margin:0">试听 · 点 ▶ 只播放，不判对错</p>
+      <div class="choices"></div>
+      <div class="lab-controls" style="margin-top:var(--sp-2)">
+        <button class="btn" type="button" data-play-all>全部播放一遍</button>
+        <span class="tag" data-count></span>
+      </div>
+      <p class="hint" style="margin-bottom:6px">作答 · 想好了再点</p>
+      <div class="picks"></div>
+      <p class="verdict" aria-live="polite"></p>
+    `;
+    host.appendChild(box);
+
+    const choices = box.querySelector('.choices');
+    const picks = box.querySelector('.picks');
+    const verdict = box.querySelector('.verdict');
+    const tag = box.querySelector('[data-count]');
+    const playAllBtn = box.querySelector('[data-play-all]');
+
+    const setPlaying = (idx) => {
+      [...choices.children].forEach((b, i) => b.classList.toggle('is-playing', i === idx));
+    };
+
+    /** 正在播放时按钮上要看得出来 —— 以前"全部播放一遍"点了像没点。 */
+    const setProgress = (text) => { tag.textContent = text; };
+
+    const block = { items: q.items, setPlaying, setProgress, playAllBtn, solved: false };
+    blocks.push(block);
+
+    q.items.forEach((item, i) => {
+      const label = item.label ?? `选项 ${i + 1}`;
+      const letter = label.replace(/\s*组$/, '');
+
+      const listen = document.createElement('button');
+      listen.type = 'button';
+      listen.className = 'btn choice-play';
+      listen.setAttribute('aria-label', `播放${label}`);
+      listen.innerHTML = `<span aria-hidden="true">▶</span> ${letter}`;
+      listen.addEventListener('click', () => playOne(q, i, setPlaying, setProgress));
+      choices.appendChild(listen);
+
+      const pick = document.createElement('button');
+      pick.type = 'button';
+      pick.className = 'btn choice-pick';
+      pick.textContent = label;
+      pick.addEventListener('click', () => answer(i, pick, q, verdict, block));
+      picks.appendChild(pick);
+    });
+
+    setProgress(`${q.items.length} 个选项`);
+    playAllBtn.addEventListener('click', () => playAll(q, setPlaying, setProgress));
   });
 
-  root.querySelector('[data-count]').textContent = `${items.length} 个选项`;
-
-  let solved = false;
-
-  /**
-   * 每次点击都必须更新反馈 —— 以前答对之后按钮被锁住，
-   * 再点它就直接 return，屏幕上留着上一次的旧结果，
-   * 看起来像"点了没反应"。
-   */
-  function answer(i, btn) {
-    const correct = i === cfg.answer;
+  function answer(i, btn, q, verdict, block) {
+    const correct = i === q.answer;
     if (correct) {
-      solved = true;
+      block.solved = true;
       btn.dataset.done = '1';
       btn.style.borderColor = 'var(--green)';
       btn.style.background = 'var(--green-soft)';
     }
     verdict.className = `verdict ${correct ? 'ok' : 'no'}`;
     verdict.textContent = correct
-      ? (cfg.explain ?? '对了。')
-      // 答错不拦、不标记，只给一句提示，让人继续听
-      : solved
+      ? (q.explain ?? '对了。')
+      : block.solved
         ? '这次不对 —— 不过答案你已经找出来了，就是高亮的那个。'
-        : (cfg.hint ?? '再听一遍，注意比较两者的差别。');
+        : (q.hint ?? '再听一遍，注意比较两者的差别。');
   }
 
-  root.querySelector('[data-play-all]').addEventListener('click', () => {
-    const gap = duration + 0.6;
-    items.forEach((item, i) => playAt(item, i * gap));
-  });
+  /** 每按一次播放都先掐掉上一次 —— 不允许两次播放叠在一起。 */
+  function resetAll(except) {
+    stopAll();
+    clearTimers();
+    for (const b of blocks) {
+      if (b !== except) { b.setPlaying(-1); b.setProgress(`${b.items.length} 个选项`); }
+    }
+  }
+
+  function playOne(q, i, setPlaying, setProgress) {
+    resetAll();
+    playAt(q.items[i], 0, q);
+    setPlaying(i);
+    setProgress(`正在播放：${q.items[i].label ?? `选项 ${i + 1}`}`);
+    timers.add(setTimeout(() => {
+      setPlaying(-1);
+      setProgress(`${q.items.length} 个选项`);
+    }, (lengthOf(q.items[i], q) + 0.25) * 1000));
+  }
+
+  function playAll(q, setPlaying, setProgress) {
+    resetAll();
+    const gap = 0.6;
+    let at = 0;
+    q.items.forEach((item, i) => {
+      playAt(item, at, q);
+      timers.add(setTimeout(() => {
+        setPlaying(i);
+        setProgress(`正在播放 ${i + 1} / ${q.items.length}`);
+      }, at * 1000));
+      at += lengthOf(item, q) + gap;
+    });
+    timers.add(setTimeout(() => {
+      setPlaying(-1);
+      setProgress(`${q.items.length} 个选项`);
+    }, (at + 0.2) * 1000));
+  }
 }

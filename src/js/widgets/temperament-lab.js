@@ -15,7 +15,7 @@ import {
   JUST, justCents, tetCents, chainResidual, wolfFifth,
   JUST_FIFTH, TET_FIFTH, PYTHAGOREAN_COMMA, tetRatio, spectrumToAmps,
 } from '../music/tuning.js';
-import { playChord } from '../audio/engine.js';
+import { playChord, stopAll } from '../audio/engine.js';
 
 const C4 = 60;
 const CX = 160;
@@ -83,6 +83,7 @@ export function mountTemperamentLab(root) {
         <button class="btn" type="button" data-set="${TET_FIFTH}">平均律 700</button>
       </div>
     </div>
+    <p class="hint" data-snap style="min-height:1.4em;margin:var(--sp-2) 0 0"></p>
 
     <p class="hint" data-verdict style="min-height: 1.6em"></p>
 
@@ -109,6 +110,7 @@ export function mountTemperamentLab(root) {
     verdict: root.querySelector('[data-verdict]'),
     fifth: root.querySelector('#tl-fifth'),
     fifthVal: root.querySelector('[data-fifth-val]'),
+    snap: root.querySelector('[data-snap]'),
     quick: root.querySelector('[data-quick]'),
     tbody: root.querySelector('tbody'),
   };
@@ -174,7 +176,12 @@ export function mountTemperamentLab(root) {
 
     drawCircle(c);
     const snapped = SNAP_TARGETS.some((t) => Math.abs(c - t) < 0.05);
-    el.fifthVal.textContent = `${c.toFixed(3)} 音分${snapped ? '（已吸附）' : ''}`;
+    // 数值这一格只放数字：文字变长会挤窄滑块，滑块的取值跟着变，
+    // 于是"文字一变→滑块一动→数值再变"——拖起来就抽搐。吸附状态另起一行说。
+    el.fifthVal.textContent = `${c.toFixed(3)}`;
+    el.snap.textContent = snapped
+      ? '已吸附到关键值（平均律 700 或纯五度 701.955）。'
+      : '自由移动中（松手时会吸附到最近的关键值）。';
 
     el.readout.innerHTML = `
       <div><dt>每个五度</dt><dd>${c.toFixed(3)} 音分</dd></div>
@@ -211,13 +218,16 @@ export function mountTemperamentLab(root) {
   // ---- 交互 ---------------------------------------------------------------
 
   el.fifth.addEventListener('input', () => {
-    state.fifth = snapCents(Number(el.fifth.value));
+    // 拖动过程中用滑块的原始值，不做吸附 —— 吸附留到松手。
+    state.fifth = Number(el.fifth.value);
     paint();
   });
 
-  // 松手时把滑块本身也拉到吸附点，手感上才"吸得住"
+  // 松手时吸附，并把滑块拉到那个点上，手感上才"吸得住"
   el.fifth.addEventListener('change', () => {
+    state.fifth = snapCents(Number(el.fifth.value));
     el.fifth.value = String(state.fifth);
+    paint();
   });
 
   el.quick.addEventListener('click', (e) => {
@@ -230,6 +240,7 @@ export function mountTemperamentLab(root) {
 
   function hearCents(cents) {
     const root = midiToHz(C4);
+    stopAll();
     playChord([root, root * Math.pow(2, cents / 1200)],
       { duration: 1.6, amps: state.rich, level: 0.22 });
   }

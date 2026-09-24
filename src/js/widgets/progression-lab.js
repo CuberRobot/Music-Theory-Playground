@@ -10,7 +10,7 @@
 
 import { midiToHz } from '../music/pitch.js';
 import { diatonicSet } from '../music/chords.js';
-import { playChordSequence, playChord } from '../audio/engine.js';
+import { playChordSequence, playChord, stopAll } from '../audio/engine.js';
 import { spectrumToAmps } from '../music/tuning.js';
 import { TEMPO } from '../audio/tempo.js';
 
@@ -103,6 +103,7 @@ export function mountProgressionLab(root) {
   const chordOf = (deg) => set()[deg].midis;
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     playChordSequence(state.degs.map((d) => chordOf(d).map(midiToHz)),
       { gap, duration: gap * 0.85, amps: PAD, level: 0.16 });
     el.now.textContent = state.degs.map((d) => set()[d].roman).join(' → ');

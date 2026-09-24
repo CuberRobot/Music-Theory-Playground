@@ -7,7 +7,7 @@
  */
 
 import { midiToHz, nameOfMidi } from '../music/pitch.js';
-import { playSequence } from '../audio/engine.js';
+import { playSequence, stopAll } from '../audio/engine.js';
 import { spectrumToAmps } from '../music/tuning.js';
 
 const PAD = spectrumToAmps('organ', 10);
@@ -70,6 +70,7 @@ export function mountTransposeLab(root) {
   });
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     const sounding = WRITTEN + current.offset;
     // 两个音先后响：先记谱音，再实际音，让差距离听得出来
     playSequence([midiToHz(WRITTEN), midiToHz(sounding)],

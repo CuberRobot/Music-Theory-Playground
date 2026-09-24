@@ -138,6 +138,7 @@ export function mountFormLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     const f = form();
     let at = 0;
     f.bars.forEach((bar) => {

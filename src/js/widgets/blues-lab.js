@@ -139,6 +139,7 @@ export function mountBluesLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     preloadPluck();
     state.playing = true;
     root.querySelector('[data-play]').textContent = '停止';

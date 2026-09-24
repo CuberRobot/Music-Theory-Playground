@@ -163,7 +163,8 @@ function renderMeter() {
 
 function renderFoot() {
   const host = document.querySelector('[data-foot]');
-  if (!host) return;
+  // 没有上一课/下一课的页面（首页、课程地图、术语表）也要有项目链接
+  if (!host) { renderSiteLinks(); return; }
   const current = document.body.dataset.lesson || '';
   const { prev, next } = neighbours(current);
   const root = rootPrefix();
@@ -177,6 +178,41 @@ function renderFoot() {
   };
 
   host.innerHTML = link(prev, 'prev') + link(next, 'next');
+  renderSiteLinks(host);
+}
+
+/**
+ * 项目自己的链接：仓库、作者博客、其他项目。
+ * 只在有页脚的地方渲染一次，位置按页面类型挑最合适的容器 ——
+ * 这样 50 多个页面不用各改一遍 HTML。
+ */
+const SITE_LINKS = [
+  ['GitHub 仓库', 'https://github.com/CuberRobot/Music-Theory-Playground'],
+  ['博客 jimmyland.me', 'https://jimmyland.me/'],
+  ['其他项目', 'https://jimmyland.me/projects/'],
+];
+
+function renderSiteLinks(after) {
+  const html = SITE_LINKS
+    .map(([label, href]) => `<a href="${href}">${label}</a>`)
+    .join('<span aria-hidden="true">·</span>');
+
+  if (after) {
+    after.insertAdjacentHTML('afterend',
+      `<p class="site-links">${html}</p>`);
+    return;
+  }
+  const pageFoot = document.querySelector('.page-foot');
+  if (pageFoot) {
+    pageFoot.insertAdjacentHTML('beforeend',
+      `<span class="site-links">${html}</span>`);
+    return;
+  }
+  const note = document.querySelector('.landing-note');
+  if (note) {
+    note.insertAdjacentHTML('afterend',
+      `<p class="site-links site-links--center">${html}</p>`);
+  }
 }
 
 function mountWidgets() {

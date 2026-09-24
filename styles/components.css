@@ -868,6 +868,17 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 }
 .page-foot a { color: var(--ink-2); }
 
+/* 项目链接：仓库 / 博客 / 其他项目。全站共用一处渲染。 */
+.site-links {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2);
+  margin: var(--sp-4) 0 0;
+  font-size: var(--fs-small); color: var(--ink-3);
+}
+.site-links a { color: var(--ink-2); text-decoration: none; }
+.site-links a:hover { color: var(--ink-1); text-decoration: underline; }
+.site-links span { color: var(--ink-4); }
+.site-links--center { justify-content: center; }
+
 @media (max-width: 640px) {
   /* 门面页的顶栏就是导航本身，不能藏；内容页有左栏，藏掉省地方 */
   .topbar:not(.topbar--plain) .topnav { display: none; }

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>J · 德沃夏克第九交响曲《自新大陆》 · Music Theory Playground</title>
 <meta name="description" content="一个捷克人在纽约写下的交响曲：美国音乐该怎么写、英国管那段旋律的来历，以及末乐章为什么把前面的主题都叫了回来。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

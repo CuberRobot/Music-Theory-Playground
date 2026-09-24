@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>G · 莫扎特第四十交响曲 · Music Theory Playground</title>
 <meta name="description" content="六个星期写完的三首交响曲、两个不同的版本、以及「莫扎特从没听过它」这个传说是怎么来的。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

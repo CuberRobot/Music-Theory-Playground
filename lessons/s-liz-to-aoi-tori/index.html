@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>Q · 利兹与青鸟 · Music Theory Playground</title>
 <meta name="description" content="京都动画 2018 年的电影《利兹与青鸟》：四个乐章的自由曲、第 3 楽章里双簧管与长笛的挂け合い、竞赛改编版把 22 分钟压成 8 分 45 秒，以及这部片子为什么只有一条"剧情音乐"。">
 <link rel="stylesheet" href="../../styles/tokens.css">

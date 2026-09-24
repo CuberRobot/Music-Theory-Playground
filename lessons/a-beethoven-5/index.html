@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>A · 贝多芬第五交响曲 · Music Theory Playground</title>
 <meta name="description" content="四个音怎么撑起一部交响曲：从 1808 年那场四小时的首演，到动机的构造、四个乐章的走法，以及「命运」这个名字是怎么被贴上去的。含公版乐谱与速度标记核对。">
 <link rel="stylesheet" href="../../styles/tokens.css">

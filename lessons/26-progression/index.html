@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 26 节 · 和弦进行的写法 · Music Theory Playground</title>
 <meta name="description" content="功能的方向、根音的运动、和声节奏。用一个可点的进行编辑器听出进行为什么顺或不顺。">
 <link rel="stylesheet" href="../../styles/tokens.css">

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>Music Theory Playground · 看得见的乐理</title>
 <meta name="description" content="一个用交互实验台讲乐理的静态站。从泛音列和十二平均律开始，先把声音拆开，再谈音乐。">
 <link rel="stylesheet" href="./styles/tokens.css">

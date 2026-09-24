@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>D · 帕赫贝尔《卡农》 · Music Theory Playground</title>
 <meta name="description" content="一条四小节的低音循环怎么撑起三百年：卡农的写作规则、它为什么到 1968 年才红，以及那八个和弦为什么能一直转下去。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

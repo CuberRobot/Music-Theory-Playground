@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>P · 普罗旺斯的风 · Music Theory Playground</title>
 <meta name="description" content="2015 年全日本吹奏乐大赛的课题曲 IV，一首进行曲：序奏—第一段—三声中段—第三段，主调 d 小调，三声中段跑到 A♭ 大调（三全音以外），以及课题曲为什么要求"所有人做同一道题"。">
 <link rel="stylesheet" href="../../styles/tokens.css">

@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 16 节 · 半音阶与变化音 · Music Theory Playground</title>
 <meta name="description" content="半音阶的写法为什么跟着方向走，以及调式变音如何制造解决的方向。">
 <link rel="stylesheet" href="../../styles/tokens.css">

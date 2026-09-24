@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>O · 三日月之舞 · Music Theory Playground</title>
 <meta name="description" content="《吹响！上低音号》久一年的竞演会自由曲：三段结构（急—缓—急）怎么听、那个小号独奏为什么是整首曲子的重心，以及围绕它发生的、第一季最大的那场冲突——香织与丽奈的独奏选拔。">
 <link rel="stylesheet" href="../../styles/tokens.css">

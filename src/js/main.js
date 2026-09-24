@@ -278,6 +278,58 @@ function renderMap() {
 }
 
 /**
+ * 深色模式。
+ *
+ * 页面样式只认 `<html data-theme="dark|light">`（没写就是跟随系统），
+ * 所以这里只做两件事：读用户的选择、写那个属性。
+ * 顶栏的切换按钮是注入的 —— 页面 HTML 里只有「声音」那颗，
+ * 不给 50 多个页面各加一遍。
+ */
+const THEME_KEY = 'mtp-theme';
+
+function systemPrefersDark() {
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+}
+
+function isDarkNow() {
+  const explicit = document.documentElement.dataset.theme;
+  return explicit ? explicit === 'dark' : systemPrefersDark();
+}
+
+function applyTheme(mode) {
+  if (mode === 'dark' || mode === 'light') document.documentElement.dataset.theme = mode;
+  else delete document.documentElement.dataset.theme;
+}
+
+function wireThemeToggle() {
+  const sound = document.querySelector('[data-sound]');
+  if (!sound) return;
+  try { applyTheme(localStorage.getItem(THEME_KEY)); } catch { /* 隐私模式下读不到就算了 */ }
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn btn-ghost';
+  const relabel = () => {
+    const dark = isDarkNow();
+    btn.textContent = dark ? '浅色' : '深色';
+    btn.setAttribute('aria-label', dark ? '切换到浅色模式' : '切换到深色模式');
+    btn.setAttribute('aria-pressed', String(dark));
+  };
+  relabel();
+  btn.addEventListener('click', () => {
+    const next = isDarkNow() ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch { /* 存不了也不影响这次切换 */ }
+    relabel();
+    // 有些图形是按当时颜色画出来的（例如谱例 SVG），通知它们重画
+    document.dispatchEvent(new CustomEvent('mtp:theme-changed'));
+  });
+  sound.parentNode.insertBefore(btn, sound);
+  window.matchMedia?.('(prefers-color-scheme: dark)')
+    .addEventListener?.('change', relabel);
+}
+
+/**
  * 顶栏的站内导航。所有页面的 HTML 里只写一条兜底链接，
  * 真正的导航在这里统一生成，加新页面时只改这一处。
  */
@@ -322,5 +374,6 @@ renderMap();
 renderTopnav();
 mountWidgets();
 wireSoundToggle();
+wireThemeToggle();
 
 export { LESSONS, findLesson };

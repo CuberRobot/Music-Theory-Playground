@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 23 节 · 动机与乐句 · Music Theory Playground</title>
 <meta name="description" content="动机是细胞，主题是句子。用贝多芬第五那四个音看重复、模进、倒影、扩大与缩小。">
 <link rel="stylesheet" href="../../styles/tokens.css">

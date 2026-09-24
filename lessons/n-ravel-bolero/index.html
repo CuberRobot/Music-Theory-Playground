@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>N · 拉威尔《波莱罗》 · Music Theory Playground</title>
 <meta name="description" content="一段节奏重复 169 次、一段旋律换着乐器演到底：拉威尔怎么用「什么都不变」做出十五分钟的渐强，以及他和托斯卡尼尼的那场争吵。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

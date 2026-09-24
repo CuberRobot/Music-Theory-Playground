@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>术语表 · Music Theory Playground</title>
 <meta name="description" content="可搜索的乐理术语词典。以国际通用的英文术语为主条目，附中文对照、一句话解释与出处，另有音程、调式、调号、和弦、速度力度的速查表。">
 <link rel="stylesheet" href="../styles/tokens.css">

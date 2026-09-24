@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>R · King Crimson 纪律 · Music Theory Playground</title>
 <meta name="description" content="King Crimson 1981 年的器乐曲《Discipline》：两把吉他、Chapman Stick 与鼓各自只拿一块拼图，音乐只存在于它们的组合里。这一节用"交错织体台"讲清楚织体到底在讲什么。">
 <link rel="stylesheet" href="../../styles/tokens.css">

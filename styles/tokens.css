@@ -54,6 +54,7 @@
   --font-music: "Bravura", "Noto Music", "Symbola", serif; /* SMuFL 乐谱记号 */
   --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
 
+
   --fs-display: 2.5rem;
   --fs-h1: 2rem;
   --fs-h2: 1.5rem;
@@ -103,6 +104,92 @@
   /* --- 音高高度映射：可视化里"越高越靠上"统一用这两个量 ----------------- */
   --pitch-unit: 12px;       /* 一个半音对应的高度 */
   --pitch-lane: 240px;      /* 一个八度可用的纵向空间 */
+}
+
+/**
+ * 深色模式。
+ *
+ * 做法只有一条：**同一个变量换一组值**，组件一行都不用改。
+ * 色相保持和浅色一致（黄=焦点、绿=稳定、陶土=张力），
+ * 只把明度关系翻过来 —— 深色底上，强调色要**变亮**才读得清，
+ * 所以 deep 系列在深色里反而比原色更浅。
+ *
+ * 触发方式两种：系统偏好（prefers-color-scheme），
+ * 或者用户在顶栏手动切换（写到 <html data-theme="dark|light">，存在 localStorage）。
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #17150F;
+    --surface: #201E17;
+    --surface-2: #272418;
+    --surface-3: #2F2B1E;
+    --line: #3A3527;
+    --line-strong: #4E4832;
+
+    --ink-1: #F2ECDC;
+    --ink-2: #CFC7B2;
+    --ink-3: #A29A85;
+    --ink-4: #7B7462;
+    --ink-inv: #17150F;
+
+    --amber-soft: #453817;
+    --amber: #EFC24C;
+    --amber-deep: #F0CD72;
+
+    --green-soft: #1F3320;
+    --green: #63B27F;
+    --green-deep: #93D6A8;
+
+    --clay-soft: #3A2620;
+    --clay: #E08A63;
+    --clay-deep: #F2A98A;
+
+    --slate-soft: #232A2E;
+    --slate: #8FA9B6;
+    --slate-deep: #BCD0DA;
+
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .4), 0 1px 1px rgba(0, 0, 0, .3);
+    --shadow-2: 0 4px 16px rgba(0, 0, 0, .45);
+    --shadow-3: 0 12px 32px rgba(0, 0, 0, .55);
+  }
+}
+
+/* 手动切到深色时同样的值（复制一份，因为 :root[data-theme] 不能复用媒体查询里的块） */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #17150F;
+  --surface: #201E17;
+  --surface-2: #272418;
+  --surface-3: #2F2B1E;
+  --line: #3A3527;
+  --line-strong: #4E4832;
+
+  --ink-1: #F2ECDC;
+  --ink-2: #CFC7B2;
+  --ink-3: #A29A85;
+  --ink-4: #7B7462;
+  --ink-inv: #17150F;
+
+  --amber-soft: #453817;
+  --amber: #EFC24C;
+  --amber-deep: #F0CD72;
+
+  --green-soft: #1F3320;
+  --green: #63B27F;
+  --green-deep: #93D6A8;
+
+  --clay-soft: #3A2620;
+  --clay: #E08A63;
+  --clay-deep: #F2A98A;
+
+  --slate-soft: #232A2E;
+  --slate: #8FA9B6;
+  --slate-deep: #BCD0DA;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .4), 0 1px 1px rgba(0, 0, 0, .3);
+  --shadow-2: 0 4px 16px rgba(0, 0, 0, .45);
+  --shadow-3: 0 12px 32px rgba(0, 0, 0, .55);
 }
 
 /* 所有数值（频率、音分、拍号）用等宽对齐 */

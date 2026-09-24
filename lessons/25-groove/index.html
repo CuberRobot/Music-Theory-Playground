@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 25 节 · 节奏与律动 · Music Theory Playground</title>
 <meta name="description" content="律动型、奇数拍的分组，以及 3:2 交叉节奏。第一部分第 6 节没讲到的部分。">
 <link rel="stylesheet" href="../../styles/tokens.css">

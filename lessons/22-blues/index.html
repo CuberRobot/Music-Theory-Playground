@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 22 节 · 布鲁斯的元素组成 · Music Theory Playground</title>
 <meta name="description" content="蓝调音、十二小节、shuffle —— 把前面二十节学到的音阶、和弦、节奏一次性用在一个真实风格上。">
 <link rel="stylesheet" href="../../styles/tokens.css">

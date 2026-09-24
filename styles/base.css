@@ -16,7 +16,9 @@ body {
 
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
-  font-weight: 500;
+  /* 中文宋体在屏幕上的默认字重偏细，和正文黑体放一起落差太大；
+     一级/二级标题提到 600，其余保持 500（见 issue #3 体验-1）。 */
+  font-weight: 600;
   line-height: var(--lh-tight);
   margin: 0 0 var(--sp-3);
 }

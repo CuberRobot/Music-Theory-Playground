@@ -97,7 +97,7 @@ export function mountMotifLab(root) {
     <div class="tiles" data-ops role="group" aria-label="变形方式"></div>
     <div data-strip style="margin-top:var(--sp-5)"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">
-      <button class="btn btn-primary" type="button" data-play>再听一遍</button>
+      <button class="btn btn-primary" type="button" data-play>听一遍</button>
       <span class="tag" data-now>—</span>
     </div>
     <dl class="readout" style="margin-top:var(--sp-4)" data-readout></dl>
@@ -122,7 +122,12 @@ export function mountMotifLab(root) {
 
   const strip = createNoteStrip(el.stripHost, { ariaLabel: '变形后的旋律与播放进度' });
 
-  root.querySelector('[data-play]').addEventListener('click', () => play(state.notes));
+  const playBtn = root.querySelector('[data-play]');
+  playBtn.addEventListener('click', () => {
+    play(state.notes);
+    // 第一次听过之后才叫"再听一遍"（issue #3-8：一开始就写"再听一遍"很怪）
+    playBtn.textContent = '再听一遍';
+  });
 
   function apply(alsoPlay) {
     const op = OPS.find((x) => x.id === state.op);

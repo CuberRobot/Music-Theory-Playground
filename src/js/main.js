@@ -126,9 +126,18 @@ function renderRail() {
   }
   host.innerHTML = parts.join('');
 
-  // 目录会很长，把当前这一节滚进视野，不然每次都要自己找
+  /**
+   * 目录会很长，把当前这一节滚到左栏的可视范围中间。
+   * 以前用 scrollIntoView({block:'nearest'})：那是"最省力地露出来"，
+   * 于是靠后的章节会贴着栏底，还得自己往下找（issue #3-9）；
+   * 它还可能顺带滚动整个页面。这里只动左栏自己的 scrollTop。
+   */
   const here = host.querySelector('[aria-current="page"]');
-  if (here) here.scrollIntoView({ inline: 'center', block: 'nearest' });
+  if (here) {
+    const bar = host.getBoundingClientRect();
+    const item = here.getBoundingClientRect();
+    host.scrollTop += (item.top - bar.top) - (bar.height - item.height) / 2;
+  }
 }
 
 function renderMeter() {

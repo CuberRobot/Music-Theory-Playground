@@ -184,15 +184,18 @@ export function mountListenChallenge(root) {
     const correct = i === q.answer;
     if (correct) {
       block.solved = true;
+      block.explain = q.explain ?? '对了。';
       btn.dataset.done = '1';
       btn.style.borderColor = 'var(--green)';
       btn.style.background = 'var(--green-soft)';
     }
     verdict.className = `verdict ${correct ? 'ok' : 'no'}`;
     verdict.textContent = correct
-      ? (q.explain ?? '对了。')
+      ? block.explain
       : block.solved
-        ? '这次不对 —— 不过答案你已经找出来了，就是高亮的那个。'
+        // 答对之后再点错选项，不要把已经给出的解释擦掉 ——
+        // 想回头核对"错在哪里"的人需要它（issue #3-6）。
+        ? `${block.explain}（这次点的不是它。）`
         : (q.hint ?? '再听一遍，注意比较两者的差别。');
   }
 

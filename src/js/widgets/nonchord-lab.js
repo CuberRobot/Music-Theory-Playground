@@ -7,7 +7,7 @@
  */
 
 import { midiToHz, nameOfMidi, pitchClassOfMidi } from '../music/pitch.js';
-import { playSequence } from '../audio/engine.js';
+import { playSequence, playChord, stopAll } from '../audio/engine.js';
 import { TEMPO } from '../audio/tempo.js';
 
 const CHORD = [60, 64, 67];          // C 大三
@@ -112,8 +112,11 @@ export function mountNonchordLab(root) {
     state.seq = new Array(8).fill(null); state.slot = 0; paint();
   });
 
+  // 「只听和弦」当然要同时响 —— 以前这里用的是 playSequence（逐个响），
+  // 于是"和弦"听起来是一条旋律（issue #3-3）。
   root.querySelector('[data-chord]').addEventListener('click', () => {
-    playSequence(CHORD.map(midiToHz), { gap: 0.5, duration: 1.4, level: 0.2 });
+    stopAll();
+    playChord(CHORD.map(midiToHz), { duration: 1.8, level: 0.2 });
   });
 
   root.querySelector('[data-play]').addEventListener('click', () => {

@@ -28,7 +28,8 @@ const PRESETS = [
 ];
 
 export function mountProgressionLab(root) {
-  const state = { degs: [0, 5, 3, 4], playing: false };
+  /** baseLen 记着当前预设本来几个和弦：用来实现"回到预设"。 */
+  const state = { degs: [0, 5, 3, 4], baseLen: 4, playing: false };
 
   root.innerHTML = `
     <div class="card-head">
@@ -41,7 +42,7 @@ export function mountProgressionLab(root) {
       <button class="btn btn-primary" type="button" data-play>播放</button>
       <button class="btn" type="button" data-slow>慢一倍</button>
       <button class="btn" type="button" data-add>加一格</button>
-      <button class="btn" type="button" data-reset>回到四个</button>
+      <button class="btn" type="button" data-reset>回到预设</button>
       <span class="tag" data-now>—</span>
     </div>
     <dl class="readout" style="margin-top:var(--sp-4)" data-readout></dl>
@@ -65,6 +66,7 @@ export function mountProgressionLab(root) {
     b.textContent = p.label;
     b.addEventListener('click', () => {
       state.degs = [...p.degs];
+      state.baseLen = p.degs.length;
       el.tip.textContent = p.tip;
       paint();
       play();
@@ -95,7 +97,9 @@ export function mountProgressionLab(root) {
     if (state.degs.length < 8) { state.degs.push(0); paint(); }
   });
   root.querySelector('[data-reset]').addEventListener('click', () => {
-    state.degs = state.degs.slice(0, 4);
+    // 以前固定 slice(0,4)：ii–V–I 预设只有三个和弦，按下去等于什么都没做
+    // （issue #3-4）。现在按当前预设的长度收回去。
+    state.degs = state.degs.slice(0, state.baseLen);
     paint();
   });
 

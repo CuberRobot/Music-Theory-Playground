@@ -553,7 +553,7 @@ section('★ 交错织体台：一个人都不许把音乐演完');
   eq(rhythm.size < INTERLOCK.slots, true, '节奏组单独也不完整');
 
   const page = readFileSync(new URL('../lessons/kc-discipline/index.html', import.meta.url), 'utf8');
-  for (const n of ['5:13', 'song?id=20045638', 'song?id=1892750802', 'interlock-lab']) {
+  for (const n of ['5:13', 'song?id=20045638', 'song?id=1892750802', 'interlock-lab', 'beat-tour.com', 'Discipline Era Transcriptions']) {
     checks++;
     if (!page.includes(n)) fail(`R 节页面缺少 ${n}`);
   }

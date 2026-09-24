@@ -209,6 +209,14 @@ export const PARTS = [
           { id: 's-liz-to-aoi-tori', no: 'Q', title: '利兹与青鸟', sub: '第 3 楽章里的挂け合い', status: 'ready' },
         ],
       },
+      {
+        id: 'rock-texture',
+        title: '摇滚与交错织体',
+        blurb: '一层一层拆开听：这里的音乐不在任何一个人手里，它在四条线的交汇处。',
+        lessons: [
+          { id: 'kc-discipline', no: 'R', title: 'King Crimson · 纪律', sub: '没有一个人演奏完整的音乐', status: 'ready' },
+        ],
+      },
     ],
   },
   {
@@ -223,8 +231,8 @@ export const PARTS = [
         title: '一 · 一套音乐是怎么做出来的',
         blurb: '一种风格能被认出来，靠的往往不是音色，而是几条固定的手法。',
         lessons: [
-          { id: 'o-afrobeat', no: 'R', title: 'Afrobeat', sub: '鼓是主旋律', status: 'ready' },
-          { id: 'p-raga', no: 'S', title: '拉格（Raga）', sub: '一个框架，九成靠即兴', status: 'ready' },
+          { id: 'o-afrobeat', no: 'S', title: 'Afrobeat', sub: '鼓是主旋律', status: 'ready' },
+          { id: 'p-raga', no: 'T', title: '拉格（Raga）', sub: '一个框架，九成靠即兴', status: 'ready' },
         ],
       },
     ],

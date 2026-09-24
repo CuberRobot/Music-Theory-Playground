@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 我想直接改（提 PR）
+    url: https://github.com/CuberRobot/Music-Theory-Playground/blob/main/docs/新增一首曲子.md
+    about: 加一首曲子的完整流程与检查清单

@@ -94,8 +94,10 @@ export function mountGroupingLab(root) {
       const d = durationByKey(k);
       const w = (d.beats / m.beats) * 100;
       const short = d.beats <= 0.5;
-      parts.push(`<div class="grp-note" style="flex:0 0 ${w}%">
-        <span class="grp-head">${d.beats >= 0.5 ? d.label.replace('音符', '') : '八分'}</span>
+      // 短音符格子里放不下名字（十六分只有 6% 宽），以前这里硬写成「八分」，
+      // 结果十六分音符被标成八分。名字放进 title，格子只留拍数。
+      parts.push(`<div class="grp-note" style="flex:0 0 ${w}%" title="${d.label}">
+        <span class="grp-head">${short ? '' : d.label.replace('音符', '')}</span>
         <span class="grp-beats">${d.beats} 拍</span></div>`);
       if (short) beams.push([cursor, cursor + d.beats]);
       cursor += d.beats;

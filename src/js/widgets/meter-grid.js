@@ -25,7 +25,8 @@ export function mountMeterGrid(root) {
       <h2>节拍网格</h2>
       <p class="hint">点格子放拍点，换拍号看强弱位置怎么挪</p>
     </div>
-    <div class="tiles" data-meters role="group" aria-label="拍号"></div>
+    <!-- 打拍子的时候换拍号、点拍点，都只是改设定，节拍不该因此断掉 -->
+    <div class="tiles" data-meters data-keep-audio role="group" aria-label="拍号"></div>
     <div class="lab-controls" style="margin-top: var(--sp-4)">
       <div class="field">
         <label for="mg-bpm">每分钟 <span data-bpm-val></span> 拍</label>
@@ -38,11 +39,11 @@ export function mountMeterGrid(root) {
     </div>
     <div style="margin-top: var(--sp-4)">
       <p class="hint" style="margin:0 0 4px">拍点</p>
-      <div class="tiles" data-grid aria-label="拍点格子"></div>
+      <div class="tiles" data-grid data-keep-audio aria-label="拍点格子"></div>
     </div>
     <div class="lab-controls" style="margin-top: var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>开始</button>
-      <button class="btn" type="button" data-clear>清空拍点</button>
+      <button class="btn" type="button" data-clear data-keep-audio>清空拍点</button>
       <span class="tag" data-info></span>
     </div>
     <p class="hint" data-note></p>
@@ -137,7 +138,9 @@ export function mountMeterGrid(root) {
       b.textContent = `第 ${i + 1} 拍`;
       b.addEventListener('click', () => {
         state.hits[i] = !state.hits[i];
-        if (state.hits[i]) click(0, { accented: m.weights[i] > 0.8 });
+        // 正在打拍子的时候，点格子只改图案、不发声 —— 否则节拍里会混进
+        // 一串不属于这一拍的"嘀"（issue #3 体验-4）。
+        if (state.hits[i] && !state.playing) click(0, { accented: m.weights[i] > 0.8 });
         paint();
       });
       el.grid.appendChild(b);

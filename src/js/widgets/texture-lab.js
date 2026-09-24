@@ -48,9 +48,10 @@ export function mountTextureLab(root) {
       <h2>织体分层台</h2>
       <p class="hint">I–vi–IV–V，每层可以单独关掉，听去掉之后哪里空了</p>
     </div>
-    <div class="tiles" data-layers role="group" aria-label="声部层"></div>
+    <!-- 循环正在跑的时候，关掉一层是为了听差别的，不能把这一遍掐掉 -->
+    <div class="tiles" data-layers data-keep-audio role="group" aria-label="声部层"></div>
     <p class="hint" style="margin:var(--sp-4) 0 6px">低音写法</p>
-    <div class="tiles" data-bass role="group" aria-label="低音写法"></div>
+    <div class="tiles" data-bass data-keep-audio role="group" aria-label="低音写法"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>播放</button>
     </div>

@@ -42,7 +42,16 @@ function harmonicsNeeded(amps) {
 let ctx = null;
 let master = null;
 let muted = false;
+/** 加法合成声部（register/live 都靠它）。 */
 const liveVoices = new Set();
+/**
+ * 不是加法合成的声音：Karplus 拨弦（AudioWorkletNode）和噪声打点（BufferSource）。
+ *
+ * 以前这两类从不入册，于是 `stopAll()` 停不掉它们 —— 用户报的"布鲁斯点了停止
+ * 还在响""换调式时上一段还在放"就是这个原因：布鲁斯的主声部正好全是拨弦。
+ * 现在它们也进同一个登记处，只是登记的是"怎么让它停"这件事。
+ */
+const liveNodes = new Set();
 
 /**
  * 起音瞬态用的噪声。真实乐器起音瞬间都有一小段宽带噪声 ——
@@ -125,7 +134,16 @@ function ramp(param, value, glide, t) {
 function enforceVoiceCap(keep) {
   if (!ctx || liveVoices.size <= MAX_LIVE_VOICES) return;
   const now = ctx.currentTime;
-  const sounding = [...liveVoices].filter((v) => v !== keep && v.startsAt <= now + 0.02);
+  /**
+   * 两个条件缺一不可：
+   *   · 已经在响的（startsAt 已过）—— 排期里的音不能动，那是整段序列；
+   *   · 而且不是刚刚创建的 —— 一个和弦是几个声部依次 new 出来的，
+   *     新和弦如果淘汰到自己人，听感就是"和弦变成了单音"（用户报过）。
+   */
+  const FRESH = 0.08;
+  const sounding = [...liveVoices].filter((v) => v !== keep
+    && v.startsAt <= now + 0.02
+    && now - (v.createdAt ?? 0) > FRESH);
   while (liveVoices.size > MAX_LIVE_VOICES && sounding.length) {
     sounding.shift().stop(0.03);
   }
@@ -146,6 +164,8 @@ class AdditiveVoice {
     this.out.gain.value = 0;
     /** 这个声部被排在什么时候响。Infinity 表示还没排期。 */
     this.startsAt = Infinity;
+    /** 什么时候被创建的：用来保护"刚刚按下的一批音"，见 enforceVoiceCap。 */
+    this.createdAt = this.ctx.currentTime;
     // 每个声部一个低通：起音时开、随后关下去，这是"击弦感"的另一半
     this.filter = this.ctx.createBiquadFilter();
     this.filter.type = 'lowpass';
@@ -301,6 +321,12 @@ class AdditiveVoice {
     this.out.gain.cancelScheduledValues(t);
     this.out.gain.setValueAtTime(this.out.gain.value, t);
     this.out.gain.linearRampToValueAtTime(0.0001, t + release);
+    /**
+     * 立刻从登记表里摘掉：淡出还要等一百多毫秒，但"它已经不在响了"这件事
+     * 必须当场成立 —— 否则连点两次时，读数会把正在淡出的旧音也算进去
+     * （用户看到的就是"点了没错，但数出来翻倍"）。
+     */
+    liveVoices.delete(this);
     setTimeout(() => this.dispose(), (release + 0.05) * 1000);
     return this;
   }
@@ -393,6 +419,13 @@ export function click(at = 0, opts = {}) {
 
 export function stopAll() {
   for (const v of [...liveVoices]) v.stop();
+  // 拨弦与噪声打点以前停不掉 —— 现在它们也在册
+  for (const n of [...liveNodes]) n.stop();
+}
+
+/** 现在有多少个声音在响（含排期）。实验台的自检与自动化测试会用到。 */
+export function activeSounds() {
+  return liveVoices.size + liveNodes.size;
 }
 
 /**
@@ -414,7 +447,28 @@ export function hat(at = 0, level = 0.08, decay = 0.045) {
   src.connect(hp).connect(g).connect(master);
   src.start(t0);
   src.stop(t0 + decay + 0.03);
-  src.onended = () => { src.disconnect(); hp.disconnect(); g.disconnect(); };
+  const entry = {
+    startsAt: t0,
+    done: false,
+    stop(release = 0.03) {
+      if (entry.done) return;
+      entry.done = true;
+      liveNodes.delete(entry);
+      const t = c.currentTime;
+      try {
+        g.gain.cancelScheduledValues(t);
+        g.gain.setValueAtTime(Math.max(0.0001, g.gain.value), t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + release);
+      } catch { /* 已经停过就忽略 */ }
+      try { src.stop(t + release + 0.02); } catch { /* 还没开始或已经停过 */ }
+    },
+  };
+  liveNodes.add(entry);
+  src.onended = () => {
+    entry.done = true;
+    liveNodes.delete(entry);
+    src.disconnect(); hp.disconnect(); g.disconnect();
+  };
   return src;
 }
 
@@ -487,8 +541,31 @@ export function playPluck(hz, opts = {}) {
   // 让它在处理器里等到那一刻再激励，否则排得越远的音衰减得越厉害。
   node.port.postMessage({ type: 'pluck', frequency: hz, brightness, at: t0 });
 
+  const entry = {
+    startsAt: t0,
+    done: false,
+    stop(release = 0.04) {
+      if (entry.done) return;
+      entry.done = true;
+      liveNodes.delete(entry);        // 立刻摘牌，不等淡出结束
+      const t = c.currentTime;
+      try {
+        g.gain.cancelScheduledValues(t);
+        g.gain.setValueAtTime(g.gain.value, t);
+        g.gain.linearRampToValueAtTime(0.0001, t + release);
+      } catch { /* 已经停过就忽略 */ }
+      setTimeout(() => {
+        try { node.disconnect(); g.disconnect(); } catch { /* 已断开 */ }
+        liveNodes.delete(entry);
+      }, (release + 0.05) * 1000);
+    },
+  };
+  liveNodes.add(entry);
+
   setTimeout(() => {
     try { node.disconnect(); g.disconnect(); } catch { /* 已断开 */ }
+    entry.done = true;
+    liveNodes.delete(entry);
   }, (Math.max(0, at) + duration + 0.45) * 1000);
   return node;
 }

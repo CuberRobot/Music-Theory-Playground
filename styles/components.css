@@ -311,6 +311,10 @@ input[type="range"] {
 }
 .afro-cells i.beat { border-left-color: var(--line-strong); }
 .afro-cells i.on { background: var(--green); border-color: var(--green-deep); }
+/* 被关掉的层：格子留着但变淡，看得出"这里本来有东西" */
+.afro-cells i.muted { background: var(--surface); opacity: .45; }
+/* 正在走到的那一格 */
+.afro-cells i.now { box-shadow: 0 0 0 2px var(--amber-deep); }
 
 /* --- 拉格台：七个音 + 塔拉格子 ----------------------------------------- */
 

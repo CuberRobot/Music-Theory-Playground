@@ -47,6 +47,7 @@ import { mountMikazukiForm } from './widgets/mikazuki-form.js';
 import { mountSoloLab } from './widgets/solo-lab.js';
 import { mountMarchLab } from './widgets/march-lab.js';
 import { mountDuetLab } from './widgets/duet-lab.js';
+import { mountInterlockLab } from './widgets/interlock-lab.js';
 
 const WIDGETS = {
   'harmonic-lab': mountHarmonicLab,
@@ -87,6 +88,7 @@ const WIDGETS = {
   'solo-lab': mountSoloLab,
   'march-lab': mountMarchLab,
   'duet-lab': mountDuetLab,
+  'interlock-lab': mountInterlockLab,
 };
 
 /** 页面用 data-root 声明自己离站点根目录有多远。首页是 "./"，章节页是 "../../"。 */

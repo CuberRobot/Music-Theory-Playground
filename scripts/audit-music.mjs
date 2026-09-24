@@ -26,6 +26,7 @@ import { MIKAZUKI, MIKAZUKI_BARS, DEMOS } from '../src/js/widgets/mikazuki-form.
 import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
 import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
+import { INTERLOCK } from '../src/js/widgets/interlock-lab.js';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 
 let fails = 0;
@@ -507,6 +508,54 @@ section('★ 利兹与青鸟 · 四个乐章与竞赛改编版');
   for (const id of [291131, 290435, 290405, 290403]) {
     checks++;
     if (!page.includes(`score/detail/${id}/`)) fail(`Q 节页面没给出乐谱 ${id}`);
+  }
+}
+
+section('★ 交错织体台：一个人都不许把音乐演完');
+{
+  // 这一节的核心主张是"没有任何一层是完整的，合起来才填满"。
+  // 这个主张得由数据保证，不然实验台就只是一句空话。
+  eq(INTERLOCK.slots, 10, '十格 = 两小节 5/8');
+  eq(INTERLOCK.bars, 2, '循环两小节');
+  eq(INTERLOCK.slots / INTERLOCK.bars, 5, '每小节五格（5/8）');
+  eq(INTERLOCK.layers.length, 4, '四层：两把吉他 + Stick + 鼓');
+
+  const covered = new Set();
+  for (const l of INTERLOCK.layers) {
+    checks++;
+    if (!l.slots.every((s) => Number.isInteger(s) && s >= 0 && s < INTERLOCK.slots)) {
+      fail(`${l.id} 的格子越界了`);
+    }
+    checks++;
+    if (new Set(l.slots).size !== l.slots.length) fail(`${l.id} 有重复的格子`);
+    // 每一层都必须留空隙 —— 这就是"没有一个人演完整"
+    checks++;
+    if (l.slots.length >= INTERLOCK.slots) fail(`${l.id} 一个人就占满了整段，那就不叫交错织体了`);
+    // 音高表和格子表要一一对应（鼓用 null 占位）
+    checks++;
+    if (l.midis && l.midis.length !== l.slots.length) fail(`${l.id} 的音高数和格子数对不上`);
+    l.slots.forEach((s) => covered.add(s));
+  }
+  eq([...covered].sort((a, b) => a - b).join(','),
+    Array.from({ length: INTERLOCK.slots }, (_, i) => i).join(','),
+    '四层合起来正好盖满十格（不多一格、不少一格）');
+
+  // 页面里的提示说"只留两把吉他会塌成片段"——那就必须真的塌：
+  // 两把吉他合起来得留下空档，而 Stick 与鼓正好补上那些空档。
+  const slotsOf = (ids) => {
+    const s = new Set();
+    INTERLOCK.layers.filter((l) => ids.includes(l.id)).forEach((l) => l.slots.forEach((x) => s.add(x)));
+    return s;
+  };
+  const guitars = slotsOf(['gtrA', 'gtrB']);
+  const rhythm = slotsOf(['stick', 'drums']);
+  eq(guitars.size < INTERLOCK.slots, true, '两把吉他合起来仍然留空——所以才听得见"片段"');
+  eq(rhythm.size < INTERLOCK.slots, true, '节奏组单独也不完整');
+
+  const page = readFileSync(new URL('../lessons/kc-discipline/index.html', import.meta.url), 'utf8');
+  for (const n of ['5:13', 'song?id=20045638', 'song?id=1892750802', 'interlock-lab', 'beat-tour.com', 'Discipline Era Transcriptions']) {
+    checks++;
+    if (!page.includes(n)) fail(`R 节页面缺少 ${n}`);
   }
 }
 

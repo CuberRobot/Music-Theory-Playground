@@ -137,7 +137,9 @@ export function mountMeterGrid(root) {
       b.textContent = `第 ${i + 1} 拍`;
       b.addEventListener('click', () => {
         state.hits[i] = !state.hits[i];
-        if (state.hits[i]) click(0, { accented: m.weights[i] > 0.8 });
+        // 正在打拍子的时候，点格子只改图案、不发声 —— 否则节拍里会混进
+        // 一串不属于这一拍的"嘀"（issue #3 体验-4）。
+        if (state.hits[i] && !state.playing) click(0, { accented: m.weights[i] > 0.8 });
         paint();
       });
       el.grid.appendChild(b);

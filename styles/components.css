@@ -202,6 +202,9 @@
   border: 1px solid var(--line-strong);
   background: var(--surface); color: var(--ink-1);
   cursor: pointer;
+  /* 底栏的上一课/下一课是 <a class="btn">：base.css 给所有链接加了下划线，
+     按钮形态的链接不该带它（见 issue #3-1）。 */
+  text-decoration: none;
 }
 .btn:hover { background: var(--surface-2); }
 .btn:active { transform: translateY(1px); }

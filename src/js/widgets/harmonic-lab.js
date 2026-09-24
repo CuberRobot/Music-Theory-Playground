@@ -43,7 +43,8 @@ export function mountHarmonicLab(root) {
         <span class="val" data-base-name>—</span>
       </div>
       <button class="btn btn-primary" type="button" data-play>播放</button>
-      <button class="btn" type="button" data-no-fund aria-pressed="false">移去基频</button>
+      <!-- 持续音正在响的时候换音色/移去基频是"边听边调"，不能把声音掐掉 -->
+      <button class="btn" type="button" data-no-fund data-keep-audio aria-pressed="false">移去基频</button>
     </div>
 
     <canvas class="scope" data-scope height="120" role="img"
@@ -53,7 +54,7 @@ export function mountHarmonicLab(root) {
     <div class="bars" data-bars role="group" aria-label="各泛音的强度"></div>
     <div class="bar-labels" data-labels aria-hidden="true"></div>
 
-    <div class="seg" data-presets role="group" aria-label="音色预设"></div>
+    <div class="seg" data-presets data-keep-audio role="group" aria-label="音色预设"></div>
 
     <div class="scroll-x scroll-x--wide">
       <table class="table" data-table>

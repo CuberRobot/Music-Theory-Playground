@@ -57,7 +57,8 @@ export function mountAfrobeatLab(root) {
       节奏型是本站按这套做法写的示范，不是某一首曲子的原样。
     </p>
     <div data-grid class="afro-grid" aria-label="十六格节奏图"></div>
-    <div class="tiles" data-layers style="margin-top:var(--sp-4)" role="group" aria-label="声部"></div>
+    <!-- 声部开关只是改设定：循环正在跑的时候拨开一层，不该把这一遍掐掉 -->
+    <div class="tiles" data-layers data-keep-audio style="margin-top:var(--sp-4)" role="group" aria-label="声部"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>播放</button>
       <button class="btn" type="button" data-stop>停</button>

@@ -29,7 +29,8 @@ export function mountGrooveLab(root) {
     </div>
     <div class="tiles" data-meters role="group" aria-label="拍号"></div>
     <p class="hint" style="margin:var(--sp-3) 0 6px">分组 · 重音落在每一组的第一个音上</p>
-    <div class="tiles" data-groups role="group" aria-label="分组方式"></div>
+    <!-- 播放中换分组只是改设定，不要因此打断正在响的那一遍 -->
+    <div class="tiles" data-groups data-keep-audio role="group" aria-label="分组方式"></div>
     <div class="accent-bar" data-strip style="height:44px;margin-top:var(--sp-4)"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>播放这个分组</button>

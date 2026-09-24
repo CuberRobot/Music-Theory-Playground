@@ -7,7 +7,7 @@
  */
 
 import { PARTS, LESSONS, findLesson, neighbours, hrefOf } from './music/curriculum.js';
-import { installUnlockOnGesture, isMuted, setMuted, isAvailable } from './audio/engine.js';
+import { installUnlockOnGesture, isMuted, setMuted, isAvailable, stopAll } from './audio/engine.js';
 
 import { mountHarmonicLab } from './widgets/harmonic-lab.js';
 import { mountTemperamentLab } from './widgets/temperament-lab.js';
@@ -246,7 +246,30 @@ function renderTopnav() {
     <a href="${root}glossary/"${page === 'glossary' ? ' aria-current="page"' : ''}>术语表</a>`;
 }
 
+/**
+ * 全站兜底：点实验台里的按钮时，先把上一段播放停掉。
+ *
+ * 规矩本来是"谁出声谁负责 stopAll()"，但漏掉一处就会叠音 ——
+ * 用户报的"换个调式上一段还在响""连点和弦变成单音"就是这么来的。
+ * 所以在**捕获阶段**拦一次指针按下：此时实验台自己的处理函数还没跑，
+ * 停掉旧的、再让它去播新的，一个点击里排的一串音（例如"先和弦后旋律"）
+ * 依然能正常排完。
+ *
+ * 需要故意叠着放的实验台，在容器或按钮上加 `data-keep-audio` 就豁免。
+ */
+function installPlaybackGuard() {
+  document.addEventListener('pointerdown', (e) => {
+    const target = e.target instanceof Element ? e.target : null;
+    const btn = target?.closest('button');
+    if (!btn) return;
+    if (!btn.closest('[data-widget]')) return;      // 只管实验台内部
+    if (btn.closest('[data-keep-audio]')) return;   // 显式豁免
+    stopAll();
+  }, true);
+}
+
 installUnlockOnGesture();
+installPlaybackGuard();
 renderRail();
 renderMeter();
 renderFoot();

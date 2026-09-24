@@ -62,8 +62,9 @@ export function mountBluesLab(root) {
     <div class="tiles" data-form role="group" aria-label="十二小节和弦走向"></div>
     <div class="lab-controls" style="margin-top: var(--sp-4)">
       <button class="btn btn-primary" type="button" data-play>播放一遍</button>
-      <button class="btn" type="button" data-feel aria-pressed="true">Shuffle</button>
-      <button class="btn" type="button" data-riff aria-pressed="true">加 riff</button>
+      <!-- 这两个只是改设定（摆感 / 要不要 riff），播放中切换不该把正在响的一遍掐掉 -->
+      <button class="btn" type="button" data-feel data-keep-audio aria-pressed="true">Shuffle</button>
+      <button class="btn" type="button" data-riff data-keep-audio aria-pressed="true">加 riff</button>
       <span class="tag" data-bar>—</span>
     </div>
     <p class="hint" data-note></p>

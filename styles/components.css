@@ -13,25 +13,58 @@
   background: color-mix(in srgb, var(--surface) 92%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--line);
+  /* 窄屏时宁可让中间的进度点阵被裁掉，也不能把声音开关挤出屏幕 */
+  min-width: 0;
 }
 .topbar .brand {
   font-family: var(--font-serif); font-size: var(--fs-small);
   color: var(--ink-1); text-decoration: none; white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 .topbar .btn { white-space: nowrap; flex-shrink: 0; }
-.topbar .crumb { font-size: var(--fs-small); color: var(--ink-3); }
+.topbar .crumb {
+  font-size: var(--fs-small); color: var(--ink-3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+}
 .topbar .crumb b { color: var(--ink-1); font-weight: 500; }
-.topbar .spacer { flex: 1; }
+.topbar .spacer { flex: 1 1 0; min-width: 0; }
 
 /* 进度格：一格一个知识点，当前用绿点，已学用黄 */
-.meter { display: flex; gap: 3px; align-items: center; }
+/* 一节课一格，节数多了就会很长：允许收缩、必要时裁掉中段，不许把顶栏撑破 */
+.meter {
+  display: flex; gap: 3px; align-items: center;
+  flex: 0 1 auto; min-width: 0; overflow: hidden;
+}
 .meter i {
   display: block; width: 10px; height: 10px; border-radius: 3px;
   background: var(--surface-3);
+  flex: 0 0 auto;
 }
 .meter i.done { background: var(--amber); }
 .meter i.now  { background: var(--green); }
+
+/**
+ * 窄屏顶栏：站名让位给导航和声音开关。
+ * 360–900px 之间只保留「站名 + 导航 + 声音」三样，进度点阵直接不显示
+ * —— 它在这一档宽度下只剩装饰作用，留着反而会把按钮挤出屏幕。
+ */
+@media (max-width: 900px) {
+  .topbar { gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); }
+  .topbar .meter { display: none; }
+  .topbar .crumb {
+    flex: 1 1 auto; text-align: right;
+  }
+  .topbar .brand { max-width: 42vw; }
+}
+
+@media (max-width: 560px) {
+  .topbar .crumb { display: none; }   /* 手机上标题已经在正文里，顶栏不必重复 */
+  .topbar .brand { max-width: none; }
+}
+
+/* 导航本身不参与收缩：宁可让进度点阵被裁，也不要让导航被挤到第二行 */
+.topnav { flex-shrink: 0; }
 
 /* --- 外壳与左栏 ----------------------------------------------------------- */
 

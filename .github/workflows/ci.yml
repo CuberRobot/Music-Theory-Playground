@@ -3,11 +3,15 @@ name: CI
 # 进入中级维护阶段后的规矩：main 只接受从分支合进来的改动。
 # 这个工作流在 PR 上跑一遍数据审计 —— 本站的乐理数字、页面与实验台的对应关系、
 # 课程编号连续性，全部由 scripts/audit-music.mjs 把关。
+#
+# push 这一档是 **branches-ignore: main**，别改成 branches: main：
+# 那样只有 main 自己的推送会跑审计（等于关掉"分支一推就体检"），而 PR 那一档
+# 本来就不带分支过滤，main 的推送另有部署工作流负责。
 
 on:
   pull_request:
   push:
-    branches:
+    branches-ignore:
       - main
 
 jobs:

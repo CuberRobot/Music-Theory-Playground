@@ -1,0 +1,22 @@
+name: CI
+
+# 进入中级维护阶段后的规矩：main 只接受从分支合进来的改动。
+# 这个工作流在 PR 上跑一遍数据审计 —— 本站的乐理数字、页面与实验台的对应关系、
+# 课程编号连续性，全部由 scripts/audit-music.mjs 把关。
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 乐理与页面审计
+        run: node scripts/audit-music.mjs

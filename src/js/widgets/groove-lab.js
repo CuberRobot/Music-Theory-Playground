@@ -85,6 +85,7 @@ export function mountGrooveLab(root) {
   }
 
   function playGroove() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     const unit = TEMPO.run * 0.9;
     const g = groups();
     const accents = [];

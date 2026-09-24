@@ -18,7 +18,7 @@
  */
 
 import { midiToHz, spellMidi } from '../music/pitch.js';
-import { playNote, now } from '../audio/engine.js';
+import { playNote, now, stopAll } from '../audio/engine.js';
 import { spectrumToAmps } from '../music/tuning.js';
 import { createNoteStrip } from '../audio/transport.js';
 import { SCORE_TEMPO, beatSeconds } from '../audio/tempo.js';
@@ -171,6 +171,7 @@ export function mountOdeLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     const layer = LAYERS.find((l) => l.id === state.layer);
     const amps = spectrumToAmps(layer.amps, 16);
     stop();

@@ -8,7 +8,7 @@
  */
 
 import { midiToHz, nameOfMidi, spellMidi } from '../music/pitch.js';
-import { playSequence, playChord } from '../audio/engine.js';
+import { playSequence, playChord, stopAll } from '../audio/engine.js';
 import { SCALE_ARGS } from '../audio/tempo.js';
 import { createKeyboard } from './keyboard.js';
 import { spectrumToAmps } from '../music/tuning.js';
@@ -96,6 +96,7 @@ export function mountChineseModesLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     if (state.seven) {
       const s = SEVEN.find((x) => x.label === state.seven);
       const root0 = modeMidis()[0];

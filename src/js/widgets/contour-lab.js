@@ -10,7 +10,7 @@
  */
 
 import { midiToHz, nameOfMidi } from '../music/pitch.js';
-import { playNote } from '../audio/engine.js';
+import { playNote, stopAll } from '../audio/engine.js';
 import { createNoteStrip } from '../audio/transport.js';
 import { TEMPO } from '../audio/tempo.js';
 
@@ -121,6 +121,7 @@ export function mountContourLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     const tl = timeline();
     if (!tl.length) return;
     strip.load(tl);

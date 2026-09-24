@@ -140,6 +140,7 @@ export function mountAfrobeatLab(root) {
   }
 
   function play() {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     stop();
     const period = schedule(0);
     state.playing = true;

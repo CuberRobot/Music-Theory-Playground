@@ -26,7 +26,7 @@ import { MIKAZUKI, MIKAZUKI_BARS, DEMOS } from '../src/js/widgets/mikazuki-form.
 import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
 import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 
 let fails = 0;
 let checks = 0;
@@ -564,6 +564,69 @@ section('节奏、词典引用、课程编号、泛音配方');
     const amps = spectrumToAmps(key, 16);
     checks++;
     if (amps.some((a) => a < 0 || a > 1.0001)) fail(`${spec.label} 振幅越界`);
+  }
+}
+
+section('★ 听辨题：一道题一个作答区，题面和选项数要对得上');
+{
+  // 用户报过两类毛病：
+  //   1. 题干问了两件事（"哪一个是纯五度、哪一个是狼五度"），界面上却只有一个作答区；
+  //   2. 题干写"两组"，实际给了三个选项。
+  // 前者现在用 questions 数组表达（一道题一块），后者靠下面这条数量核对挡住。
+  const CN = { 一: 1, 两: 2, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6 };
+  const files = readdirSync(new URL('../lessons', import.meta.url), { withFileTypes: true })
+    .filter((d) => d.isDirectory()).map((d) => d.name).sort();
+  let questionsSeen = 0;
+  for (const id of files) {
+    const page = new URL(`../lessons/${id}/index.html`, import.meta.url);
+    if (!existsSync(page)) continue;
+    const html = readFileSync(page, 'utf8');
+    for (const m of html.matchAll(/data-widget="listen-challenge">\s*<script type="application\/json">([\s\S]*?)<\/script>/g)) {
+      checks++;
+      let cfg;
+      try { cfg = JSON.parse(m[1]); } catch (e) { fail(`${id} 的听辨题 JSON 解析失败：${e.message}`); continue; }
+      const list = cfg.questions ?? [cfg];
+      for (const [qi, q] of list.entries()) {
+        questionsSeen++;
+        const items = q.items ?? [];
+        const where = `${id} 第 ${qi + 1} 题`;
+        checks++;
+        if (items.length < 2) fail(`${where} 只有 ${items.length} 个选项`);
+        checks++;
+        if (!(Number.isInteger(q.answer) && q.answer >= 0 && q.answer < items.length)) {
+          fail(`${where} 的 answer=${q.answer} 不在 0..${items.length - 1} 里`);
+        }
+        // 题面里的"两组/三个/两段"必须和实际选项数一致
+        // "哪一组"是在问选项，不是在报数量；"五个音"是在数音，也不是在数选项。
+        // 只认 "两组 / 三段 / 三个和弦（音程、选项…）" 这种真的在报选项数的说法。
+        const text = (q.question ?? '').replace(/哪[一两二三四五六]/g, '');
+        const re = /([一两二三四五六])(组|段|个)([^，。？、\s]{0,2})/g;
+        let said = null;
+        let hit;
+        while ((hit = re.exec(text))) {
+          const [, ch, unit, after] = hit;
+          if (unit !== '个' || /和弦|音程|选项|声音|音阶|拍子/.test(after)) { said = CN[ch]; break; }
+        }
+        if (said !== null && said !== items.length) {
+          fail(`${where} 题面说 ${said} 个选项，实际有 ${items.length} 个`);
+        }
+      }
+    }
+  }
+  eq(questionsSeen >= 16, true, `全站听辨题数量（${questionsSeen} 道）`);
+}
+
+section('实验台的 stopAll 必须真的导入（写过一次"用了没导入"）');
+{
+  const dir = new URL('../src/js/widgets/', import.meta.url);
+  const names = readdirSync(dir).filter((f) => f.endsWith('.js'));
+  for (const name of names) {
+    const src = readFileSync(new URL(name, dir), 'utf8');
+    if (!/\bstopAll\(/.test(src)) continue;
+    checks++;
+    if (!/import \{[^}]*\bstopAll\b[^}]*\} from '\.\.\/audio\/engine\.js'/.test(src)) {
+      fail(`${name} 用了 stopAll 但没有从 engine.js 导入它`);
+    }
   }
 }
 

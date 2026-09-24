@@ -8,10 +8,10 @@
 
 import { midiToHz, spellMidi, analyseInterval } from '../music/pitch.js';
 import { createKeyboard } from './keyboard.js';
-import { playNote, playChord, playSequence } from '../audio/engine.js';
+import { playNote, playChord, playSequence, stopAll } from '../audio/engine.js';
 
 const LOW_FROM = 55;
-const KB_TO = 79;
+const KB_TO = 84;
 const MAX_SEMIS = 13;
 const LETTER_NAMES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
@@ -59,8 +59,22 @@ export function mountIntervalLab(root) {
     from: LOW_FROM, to: KB_TO,
     ariaLabel: '音程实验台键盘',
     onDown(midi) {
-      // 下方音要留出上方音的位置，别让它顶出键盘
-      state.low = Math.max(LOW_FROM, Math.min(midi, KB_TO - MAX_SEMIS));
+      /**
+       * 以前这里把下方音钳死在 KB_TO - MAX_SEMIS（= F♯4），
+       * 结果 F♯4 右边的键点了没反应 —— 看起来像键盘坏了。
+       * 现在：点哪儿就是哪儿；只有当上方音会被顶出键盘时，
+       * 才把"半音数"收回来，并在下面说一句为什么。
+       */
+      const low = Math.max(LOW_FROM, Math.min(midi, KB_TO));
+      state.low = low;
+      if (low + state.semis > KB_TO) {
+        state.semis = Math.max(0, KB_TO - low);
+        el.semis.value = String(state.semis);
+        el.stepnote.dataset.trimmed = '1';
+      } else {
+        el.stepnote.dataset.trimmed = '';
+      }
+      stopAll();
       playNote(midiToHz(state.low), { duration: 0.7 });
       paint();
     },
@@ -78,11 +92,13 @@ export function mountIntervalLab(root) {
   });
 
   root.querySelector('[data-play]').addEventListener('click', () => {
+    stopAll();
     playChord([midiToHz(state.low), midiToHz(state.low + state.semis)],
       { duration: 1.4, level: 0.24 });
   });
 
   root.querySelector('[data-play-seq]').addEventListener('click', () => {
+    stopAll();
     playSequence([midiToHz(state.low), midiToHz(state.low + state.semis)],
       { gap: 0.5, duration: 0.45 });
   });
@@ -113,7 +129,9 @@ export function mountIntervalLab(root) {
       `中间跨过 ${iv.degree} 个字母（${letters.join(' ')}），所以是 <b>${iv.degree} 度</b>；` +
       `一共 ${state.semis} 个半音，所以音数是 <b>${state.semis}</b>。` +
       (state.semis > 0 && iv.degree !== state.semis + 1
-        ? '注意度数和半音数不是一回事。' : '');
+        ? '注意度数和半音数不是一回事。' : '') +
+      (el.stepnote.dataset.trimmed === '1'
+        ? `（刚才点的键太靠右上，上方音会被顶出键盘，所以半音数自动收到了 ${state.semis}。）` : '');
 
     el.readout.innerHTML = `
       <div><dt>度数</dt><dd>${iv.degree} 度</dd></div>

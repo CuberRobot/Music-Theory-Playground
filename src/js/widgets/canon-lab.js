@@ -13,7 +13,7 @@
  */
 
 import { midiToHz } from '../music/pitch.js';
-import { playNote, now } from '../audio/engine.js';
+import { playNote, now, stopAll } from '../audio/engine.js';
 import { spectrumToAmps } from '../music/tuning.js';
 import { createNoteStrip } from '../audio/transport.js';
 
@@ -97,6 +97,7 @@ export function mountCanonLab(root) {
   }
 
   function play(repeat) {
+    stopAll();   // 上一次还没放完就先掐掉，不许叠着响
     stop();
     const amps = spectrumToAmps('saw', 12);
     strip.load(timeline(repeat));

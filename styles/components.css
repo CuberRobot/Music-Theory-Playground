@@ -486,9 +486,18 @@ input[type="range"] {
 
 .challenge .choices { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-top: var(--sp-3); }
 .challenge .picks { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+/* 多道题时每题一块，用一条线隔开，免得看成一道题 */
+.challenge .challenge-q + .challenge-q {
+  margin-top: var(--sp-5); padding-top: var(--sp-4); border-top: 1px dashed var(--line);
+}
 .challenge .choice-play {
   min-width: 52px; padding-inline: var(--sp-3);
   background: var(--amber-soft); border-color: var(--amber-deep);
+}
+/* 正在响的那个选项：边框变实、底色变深，一眼看出在放哪一个 */
+.challenge .choice-play.is-playing {
+  background: var(--amber); border-color: var(--amber-deep); color: var(--ink-1);
+  box-shadow: 0 0 0 3px var(--amber-soft);
 }
 .challenge .choice-pick { min-width: 86px; }
 .challenge .verdict {

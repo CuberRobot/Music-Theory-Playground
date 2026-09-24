@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>K · 瓦格纳《特里斯坦与伊索尔德》前奏曲 · Music Theory Playground</title>
 <meta name="description" content="一个和弦悬了一百多年：特里斯坦和弦是什么、它为什么不解决，以及这部歌剧的写作与爱情丑闻。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

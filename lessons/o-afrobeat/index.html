@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>R · Afrobeat · Music Theory Playground</title>
 <meta name="description" content="把鼓放在正中间的音乐：Fela Kuti 的 Afrobeat 是什么做的、Kalakuta 那场袭击、Talking Heads 的 Remain in Light 怎么学它，以及 Afrobeat 和 Afrobeats 为什么不是一回事。">
 <link rel="stylesheet" href="../../styles/tokens.css">

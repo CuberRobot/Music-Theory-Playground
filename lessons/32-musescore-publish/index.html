@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>32 · 排版与导出 · Music Theory Playground</title>
 <meta name="description" content="把 MuseScore 的谱子整理成别人看得舒服的样子：页面设置、样式、系统与行距、标题与页码，以及 PDF / PNG / MusicXML / 音频各种导出格式该用哪一个。">
 <link rel="stylesheet" href="../../styles/tokens.css">

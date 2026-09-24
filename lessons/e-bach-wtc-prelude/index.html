@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>E · 巴赫《平均律》C 大调前奏曲 · Music Theory Playground</title>
 <meta name="description" content="同一个音型重复 35 小节，和声一路换过去；「平均律」这个译名带来的误会；多出来的一小节与古诺的《圣母颂》。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

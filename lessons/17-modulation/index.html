@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 17 节 · 调性关系 · Music Theory Playground</title>
 <meta name="description" content="近关系调、共同和弦、离调与转调、移调。用五度圈看一次转调要经过哪些站。">
 <link rel="stylesheet" href="../../styles/tokens.css">

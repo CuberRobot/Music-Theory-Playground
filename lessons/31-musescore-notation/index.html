@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>31 · 记谱进阶 · Music Theory Playground</title>
 <meta name="description" content="在 MuseScore 里加圆滑线、延音线、跳音、重音、力度、渐强、速度记号、三连音、反复记号：每一样在音乐上是什么意思，以及它们在哪里加。">
 <link rel="stylesheet" href="../../styles/tokens.css">

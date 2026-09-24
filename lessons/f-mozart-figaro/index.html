@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>F · 莫扎特《费加罗的婚礼》 · Music Theory Playground</title>
 <meta name="description" content="一部差点被禁的歌剧：审查、六周写成的脚本、一天之内的情节，以及莫扎特为什么把整部歌剧写成重唱。含公版乐谱与录音参照。">
 <link rel="stylesheet" href="../../styles/tokens.css">

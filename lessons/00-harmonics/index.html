@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 0 节 · 泛音列 · Music Theory Playground</title>
 <meta name="description" content="一个音其实是一串音。用可操作的泛音实验台看清楚基音、泛音与音色，以及音程是怎么从泛音列里数出来的。">
 <link rel="stylesheet" href="../../styles/tokens.css">

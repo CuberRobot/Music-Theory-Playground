@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 19 节 · 记谱法与记号 · Music Theory Playground</title>
 <meta name="description" content="谱表是一把尺子：位置决定音高，形状决定长短。以及力度、速度、装饰音这些常用记号。">
 <link rel="stylesheet" href="../../styles/tokens.css">

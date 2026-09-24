@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 28 节 · 音区与配器 · Music Theory Playground</title>
 <meta name="description" content="配器的两个维度：音域覆盖与功能分层。勾乐器，看音域盖住没有。">
 <link rel="stylesheet" href="../../styles/tokens.css">

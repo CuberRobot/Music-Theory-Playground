@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 10 节 · 音阶与调式 · Music Theory Playground</title>
 <meta name="description" content="大调、小调、五声与教会调式。用一条引力曲线看清主音是怎么把一堆音组织起来的。">
 <link rel="stylesheet" href="../../styles/tokens.css">

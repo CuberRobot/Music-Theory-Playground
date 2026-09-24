@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>第 12 节 · 调内和声 · Music Theory Playground</title>
 <meta name="description" content="调内七个和弦的功能分工、终止式与常用和弦进行。">
 <link rel="stylesheet" href="../../styles/tokens.css">

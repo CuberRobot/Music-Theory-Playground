@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>S · 拉格（Raga） · Music Theory Playground</title>
 <meta name="description" content="拉格不是一首曲子，是一套规定：用 Yaman 讲清上行下行、持续音与塔拉循环，以及拉维·香卡是怎么把印度古典音乐讲给西方听的。">
 <link rel="stylesheet" href="../../styles/tokens.css">

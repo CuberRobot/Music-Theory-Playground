@@ -27,6 +27,7 @@ import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
 import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
 import { INTERLOCK } from '../src/js/widgets/interlock-lab.js';
+import { CYCLE } from '../src/js/widgets/cycle-lab.js';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 
 let fails = 0;
@@ -508,6 +509,30 @@ section('★ 利兹与青鸟 · 四个乐章与竞赛改编版');
   for (const id of [291131, 290435, 290405, 290403]) {
     checks++;
     if (!page.includes(`score/detail/${id}/`)) fail(`Q 节页面没给出乐谱 ${id}`);
+  }
+}
+
+section('★ 小节长度台：9、8、7 与那个最小公倍数');
+{
+  // 出处：英文维基百科 Lateralus (song) —— 副歌小节在 9/8、8/8、7/8 之间轮换，
+  // 以及 Carey 那句"原来叫 9-8-7，后来发现 987 是斐波那契第 16 个数"。
+  eq(CYCLE.meters.join('-'), '9-8-7', '三种小节长度');
+  eq(CYCLE.alignAfter, 504, '三条循环重合一次要 504 个八分音符（9、8、7 的最小公倍数）');
+  eq(CYCLE.alignAfter % 9, 0, '504 能被 9 整除');
+  eq(CYCLE.alignAfter % 8, 0, '504 能被 8 整除');
+  eq(CYCLE.alignAfter % 7, 0, '504 能被 7 整除');
+  // 动机是九格 —— 装进 8 和 7 的盒子时尾巴会被切掉，这是这一节的全部论点
+  eq(CYCLE.motif.length, 9, '动机九格');
+  eq(CYCLE.motif.length > 8 && CYCLE.motif.length > 7, true, '所以装进 8 和 7 时一定会被切短');
+  // 斐波那契第 16 个数必须是 987（从 0 开始数）
+  const fib = [0, 1];
+  while (fib.length < 17) fib.push(fib.at(-1) + fib.at(-2));
+  eq(fib[16], 987, '斐波那契从 0 数第 16 个数是 987');
+
+  const page = readFileSync(new URL('../lessons/tool-lateralus/index.html', import.meta.url), 'utf8');
+  for (const n of ['9:24', '5:47', 'song?id=20464495', 'song?id=3355868693', 'cycle-lab', '504']) {
+    checks++;
+    if (!page.includes(n)) fail(`S 节页面缺少 ${n}`);
   }
 }
 

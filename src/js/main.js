@@ -111,7 +111,9 @@ function renderRail() {
       parts.push(`<div class="tier">${tier.title}</div>`);
       for (const lesson of tier.lessons) {
         const here = lesson.id === current ? ' aria-current="page"' : '';
-        const label = `<em>${lesson.no}</em><span>${lesson.title}</span>`;
+        // 编号只有第一、二部分有：作品分析与风格解析靠"层"来组织，
+        // 插一首曲子不该让后面所有节的编号跟着挪（见 CONTRIBUTING 编号规则）
+        const label = `${lesson.no ? `<em>${lesson.no}</em>` : ''}<span>${lesson.title}</span>`;
         if (lesson.status === 'ready') {
           parts.push(`<a href="${root}${hrefOf(lesson)}"${here}>${label}</a>`);
         } else {
@@ -157,7 +159,9 @@ function renderMeter() {
   }
   host.innerHTML = parts.join('');
   host.setAttribute('aria-label', currentIndex >= 0
-    ? `共 ${total} 节，当前第 ${LESSONS[currentIndex].no} 节`
+    ? (LESSONS[currentIndex].no
+      ? `共 ${total} 节，当前第 ${LESSONS[currentIndex].no} 节`
+      : `共 ${total} 节，当前是《${LESSONS[currentIndex].title}》`)
     : `共 ${total} 节`);
 }
 
@@ -173,8 +177,9 @@ function renderFoot() {
     if (!lesson || lesson.status !== 'ready') return '<span></span>';
     const arrow = dir === 'prev' ? '← ' : '';
     const tail = dir === 'next' ? ' →' : '';
+    const num = lesson.no ? `${lesson.no} ` : '';
     return `<a class="btn${dir === 'next' ? ' btn-primary' : ''}"
-      href="${root}${hrefOf(lesson)}">${arrow}${lesson.no} ${lesson.title}${tail}</a>`;
+      href="${root}${hrefOf(lesson)}">${arrow}${num}${lesson.title}${tail}</a>`;
   };
 
   host.innerHTML = link(prev, 'prev') + link(next, 'next');
@@ -255,7 +260,7 @@ function renderMap() {
 
   const card = (l, rootPath) => {
     const inner = `
-      <span class="no">第 ${l.no} 节</span>
+      ${l.no ? `<span class="no">第 ${l.no} 节</span>` : ''}
       <h4>${l.title}</h4>
       <p>${l.sub}</p>`;
     return l.status === 'ready'

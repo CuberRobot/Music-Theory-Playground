@@ -623,16 +623,29 @@ section('节奏、词典引用、课程编号、泛音配方');
     checks++;
     if (!findLesson(t.lesson)) fail(`词条 ${t.en} 引用不存在的 ${t.lesson}`);
   }
-  // 编号连续性要分两套看：第一、二部分是数字（0 起连号），
-  // 第三部分作品分析用字母，两套混在一起 Number('A') 会变成 NaN。
+  /**
+   * 编号规则（2026-09 改）：
+   *   第一部分、第二部分**有数字编号**，0 起连号 —— 这是教学顺序，要能说"第 12 节"。
+   *   第三部分（作品分析）、第四部分（风格解析）**不编号** —— 它们按"层"组织，
+   *   往里插一首曲子不该让后面所有节跟着挪号（插一次要改几十处引用，代价太高）。
+   *
+   * 所以这里守两条：数字连续、且**只有前两部分允许有编号**。
+   */
   const numbered = LESSONS.filter((l) => /^\d+$/.test(l.no));
-  const lettered = LESSONS.filter((l) => /^[A-Z]$/.test(l.no));
+  const numberedParts = new Set(['fundamentals', 'craft']);
+  for (const l of numbered) {
+    checks++;
+    if (!numberedParts.has(l.partId)) {
+      fail(`${l.partId} 的《${l.title}》不该有编号（第三、四部分不编号）`);
+    }
+  }
   eq(numbered.map((l) => Number(l.no)).every((n, i) => n === i), true, '数字课程编号连续');
-  eq(
-    lettered.map((l) => l.no).join(''),
-    lettered.map((_, i) => String.fromCharCode(65 + i)).join(''),
-    '作品分析字母编号连续（A、B、C…）',
-  );
+  for (const l of LESSONS) {
+    checks++;
+    if (numberedParts.has(l.partId) && !/^\d+$/.test(l.no)) {
+      fail(`第一、二部分的《${l.title}》必须有数字编号`);
+    }
+  }
   eq(new Set(LESSONS.map((l) => l.id)).size, LESSONS.length, '课程 id 无重复');
   for (const [key, spec] of Object.entries(SPECTRA)) {
     const amps = spectrumToAmps(key, 16);
@@ -754,13 +767,21 @@ section('ready 的课必须真的有页面，页面上的实验台必须真的�
       continue;
     }
     const html = readFileSync(page, 'utf8');
+    // 第三、四部分取消编号之后，正文里不该再出现"第 E 节""O 节"这类字母编号引用 ——
+    // 改编号规则时最容易漏的就是这些散在散文里的交叉引用（这次就漏了四处）。
+    const staleRef = html.match(/[A-Z] 节/);
+    checks++;
+    if (staleRef) {
+      fail(`${l.title} 的正文里还留着字母编号引用：${staleRef[0]}`);
+    }
+    const who = l.no ? `${l.no} ${l.title}` : l.title;
     for (const m of html.matchAll(/data-widget="([^"]+)"/g)) {
       checks++;
       const name = m[1];
       if (!existsSync(new URL(`../src/js/widgets/${name}.js`, import.meta.url))) {
-        fail(`${l.no} 用了不存在的实验台 ${name}`);
+        fail(`${who} 用了不存在的实验台 ${name}`);
       } else if (!new RegExp(`(['"]${name}['"]|\\b${name})\\s*:`).test(main)) {
-        fail(`${l.no} 的实验台 ${name} 没有在 main.js 的 WIDGETS 里注册`);
+        fail(`${who} 的实验台 ${name} 没有在 main.js 的 WIDGETS 里注册`);
       }
     }
   }

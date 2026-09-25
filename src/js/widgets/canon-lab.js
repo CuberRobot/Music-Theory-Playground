@@ -38,6 +38,9 @@ const BASS = [
  * 这就是卡农：同一句话，隔两小节依次进来，叠在一起。
  * 以前这个实验台只把低音放进音符条，于是"三层依次进入"只画在图上、没在响，
  * 音轨上也就只有一条线（用户报的"卡农不够直观"）。
+ *
+ * 这句是**本站自己写的示意**（不是原曲那句旋律，原曲那句要听录音）：
+ * 这里要听出的是"隔两小节照抄一遍"这条规则，不是那段旋律本身。
  */
 const PHRASE = [
   { s: 7, b: 1 }, { s: 5, b: 1 }, { s: 4, b: 1 }, { s: 2, b: 1 },
@@ -62,13 +65,14 @@ export function mountCanonLab(root) {
     </div>
     <p class="hint" style="margin-top:0">
       低音循环：<b>D–A–Bm–F♯m–G–D–G–A</b>（八个和弦，每个占两拍）。
+      三层上声部每两小节照抄同一句进来；那句是<b>本站自己写的示意</b>，不是原曲旋律。
       原谱没有速度标记，下面用的是本站设的中庸速度
       <span class="note" role="img" aria-label="四分音符"></span>=${DEMO_BPM}，不是"原速"。
     </p>
     <div data-lanes class="canon-lanes" aria-label="四个声部的进入位置"></div>
     <div data-strip style="margin-top:var(--sp-4)"></div>
     <div class="lab-controls" style="margin-top:var(--sp-4)">
-      <button class="btn btn-primary" type="button" data-play>听一遍低音（4 小节）</button>
+      <button class="btn btn-primary" type="button" data-play>听一遍（8 小节 · 三层都进来）</button>
       <button class="btn" type="button" data-loop>循环四遍</button>
       <button class="btn" type="button" data-stop>停</button>
     </div>

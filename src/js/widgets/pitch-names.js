@@ -67,13 +67,19 @@ export function mountPitchNames(root) {
 
   root.querySelector('[data-octave]').addEventListener('click', () => {
     const m = state.midi;
-    const hz = midiToHz(m);
-    playChord([hz, hz * 2], { duration: 1.2, level: 0.24 });
-    // 上面那个八度如果超出键盘，就往下找八度 —— 两头都留住
-    const up = m + 12 <= TO ? m + 12 : m - 12;
-    flashKeys([m, up]);
-    el.note.textContent = `${spellMidi(m, state.flats).name}（${fmtHz(hz)} Hz）`
-      + `和它的八度 ${spellMidi(up, state.flats).name}（${fmtHz(hz * 2)} Hz）`
+    /**
+     * 键盘顶端那几个音没有更高的八度可指，就往下找 —— 但不管往哪边找，
+     * **高亮的键、发出来的音、文字里写的频率必须是同一对**。
+     * 之前这里固定发 [m, m+12]、却把高亮和文字切到 m-12，
+     * 于是 C6 会写成"和它的八度 C5（2093 Hz）"（C5 实际是 523 Hz）。
+     */
+    const partner = m + 12 <= TO ? m + 12 : m - 12;
+    const hzM = midiToHz(m);
+    const hzPartner = midiToHz(partner);
+    playChord([hzM, hzPartner], { duration: 1.2, level: 0.24 });
+    flashKeys([m, partner]);
+    el.note.textContent = `${spellMidi(m, state.flats).name}（${fmtHz(hzM)} Hz）`
+      + `和它的八度 ${spellMidi(partner, state.flats).name}（${fmtHz(hzPartner)} Hz）`
       + '：频率正好翻一倍，2 : 1。键盘上亮着的就是这两个键。';
   });
 

@@ -314,7 +314,7 @@ function installSearchEntry() {
   const sound = document.querySelector('[data-sound]');
   if (!sound) return;
   const a = document.createElement('a');
-  a.className = 'btn btn-ghost';
+  a.className = 'btn btn-ghost topbar-search';
   a.href = `${rootPrefix()}search/`;
   a.textContent = '搜索';
   sound.parentNode.insertBefore(a, sound);

@@ -767,13 +767,21 @@ section('ready 的课必须真的有页面，页面上的实验台必须真的�
       continue;
     }
     const html = readFileSync(page, 'utf8');
+    // 第三、四部分取消编号之后，正文里不该再出现"第 E 节""O 节"这类字母编号引用 ——
+    // 改编号规则时最容易漏的就是这些散在散文里的交叉引用（这次就漏了四处）。
+    const staleRef = html.match(/[A-Z] 节/);
+    checks++;
+    if (staleRef) {
+      fail(`${l.title} 的正文里还留着字母编号引用：${staleRef[0]}`);
+    }
+    const who = l.no ? `${l.no} ${l.title}` : l.title;
     for (const m of html.matchAll(/data-widget="([^"]+)"/g)) {
       checks++;
       const name = m[1];
       if (!existsSync(new URL(`../src/js/widgets/${name}.js`, import.meta.url))) {
-        fail(`${l.no} 用了不存在的实验台 ${name}`);
+        fail(`${who} 用了不存在的实验台 ${name}`);
       } else if (!new RegExp(`(['"]${name}['"]|\\b${name})\\s*:`).test(main)) {
-        fail(`${l.no} 的实验台 ${name} 没有在 main.js 的 WIDGETS 里注册`);
+        fail(`${who} 的实验台 ${name} 没有在 main.js 的 WIDGETS 里注册`);
       }
     }
   }

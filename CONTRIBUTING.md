@@ -71,7 +71,7 @@ Music Theory Playground 是一个**零构建、零依赖**的纯静态教学站�
 形如 `<类型>: <一句话>`：
 
 ```
-feat:  S 节 Tool Lateralus（小节长度台）
+feat:  新一节《Lateralus》（小节长度台）
 fix:   律制滑块拖动时抽搐（吸附改为松手生效）
 docs:  补维护规范与 issue 模板
 chore: 加 MuseScore 桥客户端

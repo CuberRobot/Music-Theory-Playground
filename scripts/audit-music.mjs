@@ -821,6 +821,14 @@ section('站点元信息：版本号与维护历史必须自洽');
   checks++;
   if (!home.includes('src/js/theme.js')) fail('首页没有接上 theme.js（按钮点了不会动）');
   /**
+   * 内容页顶栏那颗常驻的「搜索」是 JS 注入的：窄屏下 `.topnav` 会被藏起来，
+   * 没有这颗按钮就只剩"点站名回首页"一条路。守一下它别被谁顺手删掉。
+   */
+  checks++;
+  if (!/function installSearchEntry\(\)/.test(mainJs) || !/installSearchEntry\(\);/.test(mainJs)) {
+    fail('main.js 里没有常驻搜索入口 installSearchEntry()（内容页窄屏就没法进搜索了）');
+  }
+  /**
    * 页眉只放站内内容入口。GitHub / 博客 / 许可这类"关于这个项目"的链接放页脚那一行 ——
    * 门面页的页眉以前堆了 7 项（还和 hero 的按钮重复），越满越容易漏改。
    */

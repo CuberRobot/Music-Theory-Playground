@@ -913,6 +913,13 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 @media (max-width: 640px) {
   .topbar { padding: var(--sp-2) var(--sp-4); gap: var(--sp-2); }
   .topbar .crumb { display: none; }
+  /**
+   * 顶栏现在有四件东西：站名 + 「搜索 / 深色 / 声音」。
+   * 按下限算（360px）：内边距 32 + 间距 32 + 三颗按钮 186 = 250，站名最多只能占 110px，
+   * 而它的上限是 42vw（151px）—— 所以窄屏下让它先让位、用省略号收尾，
+   * 别把按钮挤出屏幕（issue #2 的教训：按钮可点 > 站名完整）。
+   */
+  .topbar .brand { flex-shrink: 1; min-width: 0; }
   .shell { padding: var(--sp-4) var(--sp-4) var(--sp-7); }
   .lesson { gap: var(--sp-5); }
 }

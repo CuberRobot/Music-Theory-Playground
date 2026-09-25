@@ -16,7 +16,7 @@ import { identify, diatonicSet, invert, degreeMidi } from '../src/js/music/chord
 import { SCALES, CIRCLE_MAJOR, relativeMinorPc, SHARP_ORDER, FLAT_ORDER } from '../src/js/music/scales.js';
 import { METERS, fitsMeasure } from '../src/js/music/rhythm.js';
 import { TERMS, TEMPO_TERMS, DYNAMICS } from '../src/js/music/glossary.js';
-import { LESSONS, findLesson } from '../src/js/music/curriculum.js';
+import { LESSONS, PARTS, findLesson } from '../src/js/music/curriculum.js';
 import { TEMPO } from '../src/js/audio/tempo.js';
 import { SCORE_TEMPO } from '../src/js/audio/tempo.js';
 import { ODE_THEME } from '../src/js/widgets/ode-lab.js';
@@ -763,6 +763,27 @@ section('ready 的课必须真的有页面，页面上的实验台必须真的�
         fail(`${l.no} 的实验台 ${name} 没有在 main.js 的 WIDGETS 里注册`);
       }
     }
+  }
+}
+
+section('README 上的规模数字必须和课程表、注册表对得上');
+{
+  // "54 节 · 20 层 · 41 个实验台" 这种数字最容易随加课悄悄过期 —— 这次就写错了一个
+  // （实验台按 widgets/ 目录的文件数算成 41，但那里还含共享组件 keyboard.js，
+  // 真正注册的台子是 40）。所以让它只能从代码算出来。
+  const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
+  const m = readme.match(/(\d+)\s*节\s*·\s*(\d+)\s*层\s*·\s*(\d+)\s*个实验台/);
+  checks++;
+  if (!m) {
+    fail('README 里没找到「共 N 节 · N 层 · N 个实验台」那句（改了措辞请同步改这条检查）');
+  } else {
+    const tiers = PARTS.reduce((a, p) => a + (p.tiers ?? p.groups ?? []).length, 0);
+    const mainSrc = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+    const block = mainSrc.match(/WIDGETS = \{([\s\S]*?)\n\};/);
+    const widgets = block ? [...block[1].matchAll(/^\s*['"]?([\w-]+)['"]?\s*:/gm)].length : -1;
+    eq(Number(m[1]), LESSONS.length, 'README 的节数与课程表一致');
+    eq(Number(m[2]), tiers, 'README 的层数与课程表一致');
+    eq(Number(m[3]), widgets, 'README 的实验台数与 main.js 里注册的数量一致');
   }
 }
 

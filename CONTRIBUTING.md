@@ -91,7 +91,7 @@ src/js/widgets/            实验台（一个文件一个台，main.js 里注册
 scripts/audit-music.mjs    数据审计（唯一的质量门）
 scripts/serve.py           本地静态服务器
 assets/musescore/          示例谱（MusicXML）与渲染图
-docs/                      方案、章节大纲、UI 规范、新增曲子的流程
+docs/                      参考书与版权、UI 规范、新增曲子的流程
 ```
 
 **唯一真源**：课程结构只在 `src/js/music/curriculum.js` 里写一次，

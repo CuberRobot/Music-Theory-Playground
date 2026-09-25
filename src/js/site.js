@@ -13,6 +13,7 @@ export const SITE = {
   repo: 'https://github.com/CuberRobot/Music-Theory-Playground',
   blog: 'https://jimmyland.me/',
   projects: 'https://jimmyland.me/projects/',
+  licenseUrl: 'https://github.com/CuberRobot/Music-Theory-Playground/blob/main/LICENSE-CONTENT',
   license: '代码 MIT · 教学内容 CC BY-SA 4.0',
 };
 

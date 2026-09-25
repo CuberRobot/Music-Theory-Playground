@@ -25,15 +25,11 @@
   <a class="brand" href="./">Music Theory Playground</a>
   <span class="spacer"></span>
   <nav class="topnav" aria-label="站点导航">
+    <!-- 页眉只放"站内内容入口"。关于 / 更新 与项目外链（GitHub / 博客 / 许可）都在页脚那一行。
+         门面页不挂 main.js，这份是静态标记：加顶级入口要改两处（main.js + 这里），漏改审计会拦。 -->
     <a href="./lessons/">课程地图</a>
     <a href="./search/">搜索</a>
     <a href="./glossary/">术语表</a>
-    <!-- 首页不挂 main.js，顶栏是写死的静态标记：main.js 里 renderTopnav 加的
-         「关于 / 更新」必须在这里也写一遍，否则从门面页就没有入口（这次就漏了）。 -->
-    <a href="./about/">关于</a>
-    <a href="./changelog/">更新</a>
-    <a href="https://github.com/CuberRobot/Music-Theory-Playground">GitHub</a>
-    <a href="https://github.com/CuberRobot/Music-Theory-Playground/blob/main/LICENSE-CONTENT">许可</a>
   </nav>
   <!-- 门面页不挂 main.js，所以主题开关这颗按钮写在 HTML 里，由 theme.js 接上 -->
   <button class="btn btn-ghost" type="button" data-theme-toggle>深色</button>
@@ -45,8 +41,8 @@
     <h1>先把声音拆开，再谈音乐</h1>
     <p>每个概念都配一个能拖、能听、能看见结果的实验台。</p>
     <div class="actions">
-      <a class="btn btn-primary" href="./lessons/">进入项目</a>
-      <a class="btn" href="https://github.com/CuberRobot/Music-Theory-Playground">GitHub</a>
+      <a class="btn btn-primary" href="./lessons/00-harmonics/">从第 0 节开始</a>
+      <a class="btn" href="./search/">搜索</a>
     </div>
   </section>
 
@@ -54,13 +50,26 @@
     乐理基础 · 编曲作曲 · 作品分析 · 风格解析　—　代码 MIT · 内容 CC BY-SA 4.0
   </p>
 
-  <!-- 首页没有脚本（门面页刻意不放交互），所以这里的链接是写死的静态标记 -->
+  <!-- 页脚 = 站点地图：页眉放不下的都在这里，一项不少。
+       （门面页刻意不放交互，所以这份也是写死的静态标记） -->
   <p class="site-links site-links--center">
+    <a href="./lessons/">课程地图</a>
+    <span aria-hidden="true">·</span>
+    <a href="./search/">搜索</a>
+    <span aria-hidden="true">·</span>
+    <a href="./glossary/">术语表</a>
+    <span aria-hidden="true">·</span>
+    <a href="./about/">关于</a>
+    <span aria-hidden="true">·</span>
+    <a href="./changelog/">更新</a>
+    <span aria-hidden="true">·</span>
     <a href="https://github.com/CuberRobot/Music-Theory-Playground">GitHub 仓库</a>
     <span aria-hidden="true">·</span>
     <a href="https://jimmyland.me/">博客 jimmyland.me</a>
     <span aria-hidden="true">·</span>
     <a href="https://jimmyland.me/projects/">其他项目</a>
+    <span aria-hidden="true">·</span>
+    <a href="https://github.com/CuberRobot/Music-Theory-Playground/blob/main/LICENSE-CONTENT">许可</a>
   </p>
 </main>
 

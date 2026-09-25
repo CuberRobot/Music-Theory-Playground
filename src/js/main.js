@@ -197,6 +197,7 @@ const SITE_LINKS = [
   ['GitHub 仓库', SITE.repo],
   [`博客 jimmyland.me`, SITE.blog],
   ['其他项目', SITE.projects],
+  ['许可', SITE.licenseUrl],
 ];
 
 function renderSiteLinks(after) {

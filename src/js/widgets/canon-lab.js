@@ -33,11 +33,23 @@ const BASS = [
 ];
 
 /* 四个声部的进入位置：低音从第 1 小节起，之后每两小节进一层。 */
+/**
+ * 上面三层演奏的那句话：两小节（8 拍）的短句，**每个声部一模一样** ——
+ * 这就是卡农：同一句话，隔两小节依次进来，叠在一起。
+ * 以前这个实验台只把低音放进音符条，于是"三层依次进入"只画在图上、没在响，
+ * 音轨上也就只有一条线（用户报的"卡农不够直观"）。
+ */
+const PHRASE = [
+  { s: 7, b: 1 }, { s: 5, b: 1 }, { s: 4, b: 1 }, { s: 2, b: 1 },
+  { s: 0, b: 2 }, { s: 2, b: 1 }, { s: 4, b: 1 },
+];
+const PHRASE_BEATS = PHRASE.reduce((a, n) => a + n.b, 0);   // = 8 拍 = 2 小节
+
 const VOICES = [
   { label: '低音', bar: 1 },
-  { label: '小提琴 I', bar: 3 },
-  { label: '小提琴 II', bar: 5 },
-  { label: '小提琴 III', bar: 7 },
+  { label: '小提琴 I', bar: 3, shift: 12 },
+  { label: '小提琴 II', bar: 5, shift: 12 },
+  { label: '小提琴 III', bar: 7, shift: 12 },
 ];
 
 export function mountCanonLab(root) {
@@ -68,7 +80,7 @@ export function mountCanonLab(root) {
     stripHost: root.querySelector('[data-strip]'),
     readout: root.querySelector('[data-readout]'),
   };
-  const strip = createNoteStrip(el.stripHost, { ariaLabel: '卡农低音的音符与播放进度' });
+  const strip = createNoteStrip(el.stripHost, { ariaLabel: '卡农四个声部的音符与播放进度' });
 
   function drawLanes() {
     el.lanes.innerHTML = VOICES.map((v) => {
@@ -82,7 +94,10 @@ export function mountCanonLab(root) {
     }).join('');
   }
 
-  /** 低音展开成音符条要的时间轴；repeat 是循环几遍。 */
+  /**
+   * 展开成音符条要的时间轴：低音循环 repeat 遍，三个小提琴声部依次进来。
+   * 低音每遍 4 小节；声部按"每 2 小节进一层"从第 3 小节开始进（和上面那张进入图一致）。
+   */
   function timeline(repeat) {
     const out = [];
     for (let r = 0; r < repeat; r++) {
@@ -93,6 +108,21 @@ export function mountCanonLab(root) {
         });
       });
     }
+
+    const totalBeats = repeat * 16;
+    VOICES.filter((v) => v.shift).forEach((v) => {
+      const enterBeat = (v.bar - 1) * 4;
+      for (let b = enterBeat; b < totalBeats; b += PHRASE_BEATS) {
+        let cursor = b;
+        PHRASE.forEach((n) => {
+          const start = cursor * BEAT;
+          if (cursor < totalBeats) {
+            out.push({ midi: 50 + n.s + v.shift, start, dur: n.b * BEAT * 0.92, label: '' });
+          }
+          cursor += n.b;
+        });
+      }
+    });
     return out;
   }
 
@@ -122,16 +152,16 @@ export function mountCanonLab(root) {
     strip.stop();
   }
 
-  root.querySelector('[data-play]').addEventListener('click', () => play(1));
+  root.querySelector('[data-play]').addEventListener('click', () => play(2));   // 两遍 = 8 小节，正好让三层都进来
   root.querySelector('[data-loop]').addEventListener('click', () => play(4));
   root.querySelector('[data-stop]').addEventListener('click', stop);
 
   el.readout.innerHTML = `
-    <div><dt>低音长度</dt><dd>4 小节 · 8 个和弦</dd></div>
+    <div><dt>低音长度</dt><dd>4 小节 · 8 个和弦（循环两遍 = 8 小节）</dd></div>
     <div><dt>和弦进行</dt><dd>I–V–vi–iii–IV–I–IV–V</dd></div>
     <div><dt>进入间隔</dt><dd>每 2 小节一层</dd></div>
     <div><dt>原谱的速度</dt><dd>没有标记</dd></div>
   `;
   drawLanes();
-  strip.load(timeline(1));
+  strip.load(timeline(2));
 }

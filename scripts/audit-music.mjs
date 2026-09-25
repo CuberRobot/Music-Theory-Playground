@@ -798,7 +798,7 @@ section('站点元信息：版本号与维护历史必须自洽');
   for (const dir of navDirs) {
     checks++;
     if (!home.includes(`href="./${dir}/"`)) {
-      fail(`首页的静态导航没有链到 ${dir}/（main.js 的 renderTopnav 里有这个入口）`);
+      fail(`首页没有链到 ${dir}/（页眉或页脚都算，main.js 的 renderTopnav 里有这个入口）`);
     }
   }
   /**
@@ -820,6 +820,20 @@ section('站点元信息：版本号与维护历史必须自洽');
   if (!home.includes('data-theme-toggle')) fail('首页没有主题切换按钮（data-theme-toggle）');
   checks++;
   if (!home.includes('src/js/theme.js')) fail('首页没有接上 theme.js（按钮点了不会动）');
+  /**
+   * 页眉只放站内内容入口。GitHub / 博客 / 许可这类"关于这个项目"的链接放页脚那一行 ——
+   * 门面页的页眉以前堆了 7 项（还和 hero 的按钮重复），越满越容易漏改。
+   */
+  const homeNav = (home.match(/<nav class="topnav"[\s\S]*?<\/nav>/) ?? [''])[0];
+  checks++;
+  if (/https?:\/\//.test(homeNav)) fail('首页页眉的导航里出现了外部链接（外部链接放页脚那一行）');
+  checks++;
+  if (/https?:\/\//.test(navSrc)) fail('main.js 的 renderTopnav 里出现了外部链接（外部链接放页脚那一行）');
+  // 从页眉搬走不等于丢掉：这些链接必须在首页还找得到（现在在页脚那行）
+  for (const [what, url] of [['仓库', SITE.repo], ['许可', SITE.licenseUrl]]) {
+    checks++;
+    if (!home.includes(url)) fail(`首页没有${what}链接（页眉不放外链，但页脚那行要有）`);
+  }
   // 站点链接必须写出到页面（页脚/关于页都要用）
   checks++;
   if (!SITE.repo.includes('github.com')) fail('SITE.repo 不像 GitHub 地址');

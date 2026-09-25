@@ -27,6 +27,7 @@ import { SOLO_TAKES, SOLO_LENGTHS } from '../src/js/widgets/solo-lab.js';
 import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
 import { INTERLOCK } from '../src/js/widgets/interlock-lab.js';
+import { SITE, CHANGELOG } from '../src/js/site.js';
 import { CYCLE } from '../src/js/widgets/cycle-lab.js';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 
@@ -702,6 +703,37 @@ section('实验台的 stopAll 必须真的导入（写过一次"用了没导入"
       fail(`${name} 用了 stopAll 但没有从 engine.js 导入它`);
     }
   }
+}
+
+section('站点元信息：版本号与维护历史必须自洽');
+{
+  // 版本号散在页脚、关于页、历史页三处，最容易出现"页脚 v1.0、历史页停在 v0.3"。
+  // 这里让它们只能有一个来源：src/js/site.js。
+  eq(/^\d+\.\d+\.\d+$/.test(SITE.version), true, '版本号是 x.y.z 形式');
+  eq(CHANGELOG[0].version, SITE.version, '维护历史的第一条就是当前版本');
+  const dates = CHANGELOG.map((v) => v.date);
+  eq(dates.join(',') === [...dates].sort().reverse().join(','), true, '维护历史按日期从新到旧');
+  for (const [i, v] of CHANGELOG.entries()) {
+    checks++;
+    if (!v.title || !v.items?.length) fail(`v${v.version} 缺标题或内容`);
+    checks++;
+    if (i > 0 && !(v.version < CHANGELOG[i - 1].version)) {
+      fail(`v${v.version} 不该排在 v${CHANGELOG[i - 1].version} 后面（版本号要从新到旧）`);
+    }
+  }
+  for (const page of ['about', 'changelog']) {
+    const f = new URL(`../${page}/index.html`, import.meta.url);
+    checks++;
+    if (!existsSync(f)) { fail(`${page}/ 页面不存在`); continue; }
+    const html = readFileSync(f, 'utf8');
+    checks++;
+    if (!html.includes('data-version') && page === 'about') fail('关于页没有版本号占位');
+    checks++;
+    if (!html.includes('src/js/main.js')) fail(`${page} 页没挂 main.js`);
+  }
+  // 站点链接必须写出到页面（页脚/关于页都要用）
+  checks++;
+  if (!SITE.repo.includes('github.com')) fail('SITE.repo 不像 GitHub 地址');
 }
 
 section('MuseScore 三节：图与示例谱都在，而且不胖');

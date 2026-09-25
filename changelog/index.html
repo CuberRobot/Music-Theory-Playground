@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<title>维护历史 · Music Theory Playground</title>
+<meta name="description" content="Music Theory Playground 的维护历史：每个版本加了什么、什么时候落地，从 v0.1 立项到今天。">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/base.css">
+<link rel="stylesheet" href="../styles/components.css">
+</head>
+<body data-root="../" data-page="changelog">
+
+<header class="topbar">
+  <a class="brand" href="../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../lessons/">课程地图</a></nav>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell--full">
+  <section class="hero" style="margin-bottom: var(--sp-6)">
+    <p class="kicker">维护历史</p>
+    <h1>每个版本加了什么</h1>
+    <p class="lead-p">这是一份流水账，不是宣传页 —— 记的是"用户能感觉到的东西"，
+    以及那些被用户抓出来的错误最后变成了哪条防线。</p>
+    <p>当前版本 <b data-version></b>（<span data-updated></span> 更新）。
+    版本号只在跨过一个阶段时进位：0.x 是内容建设，1.0 起进入维护阶段。</p>
+  </section>
+
+  <div data-changelog></div>
+
+  <footer class="page-foot">
+    <span data-license></span>
+    <span><a href="../">回首页</a></span>
+  </footer>
+</div>
+
+<script type="module" src="../src/js/main.js"></script>
+</body>
+</html>

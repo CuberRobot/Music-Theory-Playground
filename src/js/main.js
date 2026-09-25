@@ -7,6 +7,7 @@
  */
 
 import { PARTS, LESSONS, findLesson, neighbours, hrefOf } from './music/curriculum.js';
+import { SITE, CHANGELOG } from './site.js';
 import { installUnlockOnGesture, isMuted, setMuted, isAvailable, stopAll } from './audio/engine.js';
 
 import { mountHarmonicLab } from './widgets/harmonic-lab.js';
@@ -187,9 +188,9 @@ function renderFoot() {
  * 这样 50 多个页面不用各改一遍 HTML。
  */
 const SITE_LINKS = [
-  ['GitHub 仓库', 'https://github.com/CuberRobot/Music-Theory-Playground'],
-  ['博客 jimmyland.me', 'https://jimmyland.me/'],
-  ['其他项目', 'https://jimmyland.me/projects/'],
+  ['GitHub 仓库', SITE.repo],
+  [`博客 jimmyland.me`, SITE.blog],
+  ['其他项目', SITE.projects],
 ];
 
 function renderSiteLinks(after) {
@@ -340,7 +341,9 @@ function renderTopnav() {
   const page = document.body.dataset.page || '';
   host.innerHTML = `
     <a href="${root}lessons/"${page === 'lessons' ? ' aria-current="page"' : ''}>课程地图</a>
-    <a href="${root}glossary/"${page === 'glossary' ? ' aria-current="page"' : ''}>术语表</a>`;
+    <a href="${root}glossary/"${page === 'glossary' ? ' aria-current="page"' : ''}>术语表</a>
+    <a href="${root}about/"${page === 'about' ? ' aria-current="page"' : ''}>关于</a>
+    <a href="${root}changelog/"${page === 'changelog' ? ' aria-current="page"' : ''}>更新</a>`;
 }
 
 /**
@@ -365,6 +368,32 @@ function installPlaybackGuard() {
   }, true);
 }
 
+/**
+ * 版本号、许可、维护历史表：都从 site.js 取，避免页脚说一个版本、历史页停在另一个。
+ * 这些元素在页面里只是占位（[data-version] / [data-changelog] …），有才渲染。
+ */
+function renderSiteMeta() {
+  for (const el of document.querySelectorAll('[data-version]')) el.textContent = `v${SITE.version}`;
+  for (const el of document.querySelectorAll('[data-updated]')) el.textContent = SITE.updated;
+  for (const el of document.querySelectorAll('[data-license]')) el.textContent = SITE.license;
+  const repoLink = document.querySelector('[data-link="repo"]');
+  if (repoLink) repoLink.href = SITE.repo;
+
+  const host = document.querySelector('[data-changelog]');
+  if (host) {
+    host.innerHTML = CHANGELOG.map((v) => `
+      <section class="card" style="margin-bottom:var(--sp-4)">
+        <div class="card-head">
+          <h2>v${v.version} · ${v.title}</h2>
+          <p class="hint">${v.date}</p>
+        </div>
+        <ul style="margin:0;padding-left:1.2em">
+          ${v.items.map((i) => `<li>${i}</li>`).join('')}
+        </ul>
+      </section>`).join('');
+  }
+}
+
 installUnlockOnGesture();
 installPlaybackGuard();
 renderRail();
@@ -372,6 +401,7 @@ renderMeter();
 renderFoot();
 renderMap();
 renderTopnav();
+renderSiteMeta();
 mountWidgets();
 wireSoundToggle();
 wireThemeToggle();

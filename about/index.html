@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<title>关于 · Music Theory Playground</title>
+<meta name="description" content="Music Theory Playground 是什么、怎么用、内容怎么组织、给谁看；以及如果你想参与（加一首曲子、修一个 bug、补一个实验台），从哪里开始。">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/base.css">
+<link rel="stylesheet" href="../styles/components.css">
+</head>
+<body data-root="../" data-page="about">
+
+<header class="topbar">
+  <a class="brand" href="../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../lessons/">课程地图</a></nav>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell--full">
+  <section class="hero" style="margin-bottom: var(--sp-6)">
+    <p class="kicker">关于 <span data-version></span></p>
+    <h1>先把声音拆开，再谈音乐</h1>
+    <p class="lead-p">一个用交互实验台讲乐理的静态站：每个概念都配一个能拖、能听、能看见结果的台子。</p>
+  </section>
+
+  <div class="lab-split" style="align-items: start">
+    <!-- ============ 给读者 ============ -->
+    <section>
+      <h2>给读者</h2>
+
+      <p><strong>它解决什么问题。</strong>乐理书上的话大多是对的，但读起来像在背条文：
+      "纯五度是 3:2"——然后呢？这个站的做法是<b>把每一句话做成一个能动手的东西</b>：
+      泛音列可以一个一个关掉听，五度的音分可以拖着看整圈会不会合上，
+      卡农的四个声部可以看着它们依次进来。</p>
+
+      <p><strong>怎么用。</strong>从<a href="../lessons/00-harmonics/">第 0 节</a>顺着走最省力，
+      因为后面的每一节都假设你听过前面那些声音。想查某个词就翻<a href="../glossary/">术语表</a>，
+      想看某个作品怎么拆就跳到<a href="../lessons/">课程地图</a>的第三部分。</p>
+
+      <p><strong>四个部分。</strong></p>
+      <dl class="readout">
+        <div><dt>第一部分 · 乐理基础</dt><dd>23 节（第 0–22 节）。从泛音列与十二平均律开始，一路到音程、节奏、音阶、和声。</dd></div>
+        <div><dt>第二部分 · 编曲与作曲</dt><dd>10 节（第 23–32 节）。动机、轮廓、律动、和弦进行、织体、配器、曲式，外加 MuseScore 三节。</dd></div>
+        <div><dt>第三部分 · 作品分析</dt><dd>按"层"组织，不编号：贝多芬、巴洛克、莫扎特、俄罗斯与东欧、晚期浪漫与二十世纪、动画与管乐、摇滚与交错织体。</dd></div>
+        <div><dt>第四部分 · 风格解析</dt><dd>一种风格能被认出来，靠的是几条固定手法——目前有 Afrobeat 与拉格。</dd></div>
+      </dl>
+
+      <p><strong>关于声音。</strong>全站<b>没有任何音频文件</b>：
+      声音都是浏览器里当场合成的（加法合成 + Karplus-Strong 拨弦 + 噪声打点）。
+      所以站点很小、加载很快，代价是音色不像真乐器。
+      谱例图是用 MuseScore 命令行渲染的，也没有外部字体依赖。</p>
+
+      <p><strong>许可与引用。</strong>这个站是开源的：<b>代码 MIT，教学内容 CC BY-SA 4.0</b>。
+      转载、改编、拿去上课都可以，署名并以相同方式共享即可。</p>
+    </section>
+
+    <!-- ============ 给贡献者 ============ -->
+    <section>
+      <h2>给贡献者</h2>
+
+      <p>这个项目按"正规维护"来跑：<b>main 不直接提交</b>，每个改动一条分支 + 一个 PR，
+      合并前必须过 CI（跑数据审计）。三条底线写在
+      <a data-link="repo" href="https://github.com/CuberRobot/Music-Theory-Playground">仓库</a>的
+      <code>CONTRIBUTING.md</code> 里：</p>
+
+      <p><strong>一 · 数据可核对。</strong>页面里的速度、调性、拍号、时长、署名、日期，
+      要么有出处，要么变成审计里的一条断言。凭记忆写下来的数字不收。</p>
+      <p><strong>二 · 页面要快。</strong>单图不超过 400KB，不引入外部依赖，
+      能不用二进制的就不用。</p>
+      <p><strong>三 · 交互必须有反馈。</strong>点了要看得见它在响、在走、还是结束了。</p>
+
+      <h3>想加一首曲子</h3>
+      <p>作品分析是会长大的模块。<b>第三、四部分不编号</b>——
+      插一首曲子只要在课程表里加一行，不用动别人。完整流程见
+      <code>docs/新增一首曲子.md</code>：</p>
+      <ol>
+        <li>先写下这一节的<b>中心论点</b>（一句话，而且能用耳朵验算）；</li>
+        <li>核事实：两个独立来源对得上才写，没有出处就不写；</li>
+        <li>起分支 <code>codex/&lt;主题&gt;</code>，定它放在哪一层；</li>
+        <li>需要动手验算的地方就做实验台（素材标明"本站自己写的示意"）；</li>
+        <li>写页面（开场 / 资料卡 / 正文 / 实验台 / 听点 / 参考 / 一句话带走）；</li>
+        <li>把这次引用的新事实<b>加进审计</b>，跑绿，开 PR。</li>
+      </ol>
+
+      <h3>想修东西</h3>
+      <p>去仓库开 issue，三类模板随你挑：
+      <b>交互问题</b>（按钮、滑块、播放）、<b>内容错误</b>（乐理说法、数字、出处）、
+      <b>新曲目提案</b>。内容错误最好带上"你认为正确的是什么"，
+      我们会把这条错误变成审计里的一条防线。</p>
+
+      <h3>本地怎么跑</h3>
+      <pre class="code">python3 scripts/serve.py 5200     # 本地预览，禁缓存
+node scripts/audit-music.mjs      # 数据审计（乐理数字、页面、编号、实验台注册）
+node scripts/check-links.mjs      # 外链体检（需代理的站加 --proxy）</pre>
+
+      <p><a href="../changelog/">维护历史</a>记着每个版本加了什么，也是这个项目怎么长起来的流水账。</p>
+    </section>
+  </div>
+
+  <footer class="page-foot">
+    <span data-license></span>
+    <span><a href="../">回首页</a></span>
+  </footer>
+</div>
+
+<script type="module" src="../src/js/main.js"></script>
+</body>
+</html>

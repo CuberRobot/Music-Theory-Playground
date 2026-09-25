@@ -80,7 +80,7 @@ export function createNoteStrip(host, opts = {}) {
           fill="${on ? 'var(--amber)' : 'var(--green)'}"/>
         ${w > 26 ? `<text x="${(x + w / 2).toFixed(1)}" y="${(y + 8).toFixed(1)}"
           text-anchor="middle" font-size="9"
-          fill="${on ? 'var(--ink-1)' : '#FFFDF7'}">${label}</text>` : ''}
+          fill="${on ? 'var(--on-accent)' : 'var(--on-green)'}">${label}</text>` : ''}
       </g>`;
     }).join('');
 

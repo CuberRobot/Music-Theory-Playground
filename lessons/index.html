@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <title>课程地图 · Music Theory Playground</title>
 <meta name="description" content="从声音的物理性质往上建：泛音列、十二平均律、音程、和弦、调。共六层 14 节。">
 <link rel="stylesheet" href="../styles/tokens.css">

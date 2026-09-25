@@ -38,6 +38,17 @@ export function mountPitchNames(root) {
     spell: root.querySelector('[data-spell]'),
   };
 
+  /**
+   * 临时高亮：听八度、听标准音的时候，让键盘上真的亮起在响的那几个键。
+   * 以前这两颗按钮只出声，键盘一动不动 —— 声音和画面各说各的（issue #3 体验-6）。
+   */
+  let flashTimer = null;
+  function flashKeys(midis) {
+    kb.setHighlight(midis.map((m, i) => ({ midi: m, tone: i === 0 ? 'amber' : 'green' })));
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(paint, 1500);
+  }
+
   const kb = createKeyboard(el.kbHost, {
     from: FROM, to: TO, labels: true,
     ariaLabel: '音名实验室键盘',
@@ -55,12 +66,22 @@ export function mountPitchNames(root) {
   });
 
   root.querySelector('[data-octave]').addEventListener('click', () => {
-    const hz = midiToHz(state.midi);
+    const m = state.midi;
+    const hz = midiToHz(m);
     playChord([hz, hz * 2], { duration: 1.2, level: 0.24 });
+    // 上面那个八度如果超出键盘，就往下找八度 —— 两头都留住
+    const up = m + 12 <= TO ? m + 12 : m - 12;
+    flashKeys([m, up]);
+    el.note.textContent = `${spellMidi(m, state.flats).name}（${fmtHz(hz)} Hz）`
+      + `和它的八度 ${spellMidi(up, state.flats).name}（${fmtHz(hz * 2)} Hz）`
+      + '：频率正好翻一倍，2 : 1。键盘上亮着的就是这两个键。';
   });
 
   root.querySelector('[data-standard]').addEventListener('click', () => {
     playNote(STANDARD, { duration: 1.1, level: 0.28 });
+    flashKeys([69]);   // A4 = MIDI 69 就是 440 Hz
+    el.note.textContent = '标准音是 A4 = 440 Hz。键盘上亮着的这个键，'
+      + '是全世界的乐器对音高的参照 —— 其他音的频率都是从它推出来的。';
   });
 
   function paint() {

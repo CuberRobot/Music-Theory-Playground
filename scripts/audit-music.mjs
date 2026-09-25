@@ -744,6 +744,18 @@ section('站点元信息：版本号与维护历史必须自洽');
     checks++;
     if (!html.includes('src/js/main.js')) fail(`${page} 页没挂 main.js`);
   }
+  /**
+   * 首页是唯一不挂 main.js 的页面（门面页刻意不放交互），它的顶栏导航是静态写死的。
+   * 所以"新加一个顶级入口"这件事要改两处：main.js 的 renderTopnav + 首页的静态标记 ——
+   * 「关于 / 更新」这次就只改了前者，从门面页根本走不到。
+   */
+  const home = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  for (const [pageName, dir] of [['关于', 'about'], ['更新', 'changelog']]) {
+    checks++;
+    if (!home.includes(`href="./${dir}/"`)) {
+      fail(`首页的静态导航没有链到${pageName}页（./${dir}/）`);
+    }
+  }
   // 站点链接必须写出到页面（页脚/关于页都要用）
   checks++;
   if (!SITE.repo.includes('github.com')) fail('SITE.repo 不像 GitHub 地址');

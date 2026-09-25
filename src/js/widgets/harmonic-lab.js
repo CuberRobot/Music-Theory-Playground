@@ -366,6 +366,15 @@ export function mountHarmonicLab(root) {
     new ResizeObserver(() => drawScope()).observe(el.scope);
   }
 
+  /**
+   * 主题切换要重画这块 canvas。
+   * 别的地方用 CSS 变量上色，浏览器自己会跟着换；
+   * canvas 是"画上去就不管了"，颜色在画的那一刻就被复制进像素里，
+   * 所以它是全站唯一需要监听 mtp:theme-changed 的地方
+   * （见 issue #10-3：这个事件以前派发了但没人接）。
+   */
+  document.addEventListener('mtp:theme-changed', drawScope);
+
   // 给"沙盒"区留的接口：外部可以直接设定一组泛音再播放
   return {
     playOnce(amps) {

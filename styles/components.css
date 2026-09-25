@@ -921,3 +921,20 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 @media (max-width: 900px) {
   .topbar .crumb { display: none; }
 }
+
+/* --- 搜索页 --------------------------------------------------------------- */
+
+.search-hit {
+  padding: var(--sp-4) 0;
+  border-bottom: 1px dashed var(--line);
+}
+.search-hit:last-child { border-bottom: 0; }
+.search-hit h3 { margin: 0 0 var(--sp-1); font-size: var(--fs-h3); }
+.search-hit h3 a { color: var(--ink-1); text-decoration: none; }
+.search-hit h3 a:hover { text-decoration: underline; }
+.search-where { margin: 0 0 var(--sp-2); font-size: var(--fs-tiny); color: var(--ink-3); }
+.search-snippet { margin: 0; font-size: var(--fs-small); color: var(--ink-2); }
+.search-snippet mark, .search-hit h3 mark {
+  background: var(--amber-soft); color: var(--ink-1);
+  border-radius: 3px; padding: 0 2px;
+}

@@ -346,6 +346,7 @@ function renderTopnav() {
   const page = document.body.dataset.page || '';
   host.innerHTML = `
     <a href="${root}lessons/"${page === 'lessons' ? ' aria-current="page"' : ''}>课程地图</a>
+    <a href="${root}search/"${page === 'search' ? ' aria-current="page"' : ''}>搜索</a>
     <a href="${root}glossary/"${page === 'glossary' ? ' aria-current="page"' : ''}>术语表</a>
     <a href="${root}about/"${page === 'about' ? ' aria-current="page"' : ''}>关于</a>
     <a href="${root}changelog/"${page === 'changelog' ? ' aria-current="page"' : ''}>更新</a>`;

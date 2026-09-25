@@ -28,6 +28,7 @@ import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
 import { INTERLOCK } from '../src/js/widgets/interlock-lab.js';
 import { SITE, CHANGELOG } from '../src/js/site.js';
+import { buildIndex, serialize } from './build-search-index.mjs';
 import { CYCLE } from '../src/js/widgets/cycle-lab.js';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 
@@ -718,6 +719,44 @@ section('实验台的 stopAll 必须真的导入（写过一次"用了没导入"
   }
 }
 
+section('站内搜索：索引必须是最新的');
+{
+  // 索引是维护期生成的静态文件。改完正文忘了重新生成，搜索就会"少一节"，
+  // 而这种错在页面上看不出来 —— 所以交给审计逐字节比。
+  const index = buildIndex();
+  const want = serialize(index);
+  const file = new URL('../assets/search-index.json', import.meta.url);
+  checks++;
+  if (!existsSync(file)) { fail('assets/search-index.json 不存在，跑 scripts/build-search-index.mjs'); }
+  else {
+    eq(readFileSync(file, 'utf8') === want, true,
+      '搜索索引是最新的（跑 node scripts/build-search-index.mjs）');
+  }
+  eq(index.count, LESSONS.filter((l) => l.status === 'ready').length, '索引覆盖了所有 ready 的课');
+  for (const it of index.items) {
+    checks++;
+    if (!it.title || !it.url) fail(`${it.id} 索引项缺标题或链接`);
+    checks++;
+    if (!(it.text || '').length) fail(`${it.id} 索引项没有正文`);
+  }
+  const page = new URL('../search/index.html', import.meta.url);
+  checks++;
+  if (!existsSync(page)) fail('search/ 页面不存在');
+  else {
+    const html = readFileSync(page, 'utf8');
+    checks++;
+    if (!html.includes('data-search-input')) fail('搜索页没有输入框');
+    checks++;
+    if (!html.includes('mtp-theme')) fail('搜索页少了防闪白的内联脚本');
+  }
+  // 索引只在搜索页加载，但它会被整个下载下来 —— 和图片一样给个体积上限。
+  if (existsSync(file)) {
+    checks++;
+    const kb = statSync(file).size / 1024;
+    if (kb > 400) fail(`搜索索引 ${kb.toFixed(0)}KB 超过 400KB 上限`);
+  }
+}
+
 section('站点元信息：版本号与维护历史必须自洽');
 {
   // 版本号散在页脚、关于页、历史页三处，最容易出现"页脚 v1.0、历史页停在 v0.3"。
@@ -750,10 +789,16 @@ section('站点元信息：版本号与维护历史必须自洽');
    * 「关于 / 更新」这次就只改了前者，从门面页根本走不到。
    */
   const home = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  for (const [pageName, dir] of [['关于', 'about'], ['更新', 'changelog']]) {
+  const mainJs = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+  const navFrom = mainJs.indexOf('function renderTopnav');
+  const navSrc = mainJs.slice(navFrom, mainJs.indexOf('\n}', navFrom));
+  const navDirs = [...navSrc.matchAll(/href="\$\{root\}([\w-]+)\/"/g)].map((m) => m[1]);
+  checks++;
+  if (!navDirs.length) fail('没能从 main.js 的 renderTopnav 里读出导航入口');
+  for (const dir of navDirs) {
     checks++;
     if (!home.includes(`href="./${dir}/"`)) {
-      fail(`首页的静态导航没有链到${pageName}页（./${dir}/）`);
+      fail(`首页的静态导航没有链到 ${dir}/（main.js 的 renderTopnav 里有这个入口）`);
     }
   }
   // 站点链接必须写出到页面（页脚/关于页都要用）

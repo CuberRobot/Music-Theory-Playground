@@ -28,6 +28,7 @@ import { PROVENCE, PROVENCE_DEMOS } from '../src/js/widgets/march-lab.js';
 import { DUET, DUET_LINES } from '../src/js/widgets/duet-lab.js';
 import { INTERLOCK } from '../src/js/widgets/interlock-lab.js';
 import { SITE, CHANGELOG } from '../src/js/site.js';
+import { buildIndex, serialize } from './build-search-index.mjs';
 import { CYCLE } from '../src/js/widgets/cycle-lab.js';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 
@@ -715,6 +716,38 @@ section('实验台的 stopAll 必须真的导入（写过一次"用了没导入"
     if (!/import \{[^}]*\bstopAll\b[^}]*\} from '\.\.\/audio\/engine\.js'/.test(src)) {
       fail(`${name} 用了 stopAll 但没有从 engine.js 导入它`);
     }
+  }
+}
+
+section('站内搜索：索引必须是最新的');
+{
+  // 索引是维护期生成的静态文件。改完正文忘了重新生成，搜索就会"少一节"，
+  // 而这种错在页面上看不出来 —— 所以交给审计逐字节比。
+  const index = buildIndex();
+  const want = serialize(index);
+  const file = new URL('../assets/search-index.json', import.meta.url);
+  checks++;
+  if (!existsSync(file)) { fail('assets/search-index.json 不存在，跑 scripts/build-search-index.mjs'); }
+  else {
+    eq(readFileSync(file, 'utf8') === want, true,
+      '搜索索引是最新的（跑 node scripts/build-search-index.mjs）');
+  }
+  eq(index.count, LESSONS.filter((l) => l.status === 'ready').length, '索引覆盖了所有 ready 的课');
+  for (const it of index.items) {
+    checks++;
+    if (!it.title || !it.url) fail(`${it.id} 索引项缺标题或链接`);
+    checks++;
+    if (!(it.text || '').length) fail(`${it.id} 索引项没有正文`);
+  }
+  const page = new URL('../search/index.html', import.meta.url);
+  checks++;
+  if (!existsSync(page)) fail('search/ 页面不存在');
+  else {
+    const html = readFileSync(page, 'utf8');
+    checks++;
+    if (!html.includes('data-search-input')) fail('搜索页没有输入框');
+    checks++;
+    if (!html.includes('mtp-theme')) fail('搜索页少了防闪白的内联脚本');
   }
 }
 

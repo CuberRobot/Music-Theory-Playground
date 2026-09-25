@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白（这是唯一的"内联脚本"，只干这件事） */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<title>搜索 · Music Theory Playground</title>
+<meta name="description" content="站内全文搜索：54 节课的正文、小标题与实验台说明都在索引里，支持多关键词（空格分隔，全部命中）。">
+<link rel="stylesheet" href="../styles/tokens.css">
+<link rel="stylesheet" href="../styles/base.css">
+<link rel="stylesheet" href="../styles/components.css">
+</head>
+<body data-root="../" data-page="search">
+
+<header class="topbar">
+  <a class="brand" href="../">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航"><a href="../lessons/">课程地图</a></nav>
+  <span class="spacer"></span>
+  <span class="meter" data-meter role="img" aria-label="课程进度"></span>
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell--full">
+  <section class="hero" style="margin-bottom: var(--sp-5)">
+    <p class="kicker">搜索</p>
+    <h1>直接在正文里找</h1>
+    <p class="lead-p">54 节课的正文、小标题和实验台说明都在这份索引里。</p>
+    <p class="hint" style="margin-top:0">
+      多个词用空格分开，<b>要求全部命中</b>（例：<code>五度 音分</code>）。
+      结果是按"出现在标题 &gt; 小标题 &gt; 正文"排的。
+    </p>
+  </section>
+
+  <div class="field" style="margin-bottom: var(--sp-4)">
+    <label for="q">搜什么</label>
+    <input id="q" class="form-input" type="search" data-search-input
+      placeholder="例如：卡农、五度、节拍器、织体、MuseScore…" autocomplete="off">
+  </div>
+  <p class="hint" data-search-info aria-live="polite"></p>
+  <div data-search-results></div>
+
+  <footer class="page-foot">
+    <span data-license></span>
+    <span><a href="../glossary/">术语表</a> · <a href="../">回首页</a></span>
+  </footer>
+</div>
+
+<script type="module" src="../src/js/main.js"></script>
+<script type="module">
+  import { mountSearch } from '../src/js/search-page.js';
+  mountSearch();
+</script>
+</body>
+</html>

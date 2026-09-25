@@ -64,16 +64,21 @@ export function createNoteStrip(host, opts = {}) {
     const midis = notes.map((n) => n.midi);
     lo = Math.min(...midis) - 1;
     hi = Math.max(...midis) + 1;
-    draw(-1);
+    draw(new Set());
     pos.textContent = '—';
   }
 
-  function draw(current) {
+  /**
+   * @param {Set<number>} active 现在正在响的音的下标集合。
+   *   以前这里接单个下标，于是**同时响几个音时只亮一个** ——
+   *   卡农那种叠起来的织体，看着就只有一条线在动（用户报的"音轨不直观"）。
+   */
+  function draw(active = new Set()) {
     const blocks = notes.map((n, i) => {
       const x = xOf(n.start);
       const w = Math.max(4, xOf(n.start + n.dur) - x);
       const y = yOf(n.midi) - 5;
-      const on = i === current;
+      const on = active.has(i);
       const label = n.label ?? nameOfMidi(n.midi);
       return `<g>
         <rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="10" rx="5"
@@ -110,7 +115,7 @@ export function createNoteStrip(host, opts = {}) {
     const c = svg.querySelector('[data-cursor]');
     if (c) c.style.opacity = '0';
     pos.textContent = '—';
-    draw(-1);
+    draw(new Set());
   }
 
   /**
@@ -127,7 +132,7 @@ export function createNoteStrip(host, opts = {}) {
 
     const cursor = svg.querySelector('[data-cursor]');
     cursor.style.opacity = '1';
-    let shown = -1;
+    let shown = '';
 
     const tick = () => {
       if (!playing) return;
@@ -136,14 +141,24 @@ export function createNoteStrip(host, opts = {}) {
       const x = xOf(Math.max(0, Math.min(total, elapsed)));
       cursor.setAttribute('transform', `translate(${x.toFixed(1)} 0)`);
 
-      const idx = notes.findIndex((n) => elapsed >= n.start && elapsed < n.start + n.dur);
-      if (idx !== shown) {
-        shown = idx;
-        draw(idx);
+      // 把"这一刻在响的"全部算出来：同时响几个就亮几个
+      const active = new Set();
+      notes.forEach((n, i) => {
+        if (elapsed >= n.start && elapsed < n.start + n.dur) active.add(i);
+      });
+      const key = [...active].join(',');
+      if (key !== shown) {
+        shown = key;
+        draw(active);
         svg.querySelector('[data-cursor]').style.opacity = '1';
-        pos.textContent = idx < 0
+        const idx = [...active][0];
+        pos.textContent = active.size === 0
           ? `第 ${elapsed.toFixed(1)} 秒 · 空拍`
-          : `第 ${elapsed.toFixed(1)} 秒 · 正在响 ${notes[idx].label ?? nameOfMidi(notes[idx].midi)}`;
+          : active.size === 1
+            // 用 || 而不是 ??：有些实验台把 label 写成空字符串（不想在块里显示字），
+            // 空字符串用 ?? 不会回退，读数就成了"正在响 "。
+            ? `第 ${elapsed.toFixed(1)} 秒 · 正在响 ${notes[idx].label || nameOfMidi(notes[idx].midi)}`
+            : `第 ${elapsed.toFixed(1)} 秒 · 正在响 ${active.size} 个音`;
       }
       raf = requestAnimationFrame(tick);
     };

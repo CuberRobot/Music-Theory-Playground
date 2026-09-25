@@ -749,6 +749,12 @@ section('站内搜索：索引必须是最新的');
     checks++;
     if (!html.includes('mtp-theme')) fail('搜索页少了防闪白的内联脚本');
   }
+  // 索引只在搜索页加载，但它会被整个下载下来 —— 和图片一样给个体积上限。
+  if (existsSync(file)) {
+    checks++;
+    const kb = statSync(file).size / 1024;
+    if (kb > 400) fail(`搜索索引 ${kb.toFixed(0)}KB 超过 400KB 上限`);
+  }
 }
 
 section('站点元信息：版本号与维护历史必须自洽');
@@ -783,10 +789,16 @@ section('站点元信息：版本号与维护历史必须自洽');
    * 「关于 / 更新」这次就只改了前者，从门面页根本走不到。
    */
   const home = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-  for (const [pageName, dir] of [['关于', 'about'], ['更新', 'changelog']]) {
+  const mainJs = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+  const navFrom = mainJs.indexOf('function renderTopnav');
+  const navSrc = mainJs.slice(navFrom, mainJs.indexOf('\n}', navFrom));
+  const navDirs = [...navSrc.matchAll(/href="\$\{root\}([\w-]+)\/"/g)].map((m) => m[1]);
+  checks++;
+  if (!navDirs.length) fail('没能从 main.js 的 renderTopnav 里读出导航入口');
+  for (const dir of navDirs) {
     checks++;
     if (!home.includes(`href="./${dir}/"`)) {
-      fail(`首页的静态导航没有链到${pageName}页（./${dir}/）`);
+      fail(`首页的静态导航没有链到 ${dir}/（main.js 的 renderTopnav 里有这个入口）`);
     }
   }
   // 站点链接必须写出到页面（页脚/关于页都要用）

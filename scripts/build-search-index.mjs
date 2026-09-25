@@ -12,6 +12,7 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import { LESSONS, PARTS } from '../src/js/music/curriculum.js';
 
 const OUT = new URL('../assets/search-index.json', import.meta.url);
@@ -69,6 +70,7 @@ export function buildIndex() {
       title: l.title,
       sub: l.sub ?? '',
       part: meta.part,
+      partNo: meta.partNo,
       tier: meta.tier,
       headings,
       text,
@@ -82,18 +84,32 @@ export function serialize(index) {
   return JSON.stringify(index, null, 0) + '\n';
 }
 
-const check = process.argv.includes('--check');
-const out = serialize(buildIndex());
+/**
+ * CLI 必须只在"被直接执行"时跑，不能在 import 时跑。
+ *
+ * 因为 `scripts/audit-music.mjs` 要 import 这里的 buildIndex / serialize 去比对索引 ——
+ * 如果这段代码在 import 时就执行，它会把索引重新写一遍，审计随后的"逐字节比较"
+ * 就永远相等：那条"索引不许过期"的防线等于不存在，而且跑一次审计会悄悄改掉
+ * 一个被跟踪的文件。
+ */
+const isCli = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 
-if (check) {
-  const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
-  if (current !== out) {
-    console.error('搜索索引不是最新的：跑 `node scripts/build-search-index.mjs` 重新生成。');
-    process.exit(1);
+if (isCli) {
+  const check = process.argv.includes('--check');
+  const index = buildIndex();
+  const out = serialize(index);
+
+  if (check) {
+    const current = existsSync(OUT) ? readFileSync(OUT, 'utf8') : '';
+    if (current !== out) {
+      console.error('搜索索引不是最新的：跑 `node scripts/build-search-index.mjs` 重新生成。');
+      process.exit(1);
+    }
+    console.log('搜索索引是最新的。');
+  } else {
+    writeFileSync(OUT, out);
+    // 按字节算，别用 out.length —— 那是字符数，中文一个字 3 字节，差三倍
+    const kb = (Buffer.byteLength(out) / 1024).toFixed(0);
+    console.log(`写入 assets/search-index.json：${kb}KB，${index.count} 节课。`);
   }
-  console.log('搜索索引是最新的。');
-} else {
-  writeFileSync(OUT, out);
-  const kb = (out.length / 1024).toFixed(0);
-  console.log(`写入 assets/search-index.json：${kb}KB，${buildIndex().count} 节课。`);
 }

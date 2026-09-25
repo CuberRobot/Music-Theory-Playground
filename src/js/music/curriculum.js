@@ -155,8 +155,8 @@ export const PARTS = [
         title: '贝多芬',
         blurb: '动机驱动这条路的终点，也是它最有说服力的证明。',
         lessons: [
-          { id: 'a-beethoven-5', no: 'A', title: '第五交响曲', sub: '四个音的重量', status: 'ready' },
-          { id: 'b-beethoven-9', no: 'B', title: '第九交响曲', sub: '先翻旧账，再唱歌', status: 'ready' },
+          { id: 'a-beethoven-5', no: '', title: '第五交响曲', sub: '四个音的重量', status: 'ready' },
+          { id: 'b-beethoven-9', no: '', title: '第九交响曲', sub: '先翻旧账，再唱歌', status: 'ready' },
         ],
       },
       {
@@ -164,9 +164,9 @@ export const PARTS = [
         title: '巴洛克',
         blurb: '重复与低音驱动的时代。',
         lessons: [
-          { id: 'c-vivaldi-seasons', no: 'C', title: '维瓦尔第 · 四季', sub: '先有诗，还是先有音乐', status: 'ready' },
-          { id: 'd-pachelbel-canon', no: 'D', title: '帕赫贝尔 · 卡农', sub: '一条循环，三百年', status: 'ready' },
-          { id: 'e-bach-wtc-prelude', no: 'E', title: '巴赫 · 平均律第一册 C 大调前奏曲', sub: '一个音型，三十五小节', status: 'ready' },
+          { id: 'c-vivaldi-seasons', no: '', title: '维瓦尔第 · 四季', sub: '先有诗，还是先有音乐', status: 'ready' },
+          { id: 'd-pachelbel-canon', no: '', title: '帕赫贝尔 · 卡农', sub: '一条循环，三百年', status: 'ready' },
+          { id: 'e-bach-wtc-prelude', no: '', title: '巴赫 · 平均律第一册 C 大调前奏曲', sub: '一个音型，三十五小节', status: 'ready' },
         ],
       },
       {
@@ -174,8 +174,8 @@ export const PARTS = [
         title: '莫扎特',
         blurb: '同样一套语法，写出来的东西能有多少差别。',
         lessons: [
-          { id: 'f-mozart-figaro', no: 'F', title: '费加罗的婚礼', sub: '一个仆人赢了主人', status: 'ready' },
-          { id: 'g-mozart-40', no: 'G', title: '第四十交响曲', sub: '六个星期的三首', status: 'ready' },
+          { id: 'f-mozart-figaro', no: '', title: '费加罗的婚礼', sub: '一个仆人赢了主人', status: 'ready' },
+          { id: 'g-mozart-40', no: '', title: '第四十交响曲', sub: '六个星期的三首', status: 'ready' },
         ],
       },
       {
@@ -183,9 +183,9 @@ export const PARTS = [
         title: '俄罗斯与东欧',
         blurb: '民族调式、管弦乐色彩，以及乡愁。',
         lessons: [
-          { id: 'h-borodin-dances', no: 'H', title: '鲍罗丁 · 波罗维茨舞曲', sub: '一个化学家写的歌剧', status: 'ready' },
-          { id: 'i-borodin-quartet', no: 'I', title: '鲍罗丁 · 第二弦乐四重奏', sub: '四个人，没有指挥', status: 'ready' },
-          { id: 'j-dvorak-9', no: 'J', title: '德沃夏克 · 第九交响曲', sub: '在纽约写的波希米亚', status: 'ready' },
+          { id: 'h-borodin-dances', no: '', title: '鲍罗丁 · 波罗维茨舞曲', sub: '一个化学家写的歌剧', status: 'ready' },
+          { id: 'i-borodin-quartet', no: '', title: '鲍罗丁 · 第二弦乐四重奏', sub: '四个人，没有指挥', status: 'ready' },
+          { id: 'j-dvorak-9', no: '', title: '德沃夏克 · 第九交响曲', sub: '在纽约写的波希米亚', status: 'ready' },
         ],
       },
       {
@@ -193,10 +193,10 @@ export const PARTS = [
         title: '晚期浪漫与二十世纪',
         blurb: '规则在这里被推到极限，然后被换掉。',
         lessons: [
-          { id: 'k-wagner-tristan', no: 'K', title: '瓦格纳 · 特里斯坦前奏曲', sub: '一个和弦，悬了一百多年', status: 'ready' },
-          { id: 'l-debussy-clair', no: 'L', title: '德彪西 · 月光', sub: '把引力关掉', status: 'ready' },
-          { id: 'm-stravinsky-rite', no: 'M', title: '斯特拉文斯基 · 春之祭', sub: '节奏变成主角之后', status: 'ready' },
-          { id: 'n-ravel-bolero', no: 'N', title: '拉威尔 · 波莱罗', sub: '十五分钟的渐强', status: 'ready' },
+          { id: 'k-wagner-tristan', no: '', title: '瓦格纳 · 特里斯坦前奏曲', sub: '一个和弦，悬了一百多年', status: 'ready' },
+          { id: 'l-debussy-clair', no: '', title: '德彪西 · 月光', sub: '把引力关掉', status: 'ready' },
+          { id: 'm-stravinsky-rite', no: '', title: '斯特拉文斯基 · 春之祭', sub: '节奏变成主角之后', status: 'ready' },
+          { id: 'n-ravel-bolero', no: '', title: '拉威尔 · 波莱罗', sub: '十五分钟的渐强', status: 'ready' },
         ],
       },
       {
@@ -204,9 +204,9 @@ export const PARTS = [
         title: '动画与管乐',
         blurb: '《吹响！上低音号》里的竞演曲。这一层的三首都是现代作品——没有公版谱可用，所以分析的落点在结构、制度、编制和听法上。',
         lessons: [
-          { id: 'q-mikazuki', no: 'O', title: '三日月之舞', sub: '一场独奏掀起的风波', status: 'ready' },
-          { id: 'r-provence', no: 'P', title: '普罗旺斯的风', sub: '一道所有人都要做的题', status: 'ready' },
-          { id: 's-liz-to-aoi-tori', no: 'Q', title: '利兹与青鸟', sub: '第 3 楽章里的挂け合い', status: 'ready' },
+          { id: 'q-mikazuki', no: '', title: '三日月之舞', sub: '一场独奏掀起的风波', status: 'ready' },
+          { id: 'r-provence', no: '', title: '普罗旺斯的风', sub: '一道所有人都要做的题', status: 'ready' },
+          { id: 's-liz-to-aoi-tori', no: '', title: '利兹与青鸟', sub: '第 3 楽章里的挂け合い', status: 'ready' },
         ],
       },
       {
@@ -214,8 +214,8 @@ export const PARTS = [
         title: '摇滚与交错织体',
         blurb: '一层一层拆开听：这里的音乐不在任何一个人手里，它在四条线的交汇处。',
         lessons: [
-          { id: 'kc-discipline', no: 'R', title: 'King Crimson · 纪律', sub: '没有一个人演奏完整的音乐', status: 'ready' },
-          { id: 'tool-lateralus', no: 'S', title: 'Tool · Lateralus', sub: '同一句话，越装越短的盒子', status: 'ready' },
+          { id: 'kc-discipline', no: '', title: 'King Crimson · 纪律', sub: '没有一个人演奏完整的音乐', status: 'ready' },
+          { id: 'tool-lateralus', no: '', title: 'Tool · Lateralus', sub: '同一句话，越装越短的盒子', status: 'ready' },
         ],
       },
     ],
@@ -232,8 +232,8 @@ export const PARTS = [
         title: '一 · 一套音乐是怎么做出来的',
         blurb: '一种风格能被认出来，靠的往往不是音色，而是几条固定的手法。',
         lessons: [
-          { id: 'o-afrobeat', no: 'T', title: 'Afrobeat', sub: '鼓是主旋律', status: 'ready' },
-          { id: 'p-raga', no: 'U', title: '拉格（Raga）', sub: '一个框架，九成靠即兴', status: 'ready' },
+          { id: 'o-afrobeat', no: '', title: 'Afrobeat', sub: '鼓是主旋律', status: 'ready' },
+          { id: 'p-raga', no: '', title: '拉格（Raga）', sub: '一个框架，九成靠即兴', status: 'ready' },
         ],
       },
     ],

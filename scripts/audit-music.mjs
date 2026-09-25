@@ -801,6 +801,25 @@ section('站点元信息：版本号与维护历史必须自洽');
       fail(`首页的静态导航没有链到 ${dir}/（main.js 的 renderTopnav 里有这个入口）`);
     }
   }
+  /**
+   * 反过来也要守：站里每个顶级页面都得在顶栏导航里有入口。
+   * 不然页面做得再好也没人找得到 —— 搜索页刚上线时就是这样：文件在、线上能开、
+   * 但顶栏没入口、首页更没有。
+   */
+  const topPages = readdirSync(new URL('..', import.meta.url), { withFileTypes: true })
+    .filter((e) => e.isDirectory() && existsSync(new URL(`../${e.name}/index.html`, import.meta.url)))
+    .map((e) => e.name);
+  for (const dir of topPages) {
+    checks++;
+    if (!navDirs.includes(dir)) {
+      fail(`顶级页面 ${dir}/ 没有出现在顶栏导航里（main.js 的 renderTopnav）`);
+    }
+  }
+  // 门面页也要能切主题：它是唯一不挂 main.js 的页面，所以单独守一下
+  checks++;
+  if (!home.includes('data-theme-toggle')) fail('首页没有主题切换按钮（data-theme-toggle）');
+  checks++;
+  if (!home.includes('src/js/theme.js')) fail('首页没有接上 theme.js（按钮点了不会动）');
   // 站点链接必须写出到页面（页脚/关于页都要用）
   checks++;
   if (!SITE.repo.includes('github.com')) fail('SITE.repo 不像 GitHub 地址');

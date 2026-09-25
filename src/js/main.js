@@ -303,6 +303,24 @@ function wireThemeToggle() {
 }
 
 /**
+ * 顶栏常驻的搜索入口。
+ *
+ * 为什么单独放一颗按钮，而不是只靠 `.topnav` 里那个「搜索」：
+ * 窄屏（≤640px）下内容页会把整条 `.topnav` 藏起来（为了给正文让地方），
+ * 于是搜索、术语表、关于、更新在手机上全都没有入口 —— 只能点站名回首页再找。
+ * 搜索是"随时想查一下"的东西，所以让它常驻在「深色 / 声音」旁边，任何宽度都在。
+ */
+function installSearchEntry() {
+  const sound = document.querySelector('[data-sound]');
+  if (!sound) return;
+  const a = document.createElement('a');
+  a.className = 'btn btn-ghost topbar-search';
+  a.href = `${rootPrefix()}search/`;
+  a.textContent = '搜索';
+  sound.parentNode.insertBefore(a, sound);
+}
+
+/**
  * 顶栏的站内导航。所有页面的 HTML 里只写一条兜底链接，
  * 真正的导航在这里统一生成，加新页面时只改这一处。
  */
@@ -377,6 +395,7 @@ renderTopnav();
 renderSiteMeta();
 mountWidgets();
 wireSoundToggle();
+installSearchEntry();   // 放在 wireThemeToggle 之前，顶栏顺序就是「搜索 · 深色 · 声音」
 wireThemeToggle();
 
 export { LESSONS, findLesson };

@@ -61,6 +61,7 @@ export function mountSearch() {
   const input = document.querySelector('[data-search-input]');
   const host = document.querySelector('[data-search-results]');
   const info = document.querySelector('[data-search-info]');
+  const samples = document.querySelector('[data-search-samples]');
   if (!input || !host) return;
 
   let index = null;
@@ -69,6 +70,8 @@ export function mountSearch() {
   const run = (raw) => {
     const q = String(raw ?? '').trim();
     const terms = norm(q).split(/\s+/).filter(Boolean);
+    // 出结果之后把示例词收起来：它是给"不知道该搜什么"的人看的
+    if (samples) samples.hidden = terms.length > 0;
     if (!terms.length) {
       info.textContent = index ? `索引里共 ${items.length} 节课。输入关键词开始。` : '正在载入索引…';
       host.innerHTML = '';
@@ -105,6 +108,11 @@ export function mountSearch() {
     .catch(() => { info.textContent = '索引没加载成功——如果你在本地跑，确认是用 scripts/serve.py 起的服务。'; });
 
   let t = null;
+  const seek = (q) => {
+    input.value = q;
+    run(q);
+    history.replaceState(null, '', `?q=${encodeURIComponent(q)}`);
+  };
   input.addEventListener('input', () => {
     clearTimeout(t);
     t = setTimeout(() => {
@@ -120,5 +128,15 @@ export function mountSearch() {
       if (first) first.focus();
     }
   });
+  // 示例词：链接本身带着 ?q= 能用（没 JS 也能搜），有 JS 就顺手省掉一次整页重载
+  if (samples) {
+    samples.addEventListener('click', (e) => {
+      const a = e.target.closest('[data-search-sample]');
+      if (!a) return;
+      e.preventDefault();
+      seek(a.dataset.searchSample);
+      input.focus();
+    });
+  }
   input.focus();
 }

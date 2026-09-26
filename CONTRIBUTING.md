@@ -87,6 +87,7 @@ python3 scripts/serve.py 5200     # 本地预览，禁缓存（改完直接刷�
 node scripts/audit-music.mjs      # 数据审计：乐理数字、页面、编号、实验台注册
 node scripts/check-links.mjs      # 外链体检（需要代理的站加 --proxy）
 node scripts/build-search-index.mjs  # 改过正文就重建站内搜索索引（审计会检查是否最新）
+node scripts/sync-share-meta.mjs     # 改了标题/描述，或换了域名，刷 60 个页面的分享卡片与图标
 ```
 
 审计里的每个数字都应该能追到出处。**它红了就不要开 PR。**

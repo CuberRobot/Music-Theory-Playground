@@ -917,6 +917,85 @@ section('ready 的课必须真的有页面，页面上的实验台必须真的�
   }
 }
 
+section('分享卡片与图标：60 个页面都得有，而且和页面自己的标题对得上');
+{
+  /**
+   * 链接转出去长什么样，取决于页面头里那几行 og —— 抓不到就只剩一条灰链接。
+   * 问题是这几行要出现在 60 个手写页面里，谁改了标题忘了改 og:title 都看不出来，
+   * 所以由 scripts/sync-share-meta.mjs 生成、这里逐项核对。
+   */
+  const PAGES = [['index.html', ''], ['404.html', '404.html']];
+  for (const dir of ['about', 'changelog', 'glossary', 'search']) PAGES.push([`${dir}/index.html`, `${dir}/`]);
+  for (const d of readdirSync(new URL('../lessons', import.meta.url))) {
+    if (statSync(new URL(`../lessons/${d}`, import.meta.url)).isDirectory()) {
+      PAGES.push([`lessons/${d}/index.html`, `lessons/${d}/`]);
+    }
+  }
+
+  const cover = SITE.origin + '/assets/og-cover.png';
+  /**
+   * description 里不许出现裸的半角双引号：属性会在那里提前结束，
+   * 后半句会变成一堆没人要的"属性"，而页面看着一切正常 —— 只有抓取器读到半句。
+   * 站内正文用半角引号没问题（那是文本节点），属性里用「」。
+   * 这个错真发生过：三节的 description 都是这么写的，一直没人发现。
+   */
+  for (const [file] of PAGES) {
+    const f = new URL(`../${file}`, import.meta.url);
+    if (!existsSync(f)) continue;
+    const html = readFileSync(f, 'utf8');
+    if (!/<meta name="description"/.test(html)) continue;
+    checks++;
+    if (!/<meta name="description" content="[^"]*">/.test(html)) {
+      fail(`${file} 的 description 属性里有没转义的半角双引号（属性会被提前截断）`);
+    }
+  }
+
+  checks++;
+  if (!/^https:\/\/[^/]+(\/[^/]+)*$/.test(SITE.origin)) {
+    fail(`SITE.origin 看起来不是站点根地址（不能带结尾斜杠）：${SITE.origin}`);
+  }
+  for (const [rel, asset] of [['icon.svg', '图标'], ['apple-touch-icon.png', 'iOS 桌面图标'], ['og-cover.png', '分享封面']]) {
+    checks++;
+    const f = new URL(`../assets/${rel}`, import.meta.url);
+    if (!existsSync(f)) {
+      fail(`assets/${rel}（${asset}）不见了`);
+      continue;
+    }
+    const kb = statSync(f).size / 1024;
+    if (kb > 400) fail(`assets/${rel} 有 ${Math.round(kb)}KB —— 静态站不该挂这么大的图`);
+  }
+
+  for (const [file, path] of PAGES) {
+    const f = new URL(`../${file}`, import.meta.url);
+    checks++;
+    if (!existsSync(f)) {
+      fail(`${file} 不存在（页面清单和实际文件对不上）`);
+      continue;
+    }
+    const html = readFileSync(f, 'utf8');
+    const who = file;
+    const grab = (re) => (html.match(re) || [])[1];
+    const title = grab(/<title>([\s\S]*?)<\/title>/);
+    const desc = grab(/<meta name="description" content="([^"]*)">/);
+    const block = grab(/<!-- share-meta -->([\s\S]*?)<!-- \/share-meta -->/);
+    const og = (p) => (block ? (block.match(new RegExp(`<meta property="${p}" content="([^"]*)"`)) || [])[1] : undefined);
+
+    checks++;
+    if (!block) {
+      fail(`${who} 没有分享卡片区块 —— 跑 node scripts/sync-share-meta.mjs`);
+      continue;
+    }
+    eq(og('og:title'), title, `${who} 的 og:title 与 <title> 一致`);
+    eq(og('og:description'), desc, `${who} 的 og:description 与 description 一致`);
+    eq(og('og:image'), cover, `${who} 的 og:image 指向分享封面`);
+    eq(og('og:url'), SITE.origin + '/' + path, `${who} 的 og:url 是它自己的地址`);
+    checks++;
+    if (!/<link rel="icon"[^>]*assets\/icon\.svg/.test(block)) fail(`${who} 没有 favicon`);
+    checks++;
+    if (!/<link rel="apple-touch-icon"[^>]*assets\/apple-touch-icon\.png/.test(block)) fail(`${who} 没有 apple-touch-icon`);
+  }
+}
+
 section('README 与门面页上的规模数字必须和课程表、注册表对得上');
 {
   // "54 节 · 20 层 · 41 个实验台" 这种数字最容易随加课悄悄过期 —— 这次就写错了一个

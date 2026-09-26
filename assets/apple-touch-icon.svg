@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="Music Theory Playground">
+  <title>Music Theory Playground</title>
+  <!--
+    iOS「添加到主屏幕」用的图标，和 assets/icon.svg 是同一套笔画、两种收边：
+    iOS 会自己把图标切成圆角并自己补底，所以这里必须是**满幅、不透明、不自己倒角**的
+    —— 用 favicon 那个带圆角和小描边的版本，切出来会变成"卡片里再套一张卡片"。
+    PNG 由这个文件渲染得到（见本文件的 README 说明 / PR 描述），这里留着源。
+  -->
+  <rect width="180" height="180" fill="#FFFDF7"/>
+  <g fill="#B9861F">
+    <rect x="42" y="51" width="24" height="84" rx="7"/>
+    <rect x="78" y="80" width="24" height="55" rx="7"/>
+    <rect x="114" y="105" width="24" height="30" rx="7"/>
+  </g>
+  <rect x="42" y="146" width="96" height="8" rx="4" fill="#CFC3A8"/>
+</svg>

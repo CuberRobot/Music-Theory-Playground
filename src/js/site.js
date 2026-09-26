@@ -10,6 +10,15 @@ export const SITE = {
   nameZh: '看得见的乐理',
   version: '1.0.0',
   updated: '2026-09-25',
+  /**
+   * 站点对外的绝对地址（不带结尾斜杠）。
+   *
+   * 为什么要写死一个"线上地址"：分享卡片用的 og:image / og:url 必须是绝对 URL，
+   * 微信和小红书的抓取器不认相对路径。这两个值散在 60 个 HTML 里，
+   * 所以它们由 scripts/sync-share-meta.mjs 从这一处生成，审计再核对一遍
+   * —— 换域名时改这里、跑一次脚本、审计变红就是漏改了。
+   */
+  origin: 'https://cuberrobot.github.io/Music-Theory-Playground',
   repo: 'https://github.com/CuberRobot/Music-Theory-Playground',
   blog: 'https://jimmyland.me/',
   projects: 'https://jimmyland.me/projects/',

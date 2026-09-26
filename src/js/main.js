@@ -134,14 +134,55 @@ function renderRail() {
    * 目录会很长，把当前这一节滚到左栏的可视范围中间。
    * 以前用 scrollIntoView({block:'nearest'})：那是"最省力地露出来"，
    * 于是靠后的章节会贴着栏底，还得自己往下找（issue #3-9）；
-   * 它还可能顺带滚动整个页面。这里只动左栏自己的 scrollTop。
+   * 它还可能顺带滚动整个页面。这里只动左栏自己的滚动位置。
+   *
+   * 轴要跟着宽窄走：≤960px 时 CSS 把 .rail 翻成一条横滑带（flex-direction: row），
+   * 那时 scrollTop 是死的 —— 以前不分方向一律改 scrollTop，于是手机上的目录条
+   * 永远停在课程开头：第 29 节的页面上，顶部显示的却是「0 泛音列 / 1」。
    */
+  scrollRailToHere(host);
+  markRailEdges(host);
+}
+
+function scrollRailToHere(host) {
   const here = host.querySelector('[aria-current="page"]');
-  if (here) {
-    const bar = host.getBoundingClientRect();
-    const item = here.getBoundingClientRect();
+  if (!here) return;
+  const bar = host.getBoundingClientRect();
+  const item = here.getBoundingClientRect();
+  if (isRailHorizontal(host)) {
+    host.scrollLeft += (item.left - bar.left) - (bar.width - item.width) / 2;
+  } else {
     host.scrollTop += (item.top - bar.top) - (bar.height - item.height) / 2;
   }
+}
+
+function isRailHorizontal(host) {
+  return getComputedStyle(host).flexDirection.startsWith('row');
+}
+
+/**
+ * 横滑带的"还能往左右滑"提示。
+ * 只在真的还有内容没露出来时挂 data-edge，滑到头就摘掉 ——
+ * 不然滑到末尾左边还挂着一层渐隐，看着像又少了东西。
+ */
+function markRailEdges(host) {
+  if (!isRailHorizontal(host)) {
+    host.removeAttribute('data-edge');
+    return;
+  }
+  const sync = () => {
+    const rest = host.scrollWidth - host.clientWidth;
+    if (rest <= 2) {
+      host.removeAttribute('data-edge');
+      return;
+    }
+    const atStart = host.scrollLeft <= 2;
+    const atEnd = host.scrollLeft >= rest - 2;
+    host.dataset.edge = atStart ? 'end' : atEnd ? 'start' : 'both';
+  };
+  sync();
+  host.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', sync);
 }
 
 function renderMeter() {
@@ -201,9 +242,12 @@ const SITE_LINKS = [
 ];
 
 function renderSiteLinks(after) {
+  // 分隔点交给 CSS（`.site-links a:not(:last-child)::after`）。
+  // 以前这里每个链接后面插一个 <span>·</span>，而 flex 换行会把独立元素甩到行首，
+  // 窄屏页脚因此出现过以「·」开头的一行。
   const html = SITE_LINKS
     .map(([label, href]) => `<a href="${href}">${label}</a>`)
-    .join('<span aria-hidden="true">·</span>');
+    .join('');
 
   if (after) {
     after.insertAdjacentHTML('afterend',
@@ -310,6 +354,31 @@ function wireThemeToggle() {
  * 于是搜索、术语表、关于、更新在手机上全都没有入口 —— 只能点站名回首页再找。
  * 搜索是"随时想查一下"的东西，所以让它常驻在「深色 / 声音」旁边，任何宽度都在。
  */
+/**
+ * 窄屏站名。
+ *
+ * 手机上顶栏要放下「搜索 / 深色 / 声音」三颗按钮，剩下给站名的宽度只够放
+ * 「Music Theory Pl…」—— 一个半截的英文名，看着像页面坏了。
+ * 中文名短得多，而且这一站本来就是给中文读者的，所以窄屏换成中文名、宽屏
+ * 仍然用项目名（英文名是它的正式名字）。
+ *
+ * 为什么不写在 HTML 里：站名写在 60 个页面里，加一对 span 要改 60 处，
+ * 而顶栏本来就是这个文件在拼（搜索入口、主题开关都在这儿）。
+ * 门面页不挂本文件，但那一档站名独占一行、本来就截不到，不受影响。
+ */
+function wireBrandLabel() {
+  const brand = document.querySelector('.topbar .brand');
+  if (!brand) return;
+  const full = brand.textContent.trim();
+  const narrow = window.matchMedia('(max-width: 640px)');
+  const sync = () => {
+    const want = narrow.matches ? SITE.nameZh : full;
+    if (brand.textContent !== want) brand.textContent = want;
+  };
+  sync();
+  narrow.addEventListener('change', sync);
+}
+
 function installSearchEntry() {
   const sound = document.querySelector('[data-sound]');
   if (!sound) return;
@@ -394,6 +463,7 @@ renderMap();
 renderTopnav();
 renderSiteMeta();
 mountWidgets();
+wireBrandLabel();
 wireSoundToggle();
 installSearchEntry();   // 放在 wireThemeToggle 之前，顶栏顺序就是「搜索 · 深色 · 声音」
 wireThemeToggle();

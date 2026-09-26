@@ -9,6 +9,22 @@
 </script>
 <title>关于 · Music Theory Playground</title>
 <meta name="description" content="Music Theory Playground 是什么、怎么用、内容怎么组织、给谁看；以及如果你想参与（加一首曲子、修一个 bug、补一个实验台），从哪里开始。">
+<!-- share-meta -->
+<!-- 分享卡片与图标。这三行 og 决定链接转出去长什么样：抓不到就只剩一条光秃秃的灰链接。
+     这一块由 node scripts/sync-share-meta.mjs 生成，别手改（下次跑会被抹平）。 -->
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Music Theory Playground">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="关于 · Music Theory Playground">
+<meta property="og:description" content="Music Theory Playground 是什么、怎么用、内容怎么组织、给谁看；以及如果你想参与（加一首曲子、修一个 bug、补一个实验台），从哪里开始。">
+<meta property="og:url" content="https://cuberrobot.github.io/Music-Theory-Playground/about/">
+<meta property="og:image" content="https://cuberrobot.github.io/Music-Theory-Playground/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /share-meta -->
 <link rel="stylesheet" href="../styles/tokens.css">
 <link rel="stylesheet" href="../styles/base.css">
 <link rel="stylesheet" href="../styles/components.css">
@@ -30,7 +46,7 @@
     <p class="lead-p">一个用交互实验台讲乐理的静态站：每个概念都配一个能拖、能听、能看见结果的台子。</p>
   </section>
 
-  <div class="lab-split" style="align-items: start">
+  <div class="lab-split lab-split--read" style="align-items: start">
     <!-- ============ 给读者 ============ -->
     <section>
       <h2>给读者</h2>
@@ -46,7 +62,7 @@
       想看某个作品怎么拆就跳到<a href="../lessons/">课程地图</a>的第三部分。</p>
 
       <p><strong>四个部分。</strong></p>
-      <dl class="readout">
+      <dl class="readout readout--prose">
         <div><dt>第一部分 · 乐理基础</dt><dd>23 节（第 0–22 节）。从泛音列与十二平均律开始，一路到音程、节奏、音阶、和声。</dd></div>
         <div><dt>第二部分 · 编曲与作曲</dt><dd>10 节（第 23–32 节）。动机、轮廓、律动、和弦进行、织体、配器、曲式，外加 MuseScore 三节。</dd></div>
         <div><dt>第三部分 · 作品分析</dt><dd>按"层"组织，不编号：贝多芬、巴洛克、莫扎特、俄罗斯与东欧、晚期浪漫与二十世纪、动画与管乐、摇滚与交错织体。</dd></div>

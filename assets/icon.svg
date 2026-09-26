@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Music Theory Playground">
+  <title>Music Theory Playground</title>
+  <!--
+    站标：纸面卡片 + 三根递减的竖条。
+    竖条是这一站的招牌图（泛音列的强度条），也是「看得见的声音」这句话最省笔画的画法。
+    只用 tokens.css 里的三个颜色，刻意不画细节 —— 它多数时候只有 16px 大，
+    三根错落的粗条在 16px 下还认得出来，十二个音的五度圈就糊成一团了。
+  -->
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="#FFFDF7"/>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="none" stroke="#CFC3A8" stroke-width="2.5"/>
+  <g fill="#B9861F">
+    <rect x="15" y="19" width="8.5" height="30" rx="2.5"/>
+    <rect x="27.75" y="29" width="8.5" height="20" rx="2.5"/>
+    <rect x="40.5" y="38" width="8.5" height="11" rx="2.5"/>
+  </g>
+  <rect x="15" y="52.5" width="34" height="3" rx="1.5" fill="#CFC3A8"/>
+</svg>

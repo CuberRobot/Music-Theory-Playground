@@ -26,22 +26,45 @@
 .topbar .crumb {
   font-size: var(--fs-small); color: var(--ink-3);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  /**
+   * 面包屑不参与收缩，地方不够时由进度点阵让（见 .meter）。
+   * 它是顶栏里唯一一句话（「十 · 结构 / 第 29 节 曲式与结构」），
+   * 被截断就变成半句读不通的话；点阵被截掉一截还是一条点阵。
+   * 代价是它必须在真的放得下时才显示 —— 断点见文件末尾那条。
+   */
+  flex-shrink: 0;
 }
 .topbar .crumb b { color: var(--ink-1); font-weight: 500; }
 .topbar .spacer { flex: 1 1 0; min-width: 0; }
 
-/* 进度格：一格一个知识点，当前用绿点，已学用黄 */
-/* 一节课一格，节数多了就会很长：允许收缩、必要时裁掉中段，不许把顶栏撑破 */
+/**
+ * 进度点阵：一格一节课，当前位置用绿点。
+ * 一节课一格，节数多了就会很长，所以允许收缩、必要时裁掉一截，不许把顶栏撑破。
+ *
+ * 两个坑都写在这里，因为它们都是"看着没问题、读起来是错的"那种：
+ *
+ * 1. 颜色。以前"已经写好"用的是琥珀黄，而黄色在这一站的意思是焦点／选中／主行动。
+ *    结果一个第一次打开站点的读者看到的是 53 颗黄 + 1 颗绿，像是自己已经学完了 98%
+ *    —— 而点阵记的其实是"这一节写完了没有"，和读者读到哪毫无关系。
+ *    写着的那一档改用中性色，它才回到"一叠刻度"该有的分量。
+ * 2. 收缩。点阵基数很大（54 格 ≈ 700px），面包屑基数小；默认按基数成比例收缩，
+ *    于是 1440px 下先被截断的是面包屑（「一 · 声音本身 / 第 0 …」）而点阵只裁掉一点。
+ *    给点阵一个大得多的权重：点阵裁一截还是一条点阵，面包屑裁一截就是一句读不通的话。
+ *    代价说清楚：54 格铺开要 700px 出头，1680px 以下它一定是被裁掉一截的
+ *    （1440px 上显示 36 格）。它在这里的作用是「这是一门很长的课」的质感，
+ *    不是让你数格子；真正的位置信息在面包屑和正文的 kicker 里。
+ */
 .meter {
   display: flex; gap: 3px; align-items: center;
   flex: 0 1 auto; min-width: 0; overflow: hidden;
+  flex-shrink: 20;
 }
 .meter i {
   display: block; width: 10px; height: 10px; border-radius: 3px;
   background: var(--surface-3);
   flex: 0 0 auto;
 }
-.meter i.done { background: var(--amber); }
+.meter i.done { background: var(--line-strong); }
 .meter i.now  { background: var(--green); }
 
 /**
@@ -52,9 +75,6 @@
 @media (max-width: 900px) {
   .topbar { gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); }
   .topbar .meter { display: none; }
-  .topbar .crumb {
-    flex: 1 1 auto; text-align: right;
-  }
   /**
    * 顶栏现在有四件东西：站名 + 「搜索 / 深色 / 声音」。这一档宽度里让站名先让位，
    * 用省略号收尾，别把按钮挤出屏幕（issue #2 的教训：按钮可点 > 站名完整）。
@@ -168,7 +188,15 @@
   display: flex; align-items: center; gap: var(--sp-3);
   flex-wrap: wrap; margin-bottom: var(--sp-4);
 }
-.lab-controls .field { flex: 1; min-width: 220px; }
+/**
+ * 读数（`.val`，min-width 6.5em）和滑块（min-width 120px）各自都有下限，
+ * 顶上那个写死的 `min-width: 220px` 比两者之和还小，等于允许 flex 把这一行
+ * 压到内容宽度以下 —— 压出去的部分会盖到后面的按钮上。
+ * 390px 实测：`.val` 溢出自己的 .field 33px，和「播放」重叠 21px，
+ * 「C4 · 261.6 Hz」被压成两行、6 被按钮吃掉。
+ * 改回 auto（= 内容宽度）：挤不下时整个 .field 换行，按钮自己排到第二行。
+ */
+.lab-controls .field { flex: 1; min-width: auto; }
 
 /* 律制实验台：圆盘 + 读数并排，窄屏堆叠 */
 .temper-grid {
@@ -195,10 +223,35 @@
   padding: var(--sp-4) var(--sp-5); text-align: center;
   color: var(--ink-1); margin: var(--sp-4) 0; overflow-x: auto;
 }
-.lesson code {
+/* 行内代码：课程页和「整幅宽度」页（关于／课程地图／搜索／术语表）共用一套。
+   以前只写了 .lesson，于是关于页那些 CONTRIBUTING.md 没有底色，和别处不一致。 */
+.lesson code, .shell--full code {
   background: var(--surface-2); padding: 1px 6px;
   border-radius: 5px; color: var(--ink-1); white-space: nowrap;
 }
+
+/**
+ * 代码块。全站只有「关于」页有一处（本地跑起来那三行），但以前一行样式都没有，
+ * 于是它按浏览器默认渲染：没有底色、不换行。不换行的 <pre> 最小内容宽度等于
+ * 它最长那一行的宽度，会把外面的两栏网格整个撑开 —— 手机上关于页因此
+ * 横向溢出 332px、正文被切掉右边一半（桌面也溢出 234px）。
+ * overflow-x: auto 让滚动容器的最小内容宽度归零，长行自己横滑，不再撑破外层。
+ */
+pre {
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--ink-2);
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+pre code { background: none; padding: 0; white-space: pre; }
 
 /* --- 谱面音符符号：用 CSS 画，不依赖字体 ---------------------------------
    ♩ 这个字符（U+2669）在部分中文字体里没有，系统回退时会被画成完全不相干的
@@ -297,6 +350,17 @@ input[type="range"] {
 .readout dd { margin: 0; font-variant-numeric: tabular-nums; color: var(--ink-1); }
 .readout dd.hi { color: var(--green-deep); }
 .readout dd.lo { color: var(--clay-deep); }
+
+/**
+ * 「关于」页的四个部分：同一个 .readout，但右边装的是整段说明而不是一个短读数。
+ * 默认样式下标签会被长说明挤扁 —— 手机上「第一部分 · 乐理基础」断成三行、
+ * 桌面上「第二部分 · 编曲与作曲」从中间断开。修饰类只给这一处用。
+ */
+.readout--prose dt { flex: 0 0 auto; }
+@media (max-width: 560px) {
+  .readout--prose > div { display: block; }
+  .readout--prose dt { margin-bottom: 2px; }
+}
 
 /* --- 标签 ----------------------------------------------------------------- */
 
@@ -489,7 +553,20 @@ input[type="range"] {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(200px, 260px);
   gap: var(--sp-5); align-items: start;
 }
-@media (max-width: 760px) { .lab-split { grid-template-columns: 1fr; } }
+/* 用 minmax(0, 1fr) 而不是 1fr：1fr 的最小值是 min-content，
+   一栏里只要有"不肯换行、也不肯横滑"的长内容，整列就会被撑到内容宽度，
+   两栏一起溢出屏幕。0 最小值把这个口子堵死，长内容自己负责收好。 */
+@media (max-width: 760px) { .lab-split { grid-template-columns: minmax(0, 1fr); } }
+
+/**
+ * 「关于」页专用：它右边那栏装的是成段说明和一个代码块，
+ * 不是实验台旁边那种 200–260px 的读数栏。沿用原比例会把正文和命令
+ * 都压成一条窄带（代码块 258px 宽、内容 643px，几乎一直在横滑）。
+ * 宽屏下把两栏拉平；窄屏仍走上面那条单栏规则。
+ */
+@media (min-width: 900px) {
+  .lab-split--read { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
 
 /* 小节网格：节奏用 */
 .grid-notes {
@@ -952,13 +1029,20 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 
 /* 项目链接：仓库 / 博客 / 其他项目。全站共用一处渲染。 */
 .site-links {
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3);
   margin: var(--sp-4) 0 0;
   font-size: var(--fs-small); color: var(--ink-3);
 }
 .site-links a { color: var(--ink-2); text-decoration: none; }
 .site-links a:hover { color: var(--ink-1); text-decoration: underline; }
-.site-links span { color: var(--ink-4); }
+/**
+ * 分隔点由 CSS 挂在每一条**前面那条链接**的后面，不再是一个独立的 <span>。
+ * 独立元素在 flex 换行里会自己跑到行首 —— 320px 下页脚会出现一行以「·」开头，
+ * 看着像少了一项。挂在链接尾巴上，它就永远跟着前一个词换行。
+ */
+.site-links a:not(:last-child)::after {
+  content: "·"; margin-left: var(--sp-3); color: var(--ink-4);
+}
 .site-links--center { justify-content: center; }
 
 @media (max-width: 640px) {
@@ -990,6 +1074,26 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   }
   .rail .reserved { display: none; }
   .rail a { white-space: nowrap; flex-shrink: 0; }
+
+  /**
+   * 这条横滑带以前没有任何"还能往右滑"的提示：iOS 默认不画滚动条，
+   * 右边被切一半的条目看起来像坏了，而不像能滑。
+   * 两端各挂一个渐隐，由 main.js 按真实滚动位置开关（没有 data-edge = 无需滑或已到头）。
+   */
+  .rail[data-edge] {
+    -webkit-mask-image: linear-gradient(to right,
+      transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right,
+      transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+  }
+  .rail[data-edge="end"] {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent 100%);
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent 100%);
+  }
+  .rail[data-edge="start"] {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 24px);
+    mask-image: linear-gradient(to right, transparent 0, #000 24px);
+  }
 }
 
 @media (max-width: 640px) {
@@ -999,8 +1103,15 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   .lesson { gap: var(--sp-5); }
 }
 
-/* 顶栏放不下时先砍面包屑，别去挤进度格和声音开关 */
-@media (max-width: 900px) {
+/**
+ * 顶栏放不下时先砍面包屑，别去挤进度格和声音开关。
+ *
+ * 断点从 900px 提到 1060px：面包屑在 2026-09 改成不收缩（它被截断就是半句
+ * 读不通的话），所以它只能在真的放得下时才露面。1060px 以下那点宽度让给
+ * 「站名 + 五个导航 + 深色 + 声音」之后，留给它的不足一行 —— 而正文顶部本来
+ * 就有一模一样的 kicker（「第 29 节 · 曲式与结构」），顶栏不必重复。
+ */
+@media (max-width: 1060px) {
   .topbar .crumb { display: none; }
 }
 
@@ -1020,6 +1131,34 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   background: var(--amber-soft); color: var(--ink-1);
   border-radius: 3px; padding: 0 2px;
 }
+
+/**
+ * 搜索框不再拉满整幅宽度。整幅是 1030px（--shell-max 1080 减左右内边距），
+ * 比正文的 68ch 度量宽出一倍，在这一页上像个贴错地方的元素。
+ */
+.search-field { max-width: 42rem; }
+
+/**
+ * 空状态下的示例词。以前空状态只有一行「索引里共 54 节课」和一大片空白，
+ * 读者得先自己想出一个词 —— 而这正是搜索页最容易劝退的一步。
+ */
+.search-samples {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--sp-2); margin: 0 0 var(--sp-5);
+}
+.search-samples-label { font-size: var(--fs-small); color: var(--ink-3); }
+.search-samples a {
+  font-size: var(--fs-small); color: var(--ink-2); text-decoration: none;
+  padding: 5px var(--sp-3);
+  border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: var(--surface);
+}
+.search-samples a:hover {
+  background: var(--surface-2); color: var(--ink-1); border-color: var(--line-strong);
+}
+/* 出结果之后示例词就该让位：留着会和结果列表抢注意力 */
+.search-samples[hidden] { display: none; }
+
 .topnav { flex-shrink: 0; }
 
 /**

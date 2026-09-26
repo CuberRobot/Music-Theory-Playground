@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  /**
+   * 先把「站点根在哪」定下来，这是本页唯一有点绕的地方。
+   *
+   * GitHub Pages 会把这一页交给任意一个不存在的地址，但地址栏里留的是用户输错的
+   * 那条路径（/Music-Theory-Playground/lessons/nope/ 这种），于是页内所有相对
+   * 链接都会以错路径为基准、全部指飞。所以按路径第一段判断：是仓库名就是项目页，
+   * 否则就是根目录（本地预览，或者以后换了自定义域名）。
+   *
+   * <base> 负责页面里那些 <a>：链接是点的时候才解算，所以晚一点也来得及。
+   *
+   * 但样式表／图标／main.js 不能只靠 <base> —— 见下面 __siteAsset 那段。
+   */
+  window.__siteRoot = (function () {
+    try {
+      var first = location.pathname.split('/').filter(Boolean)[0] || '';
+      return first === 'Music-Theory-Playground' ? '/' + first + '/' : '/';
+    } catch (e) {
+      return '/';
+    }
+  })();
+  (function () {
+    try {
+      var base = document.createElement('base');
+      base.href = window.__siteRoot;
+      document.head.appendChild(base);
+    } catch (e) {}
+  })();
+
+  /**
+   * 为什么样式表、图标、main.js 的路径要留到运行时才写上去：
+   *
+   * 浏览器在跑脚本之前就会「预扫描」文档后面还写了什么资源，看到 href/src 就立刻
+   * 按**当前地址**去取。在这个页面上当前地址是错的，于是项目页下每次打开 404 页
+   * 都会白发 3 个样式表 + 1 个 main.js 的请求（都拿回一份 404.html，再在控制台留下
+   * 4 条 MIME 类型报错），然后才轮到正确的那几个。
+   *
+   * 所以这些标签一律只写 data-site-path、不写 href/src —— 预扫描没有 URL 可拿，
+   * 只剩下面这一次正确的请求。
+   */
+  window.__siteAsset = function () {
+    var els = document.querySelectorAll('[data-site-path]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var url = window.__siteRoot + el.getAttribute('data-site-path');
+      if (el.tagName === 'SCRIPT') el.src = url;
+      else el.setAttribute('href', url);
+    }
+  };
+
+  /* 抢先应用用户选过的主题：深色偏好下别先闪一下白 */
+  try { var t = localStorage.getItem('mtp-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<title>这一页不存在 · Music Theory Playground</title>
+<meta name="description" content="地址没对上。课程地图、站内搜索和术语表都在，从这里回去。">
+<!-- share-meta -->
+<!-- 分享卡片与图标。这三行 og 决定链接转出去长什么样：抓不到就只剩一条光秃秃的灰链接。
+     这一块由 node scripts/sync-share-meta.mjs 生成，别手改（下次跑会被抹平）。 -->
+<link rel="icon" data-site-path="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" data-site-path="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Music Theory Playground">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:title" content="这一页不存在 · Music Theory Playground">
+<meta property="og:description" content="地址没对上。课程地图、站内搜索和术语表都在，从这里回去。">
+<meta property="og:url" content="https://cuberrobot.github.io/Music-Theory-Playground/404.html">
+<meta property="og:image" content="https://cuberrobot.github.io/Music-Theory-Playground/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!-- /share-meta -->
+<link rel="stylesheet" data-site-path="styles/tokens.css">
+<link rel="stylesheet" data-site-path="styles/base.css">
+<link rel="stylesheet" data-site-path="styles/components.css">
+<script>window.__siteAsset();</script>
+</head>
+<!-- data-root="./"：<base> 已经把相对基准定到站点根，所以这里和首页一样写 "./" -->
+<body data-root="./" data-page="not-found">
+
+<header class="topbar">
+  <a class="brand" href="./">Music Theory Playground</a>
+  <nav class="topnav" aria-label="站点导航">
+    <a href="./lessons/">课程地图</a>
+    <a href="./glossary/">术语表</a>
+  </nav>
+  <span class="spacer"></span>
+  <!-- 这一页不放进度点阵（data-meter）：点阵的意思是"课程走到哪了"，
+       不存在的地址谈不上进度，空着比一排在别处有意义的点更干净。 -->
+  <button class="btn btn-ghost" type="button" data-sound aria-pressed="false">声音</button>
+</header>
+
+<div class="shell--full">
+  <section class="hero">
+    <p class="kicker">404</p>
+    <h1>这一页不存在</h1>
+    <p class="lead-p">地址没对上 —— 可能是链接抄漏了一个字符，也可能它指向的内容搬过家。</p>
+    <p>每一节都有固定的地址，课程结构只在 <code>curriculum.js</code> 里写一次；
+      如果你是从别处跟过来的链接打不开，先看看它是不是还留着旧编号
+      —— 第三、四部分在 1.0.0 里取消了编号，旧的字母地址已经不在了。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="./lessons/">课程地图</a>
+      <a class="btn" href="./search/">搜索</a>
+      <a class="btn" href="./">回首页</a>
+    </div>
+  </section>
+
+  <footer class="page-foot">
+    <span data-license></span>
+    <span><a href="./glossary/">术语表</a> · <a href="./about/">关于</a></span>
+  </footer>
+</div>
+
+<script type="module" data-site-path="src/js/main.js"></script>
+<script>window.__siteAsset();</script>
+</body>
+</html>

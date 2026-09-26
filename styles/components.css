@@ -26,22 +26,45 @@
 .topbar .crumb {
   font-size: var(--fs-small); color: var(--ink-3);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  /**
+   * 面包屑不参与收缩，地方不够时由进度点阵让（见 .meter）。
+   * 它是顶栏里唯一一句话（「十 · 结构 / 第 29 节 曲式与结构」），
+   * 被截断就变成半句读不通的话；点阵被截掉一截还是一条点阵。
+   * 代价是它必须在真的放得下时才显示 —— 断点见文件末尾那条。
+   */
+  flex-shrink: 0;
 }
 .topbar .crumb b { color: var(--ink-1); font-weight: 500; }
 .topbar .spacer { flex: 1 1 0; min-width: 0; }
 
-/* 进度格：一格一个知识点，当前用绿点，已学用黄 */
-/* 一节课一格，节数多了就会很长：允许收缩、必要时裁掉中段，不许把顶栏撑破 */
+/**
+ * 进度点阵：一格一节课，当前位置用绿点。
+ * 一节课一格，节数多了就会很长，所以允许收缩、必要时裁掉一截，不许把顶栏撑破。
+ *
+ * 两个坑都写在这里，因为它们都是"看着没问题、读起来是错的"那种：
+ *
+ * 1. 颜色。以前"已经写好"用的是琥珀黄，而黄色在这一站的意思是焦点／选中／主行动。
+ *    结果一个第一次打开站点的读者看到的是 53 颗黄 + 1 颗绿，像是自己已经学完了 98%
+ *    —— 而点阵记的其实是"这一节写完了没有"，和读者读到哪毫无关系。
+ *    写着的那一档改用中性色，它才回到"一叠刻度"该有的分量。
+ * 2. 收缩。点阵基数很大（54 格 ≈ 700px），面包屑基数小；默认按基数成比例收缩，
+ *    于是 1440px 下先被截断的是面包屑（「一 · 声音本身 / 第 0 …」）而点阵只裁掉一点。
+ *    给点阵一个大得多的权重：点阵裁一截还是一条点阵，面包屑裁一截就是一句读不通的话。
+ *    代价说清楚：54 格铺开要 700px 出头，1680px 以下它一定是被裁掉一截的
+ *    （1440px 上显示 36 格）。它在这里的作用是「这是一门很长的课」的质感，
+ *    不是让你数格子；真正的位置信息在面包屑和正文的 kicker 里。
+ */
 .meter {
   display: flex; gap: 3px; align-items: center;
   flex: 0 1 auto; min-width: 0; overflow: hidden;
+  flex-shrink: 20;
 }
 .meter i {
   display: block; width: 10px; height: 10px; border-radius: 3px;
   background: var(--surface-3);
   flex: 0 0 auto;
 }
-.meter i.done { background: var(--amber); }
+.meter i.done { background: var(--line-strong); }
 .meter i.now  { background: var(--green); }
 
 /**
@@ -52,9 +75,6 @@
 @media (max-width: 900px) {
   .topbar { gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); }
   .topbar .meter { display: none; }
-  .topbar .crumb {
-    flex: 1 1 auto; text-align: right;
-  }
   /**
    * 顶栏现在有四件东西：站名 + 「搜索 / 深色 / 声音」。这一档宽度里让站名先让位，
    * 用省略号收尾，别把按钮挤出屏幕（issue #2 的教训：按钮可点 > 站名完整）。
@@ -932,13 +952,20 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 
 /* 项目链接：仓库 / 博客 / 其他项目。全站共用一处渲染。 */
 .site-links {
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2);
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3);
   margin: var(--sp-4) 0 0;
   font-size: var(--fs-small); color: var(--ink-3);
 }
 .site-links a { color: var(--ink-2); text-decoration: none; }
 .site-links a:hover { color: var(--ink-1); text-decoration: underline; }
-.site-links span { color: var(--ink-4); }
+/**
+ * 分隔点由 CSS 挂在每一条**前面那条链接**的后面，不再是一个独立的 <span>。
+ * 独立元素在 flex 换行里会自己跑到行首 —— 320px 下页脚会出现一行以「·」开头，
+ * 看着像少了一项。挂在链接尾巴上，它就永远跟着前一个词换行。
+ */
+.site-links a:not(:last-child)::after {
+  content: "·"; margin-left: var(--sp-3); color: var(--ink-4);
+}
 .site-links--center { justify-content: center; }
 
 @media (max-width: 640px) {
@@ -999,8 +1026,15 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   .lesson { gap: var(--sp-5); }
 }
 
-/* 顶栏放不下时先砍面包屑，别去挤进度格和声音开关 */
-@media (max-width: 900px) {
+/**
+ * 顶栏放不下时先砍面包屑，别去挤进度格和声音开关。
+ *
+ * 断点从 900px 提到 1060px：面包屑在 2026-09 改成不收缩（它被截断就是半句
+ * 读不通的话），所以它只能在真的放得下时才露面。1060px 以下那点宽度让给
+ * 「站名 + 五个导航 + 深色 + 声音」之后，留给它的不足一行 —— 而正文顶部本来
+ * 就有一模一样的 kicker（「第 29 节 · 曲式与结构」），顶栏不必重复。
+ */
+@media (max-width: 1060px) {
   .topbar .crumb { display: none; }
 }
 

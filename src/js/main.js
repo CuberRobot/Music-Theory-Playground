@@ -242,9 +242,12 @@ const SITE_LINKS = [
 ];
 
 function renderSiteLinks(after) {
+  // 分隔点交给 CSS（`.site-links a:not(:last-child)::after`）。
+  // 以前这里每个链接后面插一个 <span>·</span>，而 flex 换行会把独立元素甩到行首，
+  // 窄屏页脚因此出现过以「·」开头的一行。
   const html = SITE_LINKS
     .map(([label, href]) => `<a href="${href}">${label}</a>`)
-    .join('<span aria-hidden="true">·</span>');
+    .join('');
 
   if (after) {
     after.insertAdjacentHTML('afterend',
@@ -351,6 +354,31 @@ function wireThemeToggle() {
  * 于是搜索、术语表、关于、更新在手机上全都没有入口 —— 只能点站名回首页再找。
  * 搜索是"随时想查一下"的东西，所以让它常驻在「深色 / 声音」旁边，任何宽度都在。
  */
+/**
+ * 窄屏站名。
+ *
+ * 手机上顶栏要放下「搜索 / 深色 / 声音」三颗按钮，剩下给站名的宽度只够放
+ * 「Music Theory Pl…」—— 一个半截的英文名，看着像页面坏了。
+ * 中文名短得多，而且这一站本来就是给中文读者的，所以窄屏换成中文名、宽屏
+ * 仍然用项目名（英文名是它的正式名字）。
+ *
+ * 为什么不写在 HTML 里：站名写在 60 个页面里，加一对 span 要改 60 处，
+ * 而顶栏本来就是这个文件在拼（搜索入口、主题开关都在这儿）。
+ * 门面页不挂本文件，但那一档站名独占一行、本来就截不到，不受影响。
+ */
+function wireBrandLabel() {
+  const brand = document.querySelector('.topbar .brand');
+  if (!brand) return;
+  const full = brand.textContent.trim();
+  const narrow = window.matchMedia('(max-width: 640px)');
+  const sync = () => {
+    const want = narrow.matches ? SITE.nameZh : full;
+    if (brand.textContent !== want) brand.textContent = want;
+  };
+  sync();
+  narrow.addEventListener('change', sync);
+}
+
 function installSearchEntry() {
   const sound = document.querySelector('[data-sound]');
   if (!sound) return;
@@ -435,6 +463,7 @@ renderMap();
 renderTopnav();
 renderSiteMeta();
 mountWidgets();
+wireBrandLabel();
 wireSoundToggle();
 installSearchEntry();   // 放在 wireThemeToggle 之前，顶栏顺序就是「搜索 · 深色 · 声音」
 wireThemeToggle();

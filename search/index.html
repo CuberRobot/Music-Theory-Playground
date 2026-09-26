@@ -34,12 +34,29 @@
     </p>
   </section>
 
-  <div class="field" style="margin-bottom: var(--sp-4)">
+  <div class="field search-field" style="margin-bottom: var(--sp-4)">
     <label for="q">搜什么</label>
     <input id="q" class="form-input" type="search" data-search-input
       placeholder="例如：卡农、五度、节拍器、织体、MuseScore…" autocomplete="off">
   </div>
   <p class="hint" data-search-info aria-live="polite"></p>
+
+  <!-- 空状态下的几个示例词。
+       搜索页最大的问题是"来了不知道搜什么"—— 空状态下面是一大片空白，
+       得自己先想出一个词。这几个是索引里确实有的词（每一条都能搜出结果）。
+       写成链接而不是按钮：可以新开标签、可以右键复制、没有 JS 也能用
+       （链接带着 ?q= 走，search-page.js 本来就会读它）；
+       JS 在的时候拦掉默认行为，就不用为了换个词重新下一遍 270KB 的索引。 -->
+  <div class="search-samples" data-search-samples>
+    <span class="search-samples-label">试试</span>
+    <a href="?q=泛音列" data-search-sample="泛音列">泛音列</a>
+    <a href="?q=五度" data-search-sample="五度">五度</a>
+    <a href="?q=卡农" data-search-sample="卡农">卡农</a>
+    <a href="?q=织体" data-search-sample="织体">织体</a>
+    <a href="?q=布鲁斯" data-search-sample="布鲁斯">布鲁斯</a>
+    <a href="?q=MuseScore" data-search-sample="MuseScore">MuseScore</a>
+  </div>
+
   <div data-search-results></div>
 
   <footer class="page-foot">

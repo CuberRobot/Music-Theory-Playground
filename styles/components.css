@@ -943,6 +943,34 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   background: var(--amber-soft); color: var(--ink-1);
   border-radius: 3px; padding: 0 2px;
 }
+
+/**
+ * 搜索框不再拉满整幅宽度。整幅是 1030px（--shell-max 1080 减左右内边距），
+ * 比正文的 68ch 度量宽出一倍，在这一页上像个贴错地方的元素。
+ */
+.search-field { max-width: 42rem; }
+
+/**
+ * 空状态下的示例词。以前空状态只有一行「索引里共 54 节课」和一大片空白，
+ * 读者得先自己想出一个词 —— 而这正是搜索页最容易劝退的一步。
+ */
+.search-samples {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--sp-2); margin: 0 0 var(--sp-5);
+}
+.search-samples-label { font-size: var(--fs-small); color: var(--ink-3); }
+.search-samples a {
+  font-size: var(--fs-small); color: var(--ink-2); text-decoration: none;
+  padding: 5px var(--sp-3);
+  border: 1px solid var(--line); border-radius: var(--r-pill);
+  background: var(--surface);
+}
+.search-samples a:hover {
+  background: var(--surface-2); color: var(--ink-1); border-color: var(--line-strong);
+}
+/* 出结果之后示例词就该让位：留着会和结果列表抢注意力 */
+.search-samples[hidden] { display: none; }
+
 .topnav { flex-shrink: 0; }
 
 /**

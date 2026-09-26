@@ -917,21 +917,38 @@ section('ready 的课必须真的有页面，页面上的实验台必须真的�
   }
 }
 
-section('README 上的规模数字必须和课程表、注册表对得上');
+section('README 与门面页上的规模数字必须和课程表、注册表对得上');
 {
   // "54 节 · 20 层 · 41 个实验台" 这种数字最容易随加课悄悄过期 —— 这次就写错了一个
   // （实验台按 widgets/ 目录的文件数算成 41，但那里还含共享组件 keyboard.js，
   // 真正注册的台子是 40）。所以让它只能从代码算出来。
+  const tiers = PARTS.reduce((a, p) => a + (p.tiers ?? p.groups ?? []).length, 0);
+  const mainSrc = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+  const block = mainSrc.match(/WIDGETS = \{([\s\S]*?)\n\};/);
+  const widgets = block ? [...block[1].matchAll(/^\s*['"]?([\w-]+)['"]?\s*:/gm)].length : -1;
+  const NUM = /(\d+)\s*节\s*·\s*(\d+)\s*层\s*·\s*(\d+)\s*个实验台/;
+
+  // 门面页第一屏也写了同一组数字（"一进门就该看见这一站有多厚"）。
+  // 它和 README 一样会随加课过期，所以同样交给审计，而不是靠人记得。
+  const landing = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  // 首页那行里数字各自包在 <b> 里，所以先把标签剥掉再比。
+  const scaleLine = landing.match(/<p class="landing-scale">([\s\S]*?)<\/p>/);
+  const lm = scaleLine ? scaleLine[1].replace(/<[^>]+>/g, '').match(NUM) : null;
+  checks++;
+  if (!lm) {
+    fail('首页 .landing-scale 里没有「N 节 · N 层 · N 个实验台」（改了措辞请同步改这条检查）');
+  } else {
+    eq(Number(lm[1]), LESSONS.length, '首页的节数与课程表一致');
+    eq(Number(lm[2]), tiers, '首页的层数与课程表一致');
+    eq(Number(lm[3]), widgets, '首页的实验台数与 main.js 里注册的数量一致');
+  }
+
   const readme = readFileSync(new URL('../README.md', import.meta.url), 'utf8');
-  const m = readme.match(/(\d+)\s*节\s*·\s*(\d+)\s*层\s*·\s*(\d+)\s*个实验台/);
+  const m = readme.match(NUM);
   checks++;
   if (!m) {
     fail('README 里没找到「共 N 节 · N 层 · N 个实验台」那句（改了措辞请同步改这条检查）');
   } else {
-    const tiers = PARTS.reduce((a, p) => a + (p.tiers ?? p.groups ?? []).length, 0);
-    const mainSrc = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
-    const block = mainSrc.match(/WIDGETS = \{([\s\S]*?)\n\};/);
-    const widgets = block ? [...block[1].matchAll(/^\s*['"]?([\w-]+)['"]?\s*:/gm)].length : -1;
     eq(Number(m[1]), LESSONS.length, 'README 的节数与课程表一致');
     eq(Number(m[2]), tiers, 'README 的层数与课程表一致');
     eq(Number(m[3]), widgets, 'README 的实验台数与 main.js 里注册的数量一致');

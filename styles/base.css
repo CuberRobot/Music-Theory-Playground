@@ -27,6 +27,23 @@ h1 { font-size: var(--fs-h1); }
 h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); }
 
+/**
+ * 中文标题的断行。
+ *
+ * 中文可以在任意两个字之间断行，而浏览器并不知道"拆开""找到""演奏"是一个词，
+ * 于是标题经常从词中间断开：「查一个词，找 / 到它对应哪一节」
+ * 「重复建立，对比 / 更新，回归满足」。
+ *
+ * keep-all 关掉汉字之间的默认断点，让断行只可能发生在标点处（逗号、空格）。
+ * 代价是没有标点、又长过一行的标题会变成一整块，所以补一个 anywhere 兜底，
+ * 它只在整行实在塞不下时才允许内部断开。
+ *
+ * 全站 60 个页面实测：带逗号的标题全部改在逗号处断，没有一个标题撑破自己的行盒。
+ * 也试过 text-wrap: balance（本想摊匀两行、消掉孤字）：它对中文更糟 ——
+ * 它优化行长而不管词边界，会把「找到」拆成「找 / 到」。
+ */
+h1, h2, h3 { word-break: keep-all; overflow-wrap: anywhere; }
+
 p { margin: 0 0 var(--sp-4); max-width: var(--measure); }
 
 a { color: var(--green-deep); text-underline-offset: 3px; }

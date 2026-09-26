@@ -38,8 +38,31 @@
 <main class="landing-stage">
   <section class="glass">
     <p class="kicker">看得见的乐理 · See it, play it, hear it.</p>
-    <h1>先把声音拆开，再谈音乐</h1>
+    <!-- 两个分句各自成块：手机上标题要占两行，而中文可以在任意两字之间断行，
+         于是"先把声音拆开，再谈音乐"会断成「…再谈音 / 乐」（留下一个孤字）
+         或者「先把声音拆 / 开…」（把"拆开"劈开）。按分句分组之后，
+         只可能断在逗号处。宽屏两段并排，仍然是一行。 -->
+    <h1><span>先把声音拆开，</span><span>再谈音乐</span></h1>
     <p>每个概念都配一个能拖、能听、能看见结果的实验台。</p>
+
+    <!-- 实验台预览。
+         门面页刻意不挂 main.js、不放真交互，但也不能只有一句口号 ——
+         从小红书这类地方点进来的人，需要在第一屏就看见"看得见"是什么样。
+         所以这里用纯 CSS 画了一段泛音竖条：和站内第 0 节那个实验台是同一组
+         数字（每根高 1/n），只是不能拖。它只是画面，没有承诺可点，所以
+         aria-hidden 掉，别让读屏用户以为这里有个能操作的控件。 -->
+    <div class="lab-preview" aria-hidden="true">
+      <p class="lab-preview-head"><b>泛音实验台</b><span>第 0 节 · 站内可拖</span></p>
+      <div class="lab-preview-bars">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+
+    <!-- 规模数字。这一行有审计盯着（scripts/audit-music.mjs 的"门面页数字"一节）——
+         加一节课忘了改这里，CI 会红，和 README 那句一个待遇。 -->
+    <p class="landing-scale"><b>54</b> 节 · <b>20</b> 层 · <b>40</b> 个实验台</p>
+
     <div class="actions">
       <a class="btn btn-primary" href="./lessons/">进入课程地图</a>
       <a class="btn" href="./search/">搜索</a>

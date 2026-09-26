@@ -879,6 +879,8 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   font-size: clamp(1.7rem, 1rem + 2.6vw, 2.6rem);
   margin-bottom: var(--sp-4);
 }
+/* 分句成块：断行只能发生在逗号处（见 index.html 里的说明）。 */
+.glass h1 span { display: inline-block; }
 .glass p { color: var(--ink-2); margin-inline: auto; max-width: 26rem; }
 .glass .actions {
   display: flex; flex-wrap: wrap; gap: var(--sp-3);
@@ -897,6 +899,71 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   background: color-mix(in srgb, var(--amber) 85%, var(--surface));
 }
 
+/**
+ * 门面页的实验台预览：一段纯 CSS 画的泛音竖条。
+ *
+ * 为什么要有它：门面页刻意不挂 main.js、不放真交互（见 index.html 的说明），
+ * 但这样一来第一屏就只有一句口号 —— 从小红书这类地方点进来的人，
+ * 在按"进入课程地图"之前看不到任何"看得见"的东西。
+ * 这一块把站内第 0 节那个实验台的样子搬上来：同一组数字（每根高 1/n），
+ * 只是不能拖。用 CSS 画而不是截图：它是矢量、几行代码、不用管窄屏缩放，
+ * 也符合"能不用二进制的就不用"。
+ */
+.lab-preview {
+  margin: var(--sp-5) auto 0;
+  max-width: 21rem;
+  padding: var(--sp-3) var(--sp-4) var(--sp-4);
+  border-radius: var(--r-lg);
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--line-strong) 55%, transparent);
+  text-align: left;
+}
+.lab-preview-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: var(--sp-3); margin: 0 0 var(--sp-3); max-width: none;
+}
+.lab-preview-head b {
+  font-family: var(--font-serif); font-size: var(--fs-small);
+  font-weight: 600; color: var(--ink-1);
+}
+.lab-preview-head span { font-size: var(--fs-tiny); color: var(--ink-3); }
+.lab-preview-bars {
+  display: flex; align-items: flex-end; gap: 3px; height: 72px;
+}
+.lab-preview-bars i {
+  flex: 1; border-radius: 3px 3px 0 0; background: var(--amber); block-size: 6%;
+}
+/* 十六根，按泛音列的 1/n 衰减 —— 和站内实验台用的是同一组数字。
+   高处那几根是实色，从第九根起混进纸色：真实实验台里它们本来就弱。 */
+.lab-preview-bars i:nth-child(1)  { block-size: 100%; }
+.lab-preview-bars i:nth-child(2)  { block-size: 50%; }
+.lab-preview-bars i:nth-child(3)  { block-size: 33%; }
+.lab-preview-bars i:nth-child(4)  { block-size: 25%; }
+.lab-preview-bars i:nth-child(5)  { block-size: 20%; }
+.lab-preview-bars i:nth-child(6)  { block-size: 17%; }
+.lab-preview-bars i:nth-child(7)  { block-size: 14%; }
+.lab-preview-bars i:nth-child(8)  { block-size: 12.5%; }
+.lab-preview-bars i:nth-child(9)  { block-size: 11%; }
+.lab-preview-bars i:nth-child(10) { block-size: 10%; }
+.lab-preview-bars i:nth-child(11) { block-size: 9%; }
+.lab-preview-bars i:nth-child(12) { block-size: 8.3%; }
+.lab-preview-bars i:nth-child(13) { block-size: 7.7%; }
+.lab-preview-bars i:nth-child(14) { block-size: 7.1%; }
+.lab-preview-bars i:nth-child(15) { block-size: 6.7%; }
+.lab-preview-bars i:nth-child(16) { block-size: 6.3%; }
+.lab-preview-bars i:nth-child(n+9) {
+  background: color-mix(in srgb, var(--amber) 62%, var(--surface));
+}
+
+/* 规模数字：一进门就该看见这一站有多厚。数字用衬线抬一下，别混在句子里。 */
+.landing-scale {
+  margin: var(--sp-5) 0 0; font-size: var(--fs-small); color: var(--ink-3);
+}
+.landing-scale b {
+  font-family: var(--font-serif); font-size: 1.3em; font-weight: 600;
+  color: var(--ink-1); margin-right: 2px;
+}
+
 .landing-note {
   margin: 0; font-size: var(--fs-tiny); color: var(--ink-3);
   text-align: center;
@@ -905,6 +972,16 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 /* 浏览器不支持 backdrop-filter 时给一块实底，别让字浮在色团上 */
 @supports not (backdrop-filter: blur(4px)) {
   .glass { background: color-mix(in srgb, var(--surface) 94%, transparent); }
+}
+
+/**
+ * 很窄的机器（≤380px）：两颗按钮挤不进一行，于是各自换行、各按自己的文字宽度
+ * 居中，看起来像楼梯。这一档改成上下等宽，两行对齐。
+ * 320px 实测：改前「进入课程地图」宽、「搜索」窄，且左右不对齐。
+ */
+@media (max-width: 380px) {
+  .glass .actions { flex-direction: column; align-items: stretch; }
+  .glass .actions .btn { text-align: center; }
 }
 
 /* --- 课程地图页 ------------------------------------------------------------ */

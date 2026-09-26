@@ -134,14 +134,55 @@ function renderRail() {
    * 目录会很长，把当前这一节滚到左栏的可视范围中间。
    * 以前用 scrollIntoView({block:'nearest'})：那是"最省力地露出来"，
    * 于是靠后的章节会贴着栏底，还得自己往下找（issue #3-9）；
-   * 它还可能顺带滚动整个页面。这里只动左栏自己的 scrollTop。
+   * 它还可能顺带滚动整个页面。这里只动左栏自己的滚动位置。
+   *
+   * 轴要跟着宽窄走：≤960px 时 CSS 把 .rail 翻成一条横滑带（flex-direction: row），
+   * 那时 scrollTop 是死的 —— 以前不分方向一律改 scrollTop，于是手机上的目录条
+   * 永远停在课程开头：第 29 节的页面上，顶部显示的却是「0 泛音列 / 1」。
    */
+  scrollRailToHere(host);
+  markRailEdges(host);
+}
+
+function scrollRailToHere(host) {
   const here = host.querySelector('[aria-current="page"]');
-  if (here) {
-    const bar = host.getBoundingClientRect();
-    const item = here.getBoundingClientRect();
+  if (!here) return;
+  const bar = host.getBoundingClientRect();
+  const item = here.getBoundingClientRect();
+  if (isRailHorizontal(host)) {
+    host.scrollLeft += (item.left - bar.left) - (bar.width - item.width) / 2;
+  } else {
     host.scrollTop += (item.top - bar.top) - (bar.height - item.height) / 2;
   }
+}
+
+function isRailHorizontal(host) {
+  return getComputedStyle(host).flexDirection.startsWith('row');
+}
+
+/**
+ * 横滑带的"还能往左右滑"提示。
+ * 只在真的还有内容没露出来时挂 data-edge，滑到头就摘掉 ——
+ * 不然滑到末尾左边还挂着一层渐隐，看着像又少了东西。
+ */
+function markRailEdges(host) {
+  if (!isRailHorizontal(host)) {
+    host.removeAttribute('data-edge');
+    return;
+  }
+  const sync = () => {
+    const rest = host.scrollWidth - host.clientWidth;
+    if (rest <= 2) {
+      host.removeAttribute('data-edge');
+      return;
+    }
+    const atStart = host.scrollLeft <= 2;
+    const atEnd = host.scrollLeft >= rest - 2;
+    host.dataset.edge = atStart ? 'end' : atEnd ? 'start' : 'both';
+  };
+  sync();
+  host.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', sync);
 }
 
 function renderMeter() {

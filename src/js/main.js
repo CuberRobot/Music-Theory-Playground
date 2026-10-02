@@ -241,29 +241,54 @@ const SITE_LINKS = [
   ['许可', SITE.licenseUrl],
 ];
 
-function renderSiteLinks(after) {
-  // 分隔点交给 CSS（`.site-links a:not(:last-child)::after`）。
-  // 以前这里每个链接后面插一个 <span>·</span>，而 flex 换行会把独立元素甩到行首，
-  // 窄屏页脚因此出现过以「·」开头的一行。
+/**
+ * 页脚那句「要个 star」。
+ *
+ * 为什么不做成弹窗、浮层或者"关掉就不再出现"的横幅：这个站是拿来看和听的，
+ * 任何盖住内容的东西都在扣分。所以它只有一行、永远待在页脚、不记任何状态；
+ * 用户完全可以不理会它，页面也不会因此变慢或者跳动。
+ *
+ * 链接只能来自 SITE.repo —— 仓库地址像版本号一样只能有一个来源（审计会核对）。
+ */
+function starLine() {
+  return `<p class="site-star"><span aria-hidden="true">★</span> `
+    + `<a href="${SITE.repo}">在 GitHub 上点一个 star</a>，让更多人找到这一站。</p>`;
+}
+
+/**
+ * 项目链接 + star 那句，一起包进 .site-foot。
+ *
+ * 为什么非包一层不可：宿主容器（.lesson）是 gap: 32px 的 flex 列，
+ * 每个直接子元素之间都会被拉开 32px。早先 star 那行是作为第三个子元素单独插进去的，
+ * 于是页脚变成两个空行 —— 先 48px（32 的 gap 加 16 的 margin），再 40px（32 加 8），
+ * 既不等距也不紧凑。包成一块之后外面只留一个间距，里面由 .site-foot 自己的 gap 说了算。
+ */
+function siteFoot({ center = false } = {}) {
   const html = SITE_LINKS
     .map(([label, href]) => `<a href="${href}">${label}</a>`)
     .join('');
+  // 分隔点交给 CSS（`.site-links a:not(:last-child)::after`）。
+  // 以前这里每个链接后面插一个 <span>·</span>，而 flex 换行会把独立元素甩到行首，
+  // 窄屏页脚因此出现过以「·」开头的一行。
+  // 404 页不开口要 star：人是走错路才到那儿的，那是最不该开口的时刻。
+  const star = document.body.dataset.page === 'not-found' ? '' : starLine();
+  return `<div class="site-foot${center ? ' site-foot--center' : ''}">`
+    + `<p class="site-links">${html}</p>${star}</div>`;
+}
 
+function renderSiteLinks(after) {
   if (after) {
-    after.insertAdjacentHTML('afterend',
-      `<p class="site-links">${html}</p>`);
+    after.insertAdjacentHTML('afterend', siteFoot());
     return;
   }
   const pageFoot = document.querySelector('.page-foot');
   if (pageFoot) {
-    pageFoot.insertAdjacentHTML('beforeend',
-      `<span class="site-links">${html}</span>`);
+    pageFoot.insertAdjacentHTML('beforeend', siteFoot());
     return;
   }
   const note = document.querySelector('.landing-note');
   if (note) {
-    note.insertAdjacentHTML('afterend',
-      `<p class="site-links site-links--center">${html}</p>`);
+    note.insertAdjacentHTML('afterend', siteFoot({ center: true }));
   }
 }
 

@@ -85,6 +85,17 @@
     </div>
   </section>
 
+  <!-- 「要个 star」。门面页是唯一不挂 main.js 的页面，所以这份是静态标记；
+       内容页页脚那一个版本由 main.js 的 siteFoot 渲染（审计两处都盯着）。
+       刻意不做弹窗、不做浮层：它就钉在第一屏下面，不理会也不影响任何事。
+       这里做得比页脚那份显眼 —— 一颗药丸，而且只有一行：
+       从小红书这类地方点进来的人多半只看这一屏，多一行就会把页脚推出第一屏。 -->
+  <p class="site-star site-star--center">
+    <a class="btn site-star-cta" href="https://github.com/CuberRobot/Music-Theory-Playground">
+      <span aria-hidden="true">★</span> 在 GitHub 上点一个 star，让更多人找到这一站
+    </a>
+  </p>
+
   <p class="landing-note">
     乐理基础 · 编曲作曲 · 作品分析 · 风格解析　—　代码 MIT · 内容 CC BY-SA 4.0
   </p>

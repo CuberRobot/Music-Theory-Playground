@@ -847,6 +847,65 @@ section('站点元信息：版本号与维护历史必须自洽');
   if (!SITE.repo.includes('github.com')) fail('SITE.repo 不像 GitHub 地址');
 }
 
+section('要 star 的两个入口：门面页与页脚都得在，而且指向仓库');
+{
+  /**
+   * 这一句最容易在下一次改版里被"顺手删掉"——它不影响任何功能，删了页面照样跑，
+   * 只是再也长不出 star。所以给它一条防线：门面页一处（静态标记），页脚一处（main.js 渲染）。
+   * 仓库地址像版本号一样只允许一个来源（SITE.repo），硬编码的链接在这里就会被抓出来。
+   */
+  const home = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  const mainJs = readFileSync(new URL('../src/js/main.js', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../styles/components.css', import.meta.url), 'utf8');
+  const fnBody = (name) => {
+    const at = mainJs.indexOf(`function ${name}`);
+    return at < 0 ? '' : mainJs.slice(at, mainJs.indexOf('\n}', at));
+  };
+
+  const onLanding = home.match(/<p class="site-star[\s\S]*?<\/p>/);
+  checks++;
+  if (!onLanding) fail('门面页没有要 star 的那一行（.site-star）');
+  else {
+    checks++;
+    if (!onLanding[0].includes(SITE.repo)) fail('门面页的 star 入口没有指向 SITE.repo');
+  }
+
+  const line = fnBody('starLine');
+  checks++;
+  if (!line) fail('main.js 里没有 starLine()（页脚的 star 提示）');
+  else {
+    checks++;
+    if (!line.includes('SITE.repo')) fail('starLine 里的仓库地址没有用 SITE.repo（只能有一个来源）');
+    checks++;
+    if (!line.includes('site-star')) fail('starLine 没有用 .site-star 这个类（样式会挂不上）');
+  }
+
+  /**
+   * 项目链接和 star 那行必须包进同一块（.site-foot）。
+   * 分开插的话，宿主的 gap: 32px 会把它们撕成两个大小不一的空行 —— 这个坑刚踩过一次。
+   */
+  const foot = fnBody('siteFoot');
+  checks++;
+  if (!foot) fail('main.js 里没有 siteFoot()（页脚把链接与 star 包成一块）');
+  else {
+    checks++;
+    if (!foot.includes('site-foot')) fail('siteFoot 没有用 .site-foot 包住（页脚间距会被宿主 gap 撕开）');
+    checks++;
+    if (!foot.includes('starLine()')) fail('siteFoot 没有渲染 star 那一行');
+  }
+  checks++;
+  if (!/\.site-foot\s*\{/.test(css)) fail('components.css 里没有 .site-foot 的样式');
+
+  /**
+   * 但它不能变成浮层。用户明确要求：不要弹窗、不要盖住内容。
+   * 一旦有人给这两块加上 position: fixed / sticky，这条会红。
+   */
+  checks++;
+  if (/\.site-(star|foot)[^{]*\{[^}]*position:\s*(fixed|sticky)/.test(css)) {
+    fail('star 提示不能是浮层（position: fixed / sticky）—— 它会盖住内容');
+  }
+}
+
 section('MuseScore 三节：图与示例谱都在，而且不胖');
 {
   // 这一层是给"教程"加的：教程最容易坏的地方不是代码，是图。

@@ -859,7 +859,9 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: var(--sp-5);
-  padding: var(--sp-6) var(--sp-5) var(--sp-8);
+  /* 底部从 --sp-8 收到 --sp-7：多出来的那颗 star 药丸要占一行，
+     不收这一档就会把页脚推出第一屏（900px 视口实测差 4px）。 */
+  padding: var(--sp-6) var(--sp-5) var(--sp-7);
 }
 
 .glass {
@@ -1030,7 +1032,9 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
 /* 项目链接：仓库 / 博客 / 其他项目。全站共用一处渲染。 */
 .site-links {
   display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3);
-  margin: var(--sp-4) 0 0;
+  /* 上边距交给容器（.landing-stage 和 .site-foot 都有自己的 gap）——
+     自己再带一个 16px，门面页就会出现一条 40px 的空行，比旁边两条 24px 的显眼一倍。 */
+  margin: 0;
   font-size: var(--fs-small); color: var(--ink-3);
 }
 .site-links a { color: var(--ink-2); text-decoration: none; }
@@ -1044,6 +1048,39 @@ details.quick[open] summary { margin-bottom: var(--sp-2); }
   content: "·"; margin-left: var(--sp-3); color: var(--ink-4);
 }
 .site-links--center { justify-content: center; }
+
+/**
+ * 页脚那一块：项目链接 + 「要个 star」。
+ *
+ * 为什么必须包一层：宿主（.lesson 是 gap: 32px 的 flex 列）里，每个直接子元素
+ * 之间一律 32px。两行分开插进去就变成两个大小不一的空行（实测 48px / 40px）。
+ * 包成一块之后，外面只剩一个间距，里面由这里的 gap 说了算。
+ */
+.site-foot {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  align-items: flex-start;
+}
+.site-foot--center { align-items: center; }
+/* .page-foot 本身是个 flex 行：这一块要落到最后一行，独占整行 */
+.page-foot .site-foot { flex-basis: 100%; }
+
+/**
+ * 「要个 star」那一行。刻意做小、做灰 —— 它是页脚的一部分，不是一块广告位。
+ * 门面页那一份是 index.html 里的静态标记（那一页不挂 main.js），做得更显眼一点。
+ * 两边都不做浮层、不做弹窗：盖住内容的提示，再好看也是负分。
+ */
+.site-star {
+  margin: 0; font-size: var(--fs-tiny); color: var(--ink-3);
+}
+.site-star a:not(.site-star-cta) { color: var(--ink-2); text-decoration: none; }
+.site-star a:not(.site-star-cta):hover { color: var(--ink-1); text-decoration: underline; }
+.site-star--center { text-align: center; }
+/* 门面页那颗药丸：和页脚那行是同一个意思，但一眼能看见（.site-star a 那条压不到它） */
+.site-star .site-star-cta {
+  color: var(--ink-1); text-decoration: none;
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  border-color: color-mix(in srgb, var(--line-strong) 70%, transparent);
+}
 
 @media (max-width: 640px) {
   /* 门面页的顶栏就是导航本身，不能藏；内容页有左栏，藏掉省地方 */
